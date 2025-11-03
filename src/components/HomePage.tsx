@@ -2097,7 +2097,6 @@ export function HomePage() {
                 <div className="flex gap-3">
                   {[
                     { icon: Linkedin, href: "#" },
-                    { icon: Twitter, href: "#" },
                     { icon: Mail, href: "#" },
                   ].map((social, index) => (
                     <motion.a
