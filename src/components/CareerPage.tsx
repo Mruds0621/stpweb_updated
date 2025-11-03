@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "motion/react";
 import {
     MapPin,
@@ -34,7 +34,7 @@ import { Textarea } from "./ui/textarea";
 import { Switch } from "./ui/switch";
 import { Checkbox } from "./ui/checkbox";
 import { toast } from "sonner@2.0.3";
-
+import emailjs from '@emailjs/browser';
 interface WorkExperience {
     id: number;
     companyName: string;
@@ -50,6 +50,7 @@ export function CareerPage() {
     const [isApplicationOpen, setIsApplicationOpen] = useState(false);
     const [hasWorkExperience, setHasWorkExperience] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const formRef = useRef<HTMLFormElement>(null);
     const [workExperiences, setWorkExperiences] = useState<WorkExperience[]>([
         {
             id: 1,
@@ -216,8 +217,7 @@ export function CareerPage() {
             const workExpDetails = hasWorkExperience
                 ? workExperiences
                     .map((exp, index) => {
-                        return `
-Experience ${index + 1}:
+                        return `Experience ${index + 1}:
 - Company: ${exp.companyName}
 - Role: ${exp.jobRole}
 - Description: ${exp.jobDescription}
@@ -226,54 +226,35 @@ Experience ${index + 1}:
 `;
                     })
                     .join("\n")
-                : "No work experience";
+                : "No work experience provided";
 
-            // Prepare email data
-            const emailData = {
-                to: "alost513@gmail.com",
-                subject: `Job Application: ${selectedPosition.title} - ${formData.fullName}`,
-                body: `
-New Job Application Received
+            const currentDate = new Date().toLocaleString();
 
-Position: ${selectedPosition.title}
-Department: ${selectedPosition.department}
+            // Send admin notification email only
+            const result = await emailjs.send(
+                import.meta.env.VITE_EMAILJS_SERVICE_ID,
+                import.meta.env.VITE_EMAILJS_CAREER_TEMPLATE_ID,
+                {
+                    position_title: selectedPosition.title,
+                    department: selectedPosition.department,
+                    name: formData.fullName,
+                    email: formData.email,
+                    mobile: formData.mobile,
+                    address: formData.address,
+                    notice_period: formData.noticePeriod,
+                    work_experience: workExpDetails,
+                    additional_info: formData.additionalInfo || "Not provided",
+                    resume_filename: formData.resume ? formData.resume.name : "Not attached",
+                    submitted_date: currentDate,
+                },
+                import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+            );
 
-Applicant Details:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Full Name: ${formData.fullName}
-Email: ${formData.email}
-Mobile: ${formData.mobile}
-Current Address: ${formData.address}
-Notice Period: ${formData.noticePeriod} days
-
-Work Experience:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${workExpDetails}
-
-Notice Period: ${formData.noticePeriod} days
-
-Additional Information:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${formData.additionalInfo || "N/A"}
-
-Resume: ${formData.resume ? formData.resume.name : "Not attached"}
-        `,
-            };
-
-            // TODO: Replace this with your actual email API endpoint
-            // Example using fetch:
-            // const response = await fetch('/api/send-email', {
-            //   method: 'POST',
-            //   headers: { 'Content-Type': 'application/json' },
-            //   body: JSON.stringify(emailData),
-            // });
-
-            // For now, we'll simulate a successful email send
-            await new Promise((resolve) => setTimeout(resolve, 1500));
+            console.log('Career application email sent successfully:', result.text);
 
             // Show success toast
             toast.success("Application submitted successfully!", {
-                description: `Your application for ${selectedPosition.title} has been received. We'll contact you soon.`,
+                description: "Thank you for your application. We'll review it and contact you soon.",
                 duration: 5000,
             });
 
@@ -302,7 +283,10 @@ Resume: ${formData.resume ? formData.resume.name : "Not attached"}
 
             // Close dialog
             setIsApplicationOpen(false);
+
         } catch (error) {
+            console.error('Email sending failed:', error);
+
             // Show error toast
             toast.error("Failed to submit application", {
                 description: "Please try again or contact us directly via email.",
@@ -356,7 +340,8 @@ Resume: ${formData.resume ? formData.resume.name : "Not attached"}
                 {/* Background Image */}
                 <div className="absolute inset-0">
                     <ImageWithFallback
-                        src="/image_data/Website_Hero_Section/career.jpg"
+                        src="https://images.unsplash.com/photo-1748346918817-0b1b6b2f9bab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBvZmZpY2UlMjB0ZWFtd29ya3xlbnwxfHx8fDE3NjE5MTI1NTd8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                        alt="Career Opportunities"
                         className="w-full h-full object-cover"
                     />
                     {/* Dark Overlay */}
@@ -380,7 +365,7 @@ Resume: ${formData.resume ? formData.resume.name : "Not attached"}
                         >
                             Build Your Future
                             <br />
-                            <span style={{ color: "white" }}>Transform Urban India</span>
+                            <span style={{ color: colors.accent }}>Transform Urban India</span>
                         </motion.h1>
 
                         <motion.p
@@ -647,7 +632,7 @@ Resume: ${formData.resume ? formData.resume.name : "Not attached"}
                         </DialogDescription>
                     </DialogHeader>
 
-                    <form onSubmit={handleSubmit} className="space-y-6 mt-4">
+                    <form ref={formRef} onSubmit={handleSubmit} className="space-y-6 mt-4">
                         {/* Full Name */}
                         <div className="space-y-2">
                             <Label htmlFor="fullName">Full Name *</Label>

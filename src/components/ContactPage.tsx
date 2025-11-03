@@ -49,44 +49,27 @@ export function ContactPage() {
         setIsSubmitting(true);
 
         try {
-            // Add current date to form data
             const currentDate = new Date().toLocaleString();
 
-            // Send admin notification email
-            const adminResult = await emailjs.send(
+            // Send admin notification email only
+            const result = await emailjs.send(
                 import.meta.env.VITE_EMAILJS_SERVICE_ID,
-                import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+                import.meta.env.VITE_EMAILJS_CONTACT_TEMPLATE_ID,
                 {
                     name: formData.name,
                     email: formData.email,
                     organization: formData.organization || "Not provided",
                     message: formData.message,
-                    date: currentDate
+                    submitted_date: currentDate,
                 },
                 import.meta.env.VITE_EMAILJS_PUBLIC_KEY
             );
 
-            console.log('Admin email sent successfully:', adminResult.text);
-
-            // Send confirmation email to the sender
-            const confirmationResult = await emailjs.send(
-                import.meta.env.VITE_EMAILJS_SERVICE_ID,
-                import.meta.env.VITE_EMAILJS_CONFIRMATION_TEMPLATE_ID,
-                {
-                    name: formData.name,
-                    email: formData.email,
-                    organization: formData.organization || "Not provided",
-                    message: formData.message,
-                    date: currentDate
-                },
-                import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-            );
-
-            console.log('Confirmation email sent successfully:', confirmationResult.text);
+            console.log('Contact form email sent successfully:', result.text);
 
             // Show success toast
             toast.success("Message sent successfully!", {
-                description: "We've sent a confirmation email to your inbox.",
+                description: "Thank you for your message. We'll get back to you soon.",
                 duration: 5000,
             });
 
@@ -142,7 +125,7 @@ export function ContactPage() {
 
                 <div className="absolute inset-0">
                     <ImageWithFallback
-                        src="/image_data/Website_Hero_Section/contact.jpg"
+                        src="https://images.unsplash.com/photo-1748346918817-0b1b6b2f9bab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBvZmZpY2UlMjB0ZWFtd29ya3xlbnwxfHx8fDE3NjE5MTI1NTd8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
                         alt="Career Opportunities"
                         className="w-full h-full object-cover"
                     />
