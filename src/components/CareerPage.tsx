@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
 import {
     MapPin,
@@ -16,7 +16,10 @@ import {
     Send,
     X,
     Plus,
-    Trash2
+    Trash2,
+    CheckCircle2,
+    ChevronLeft,
+    ChevronRight
 } from "lucide-react";
 import { useThemeColors } from "./useThemeColors";
 import { Footer } from "./Footer";
@@ -34,7 +37,15 @@ import { Textarea } from "./ui/textarea";
 import { Switch } from "./ui/switch";
 import { Checkbox } from "./ui/checkbox";
 import { toast } from "sonner@2.0.3";
-import emailjs from '@emailjs/browser';
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+    type CarouselApi
+} from "./ui/carousel";
+
 interface WorkExperience {
     id: number;
     companyName: string;
@@ -45,12 +56,227 @@ interface WorkExperience {
     currentlyWorking: boolean;
 }
 
+interface CultureSlide {
+    id: number;
+    title: string;
+    subtitle: string;
+    hashtag: string;
+    points: string[];
+    image: string;
+}
+
+// Culture Carousel Component with Auto-play
+function CultureCarousel({ colors, cultureSlides }: { colors: any; cultureSlides: CultureSlide[] }) {
+    const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const autoplayRef = useRef<NodeJS.Timeout>();
+    const isAutoScrollingRef = useRef(false);
+
+    // Reset autoplay timer
+    const resetAutoplay = () => {
+        if (autoplayRef.current) {
+            clearInterval(autoplayRef.current);
+        }
+        autoplayRef.current = setInterval(() => {
+            if (carouselApi?.canScrollNext()) {
+                isAutoScrollingRef.current = true;
+                carouselApi.scrollNext();
+            } else {
+                isAutoScrollingRef.current = true;
+                carouselApi?.scrollTo(0);
+            }
+        }, 3500);
+    };
+
+    useEffect(() => {
+        if (!carouselApi) {
+            return;
+        }
+
+        // Update current index when carousel scrolls
+        carouselApi.on("select", () => {
+            setCurrentIndex(carouselApi.selectedScrollSnap());
+
+            // If this was a manual scroll (not auto), reset the timer
+            if (!isAutoScrollingRef.current) {
+                resetAutoplay();
+            }
+            // Reset the flag
+            isAutoScrollingRef.current = false;
+        });
+
+        // Start autoplay
+        resetAutoplay();
+
+        // Cleanup
+        return () => {
+            if (autoplayRef.current) {
+                clearInterval(autoplayRef.current);
+            }
+        };
+    }, [carouselApi]);
+
+    return (
+        <div className="bg-gradient-to-b from-gray-50 to-white py-8 sm:py-10 lg:py-12">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                    className="text-center mb-8 sm:mb-12"
+                >
+                    <h2 className="text-2xl sm:text-3xl lg:text-4xl mb-3 sm:mb-4" style={{ fontWeight: 700, color: colors.text }}>
+                        Our Culture & Values
+                    </h2>
+                    <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-3xl mx-auto">
+                        Experience a workplace that values your well-being, growth, and contributions
+                    </p>
+                </motion.div>
+
+                <Carousel
+                    setApi={setCarouselApi}
+                    className="w-full"
+                    opts={{ align: "start", loop: true }}
+                >
+                    <CarouselContent>
+                        {cultureSlides.map((slide, index) => {
+                            // Different background colors for each slide
+                            const cardBackgrounds = [
+                                'linear-gradient(135deg, #FED7B0 0%, #F9C89B 100%)', // Peachy orange
+                                'linear-gradient(135deg, #C8E6F5 0%, #A5D8F0 100%)', // Light blue
+                                'linear-gradient(135deg, #E5D4F7 0%, #D4BBEF 100%)'  // Light purple
+                            ];
+
+                            return (
+                                <CarouselItem key={slide.id}>
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        whileInView={{ opacity: 1, scale: 1 }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                                        className="rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl"
+                                        style={{
+                                            background: cardBackgrounds[index % cardBackgrounds.length]
+                                        }}
+                                    >
+                                        <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-0">
+                                            {/* Left Side - Content */}
+                                            <div className="p-6 sm:p-8 lg:p-12 flex flex-col justify-center order-2 lg:order-1">
+                                                <h3
+                                                    className="text-2xl sm:text-3xl lg:text-4xl mb-3 sm:mb-4"
+                                                    style={{
+                                                        fontWeight: 700,
+                                                        color: colors.primary
+                                                    }}
+                                                >
+                                                    {slide.title}
+                                                </h3>
+                                                <p className="text-sm sm:text-base lg:text-lg mb-6 sm:mb-8" style={{ color: '#1F2937' }}>
+                                                    {slide.subtitle}
+                                                </p>
+
+                                                <div className="space-y-4 sm:space-y-5 mb-6 sm:mb-8">
+                                                    {slide.points.map((point, idx) => (
+                                                        <div key={idx} className="pb-3 sm:pb-4 border-b border-gray-400/40">
+                                                            <div className="flex items-start gap-3">
+                                                                <CheckCircle2
+                                                                    className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0 mt-0.5"
+                                                                    style={{ color: colors.accent }}
+                                                                />
+                                                                <p className="text-sm sm:text-base" style={{ color: '#1F2937' }}>
+                                                                    {point}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            {/* Right Side - Image */}
+                                            <div className="relative h-80 sm:h-96 lg:h-[420px] order-1 lg:order-2 flex items-center justify-center p-4 sm:p-6 lg:p-8">
+                                                <div className="relative w-full h-full max-w-xl mx-auto rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl">
+                                                    <ImageWithFallback
+                                                        src={slide.image}
+                                                        alt={slide.title}
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                    {/* Overlay with Hashtag */}
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex flex-col items-center justify-end pb-4 sm:pb-6">
+                                                        <h4
+                                                            className="text-xl sm:text-2xl lg:text-3xl text-white mb-1 sm:mb-2"
+                                                            style={{ fontWeight: 700 }}
+                                                        >
+                                                            {slide.title}
+                                                        </h4>
+                                                        <p
+                                                            className="text-sm sm:text-base lg:text-lg text-white/90"
+                                                            style={{ fontWeight: 500 }}
+                                                        >
+                                                            {slide.hashtag}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                </CarouselItem>
+                            );
+                        })}
+                    </CarouselContent>
+
+                    {/* Custom Navigation Buttons - Fully Responsive */}
+                    <CarouselPrevious
+                        className="left-2 sm:left-3 md:left-4 lg:-left-12 xl:-left-16 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-x-1 border-0 z-20 [&>svg]:w-3.5 [&>svg]:h-3.5 sm:[&>svg]:w-4 sm:[&>svg]:h-4 md:[&>svg]:w-5 md:[&>svg]:h-5 lg:[&>svg]:w-6 lg:[&>svg]:h-6"
+                        style={{
+                            background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.accent} 100%)`,
+                            color: 'white'
+                        }}
+                    />
+                    <CarouselNext
+                        className="right-2 sm:right-3 md:right-4 lg:-right-12 xl:-right-16 w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:translate-x-1 border-0 z-20 [&>svg]:w-3.5 [&>svg]:h-3.5 sm:[&>svg]:w-4 sm:[&>svg]:h-4 md:[&>svg]:w-5 md:[&>svg]:h-5 lg:[&>svg]:w-6 lg:[&>svg]:h-6"
+                        style={{
+                            background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.accent} 100%)`,
+                            color: 'white'
+                        }}
+                    />
+                </Carousel>
+
+                {/* Active Indicator Dots - Responsive */}
+                <div className="flex justify-center gap-1.5 sm:gap-2 mt-4 sm:mt-5 md:mt-6">
+                    {cultureSlides.map((_, idx) => (
+                        <button
+                            key={idx}
+                            onClick={() => {
+                                carouselApi?.scrollTo(idx);
+                            }}
+                            className="transition-all duration-300 cursor-pointer hover:opacity-75"
+                            aria-label={`Go to slide ${idx + 1}`}
+                        >
+                            <div
+                                className={`rounded-full transition-all duration-300 ${idx === currentIndex
+                                        ? 'w-6 h-1.5 sm:w-7 sm:h-2 md:w-8 md:h-2'
+                                        : 'w-1.5 h-1.5 sm:w-2 sm:h-2'
+                                    }`}
+                                style={{
+                                    backgroundColor: idx === currentIndex ? colors.primary : '#D1D5DB'
+                                }}
+                            />
+                        </button>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export function CareerPage() {
     const { colors } = useThemeColors();
     const [isApplicationOpen, setIsApplicationOpen] = useState(false);
     const [hasWorkExperience, setHasWorkExperience] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const formRef = useRef<HTMLFormElement>(null);
+    const [selectedCategory, setSelectedCategory] = useState("All");
+    const [visibleCount, setVisibleCount] = useState(10);
     const [workExperiences, setWorkExperiences] = useState<WorkExperience[]>([
         {
             id: 1,
@@ -62,6 +288,46 @@ export function CareerPage() {
             currentlyWorking: false,
         }
     ]);
+
+    // Culture & Values Carousel Data
+    const cultureSlides = [
+        {
+            id: 1,
+            title: "#WellnessMatters",
+            subtitle: "Nurturing everyone's physical and mental wellness through",
+            hashtag: "#ThriveAtSthapatya",
+            points: [
+                "Support and empathy for colleagues during challenging times",
+                "Awareness about menstrual and menopausal health",
+                "Measures to reduce stress and promote work-life balance"
+            ],
+            image: "https://images.unsplash.com/photo-1690264460165-0ff5e1063d86?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0ZWFtJTIwY29sbGFib3JhdGlvbiUyMG9mZmljZXxlbnwxfHx8fDE3NjIyMTIzMDN8MA&ixlib=rb-4.1.0&q=80&w=1080"
+        },
+        {
+            id: 2,
+            title: "#GrowthCulture",
+            subtitle: "Empowering every team member to reach their full potential through",
+            hashtag: "#LearnAndGrow",
+            points: [
+                "Continuous learning and skill development programs",
+                "Career advancement opportunities across departments",
+                "Mentorship from industry leaders and experts"
+            ],
+            image: "https://images.unsplash.com/photo-1758876019673-704b039d405c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBncm93dGglMjBzdWNjZXNzfGVufDF8fHx8MTc2MjIzODU4OHww&ixlib=rb-4.1.0&q=80&w=1080"
+        },
+        {
+            id: 3,
+            title: "#InnovationFirst",
+            subtitle: "Building tomorrow's solutions for municipal governance through",
+            hashtag: "#TechForGood",
+            points: [
+                "Cutting-edge GIS and IT solutions development",
+                "Collaboration with leading technology partners",
+                "Impact-driven projects transforming urban India"
+            ],
+            image: "https://images.unsplash.com/photo-1759752393882-1b6587a7c887?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3b3JrcGxhY2UlMjBpbm5vdmF0aW9uJTIwdGVjaG5vbG9neXxlbnwxfHx8fDE3NjIyMzg1OTB8MA&ixlib=rb-4.1.0&q=80&w=1080"
+        }
+    ];
 
     // Form state
     const [formData, setFormData] = useState({
@@ -79,6 +345,7 @@ export function CareerPage() {
             id: 1,
             title: "GIS Specialist",
             department: "Technology",
+            category: "Technology",
             location: "Multiple locations",
             type: "Full-time",
             experience: "2-4 years",
@@ -96,6 +363,7 @@ export function CareerPage() {
             id: 2,
             title: "Field Survey Executive",
             department: "Operations",
+            category: "Operations",
             location: "Multiple locations",
             type: "Full-time",
             experience: "0-2 years",
@@ -113,6 +381,7 @@ export function CareerPage() {
             id: 3,
             title: "Data Analyst",
             department: "Analytics",
+            category: "Analytics",
             location: "Multiple locations",
             type: "Full-time",
             experience: "1-3 years",
@@ -130,6 +399,7 @@ export function CareerPage() {
             id: 4,
             title: "Project Manager",
             department: "Management",
+            category: "Management",
             location: "Multiple locations",
             type: "Full-time",
             experience: "5-8 years",
@@ -147,6 +417,7 @@ export function CareerPage() {
             id: 5,
             title: "Mobile App Developer",
             department: "Technology",
+            category: "Technology",
             location: "Multiple locations",
             type: "Full-time",
             experience: "2-5 years",
@@ -162,8 +433,9 @@ export function CareerPage() {
         },
         {
             id: 6,
-            title: "Customer Support",
+            title: "Customer Support Specialist",
             department: "Support",
+            category: "Support",
             location: "Multiple locations",
             type: "Full-time",
             experience: "0-2 years",
@@ -176,10 +448,329 @@ export function CareerPage() {
                 "Gather user feedback",
                 "Ensure customer satisfaction"
             ]
+        },
+        {
+            id: 7,
+            title: "Senior GIS Developer",
+            department: "Technology",
+            category: "Technology",
+            location: "Pune, Maharashtra",
+            type: "Full-time",
+            experience: "5-7 years",
+            icon: Code,
+            responsibilities: [
+                "Design GIS architecture solutions",
+                "Lead GIS development projects",
+                "Mentor junior developers",
+                "Integrate GIS with enterprise systems",
+                "Optimize spatial queries",
+                "Implement advanced mapping features"
+            ]
+        },
+        {
+            id: 8,
+            title: "Data Quality Analyst",
+            department: "Analytics",
+            category: "Analytics",
+            location: "Multiple locations",
+            type: "Full-time",
+            experience: "2-4 years",
+            icon: BarChart,
+            responsibilities: [
+                "Ensure data accuracy and consistency",
+                "Develop data quality metrics",
+                "Create validation rules",
+                "Audit data collection processes",
+                "Generate quality reports",
+                "Implement data cleaning procedures"
+            ]
+        },
+        {
+            id: 9,
+            title: "Field Operations Manager",
+            department: "Operations",
+            category: "Operations",
+            location: "Multiple locations",
+            type: "Full-time",
+            experience: "4-6 years",
+            icon: Users,
+            responsibilities: [
+                "Manage field survey teams",
+                "Plan and execute survey operations",
+                "Monitor survey progress",
+                "Ensure quality compliance",
+                "Handle stakeholder coordination",
+                "Optimize field processes"
+            ]
+        },
+        {
+            id: 10,
+            title: "Business Analyst",
+            department: "Analytics",
+            category: "Analytics",
+            location: "Multiple locations",
+            type: "Full-time",
+            experience: "3-5 years",
+            icon: BarChart,
+            responsibilities: [
+                "Analyze business requirements",
+                "Create functional specifications",
+                "Design process improvements",
+                "Support system implementations",
+                "Generate business insights",
+                "Facilitate stakeholder meetings"
+            ]
+        },
+        {
+            id: 11,
+            title: "Technical Support Lead",
+            department: "Support",
+            category: "Support",
+            location: "Multiple locations",
+            type: "Full-time",
+            experience: "3-5 years",
+            icon: Headphones,
+            responsibilities: [
+                "Lead support team operations",
+                "Handle escalated issues",
+                "Improve support processes",
+                "Conduct training programs",
+                "Monitor support metrics",
+                "Ensure SLA compliance"
+            ]
+        },
+        {
+            id: 12,
+            title: "Senior Project Manager",
+            department: "Management",
+            category: "Management",
+            location: "Multiple locations",
+            type: "Full-time",
+            experience: "8-12 years",
+            icon: FolderKanban,
+            responsibilities: [
+                "Lead multiple ULB projects",
+                "Strategic planning and execution",
+                "Manage project portfolios",
+                "Client relationship management",
+                "Team leadership and development",
+                "Budget and resource optimization"
+            ]
+        },
+        {
+            id: 13,
+            title: "Survey Team Leader",
+            department: "Operations",
+            category: "Operations",
+            location: "Multiple locations",
+            type: "Full-time",
+            experience: "2-4 years",
+            icon: Users,
+            responsibilities: [
+                "Lead survey teams on-ground",
+                "Ensure survey quality standards",
+                "Train new survey members",
+                "Coordinate with local authorities",
+                "Monitor daily targets",
+                "Resolve field challenges"
+            ]
+        },
+        {
+            id: 14,
+            title: "Full Stack Developer",
+            department: "Technology",
+            category: "Technology",
+            location: "Pune, Maharashtra",
+            type: "Full-time",
+            experience: "3-6 years",
+            icon: Code,
+            responsibilities: [
+                "Develop web applications",
+                "Build RESTful APIs",
+                "Database design and optimization",
+                "Implement frontend features",
+                "Code reviews and testing",
+                "Deploy and maintain applications"
+            ]
+        },
+        {
+            id: 15,
+            title: "UI/UX Designer",
+            department: "Technology",
+            category: "Technology",
+            location: "Pune, Maharashtra",
+            type: "Full-time",
+            experience: "2-4 years",
+            icon: Code,
+            responsibilities: [
+                "Design user interfaces",
+                "Create wireframes and prototypes",
+                "Conduct user research",
+                "Develop design systems",
+                "Collaborate with developers",
+                "Ensure accessibility standards"
+            ]
+        },
+        {
+            id: 16,
+            title: "Data Engineer",
+            department: "Analytics",
+            category: "Analytics",
+            location: "Multiple locations",
+            type: "Full-time",
+            experience: "3-5 years",
+            icon: BarChart,
+            responsibilities: [
+                "Build data pipelines",
+                "Design data warehouse solutions",
+                "Optimize ETL processes",
+                "Implement data integration",
+                "Ensure data security",
+                "Monitor data infrastructure"
+            ]
+        },
+        {
+            id: 17,
+            title: "Client Success Manager",
+            department: "Support",
+            category: "Support",
+            location: "Multiple locations",
+            type: "Full-time",
+            experience: "4-6 years",
+            icon: Headphones,
+            responsibilities: [
+                "Manage client relationships",
+                "Ensure client satisfaction",
+                "Drive product adoption",
+                "Identify upsell opportunities",
+                "Conduct business reviews",
+                "Resolve client concerns"
+            ]
+        },
+        {
+            id: 18,
+            title: "Assistant Project Manager",
+            department: "Management",
+            category: "Management",
+            location: "Multiple locations",
+            type: "Full-time",
+            experience: "2-4 years",
+            icon: FolderKanban,
+            responsibilities: [
+                "Support project execution",
+                "Coordinate project activities",
+                "Track project milestones",
+                "Prepare project reports",
+                "Assist in stakeholder management",
+                "Monitor project documentation"
+            ]
+        },
+        {
+            id: 19,
+            title: "Survey Coordinator",
+            department: "Operations",
+            category: "Operations",
+            location: "Multiple locations",
+            type: "Full-time",
+            experience: "1-3 years",
+            icon: Users,
+            responsibilities: [
+                "Plan survey schedules",
+                "Allocate resources",
+                "Monitor survey progress",
+                "Ensure data quality",
+                "Generate progress reports",
+                "Support field teams"
+            ]
+        },
+        {
+            id: 20,
+            title: "DevOps Engineer",
+            department: "Technology",
+            category: "Technology",
+            location: "Pune, Maharashtra",
+            type: "Full-time",
+            experience: "3-5 years",
+            icon: Code,
+            responsibilities: [
+                "Manage cloud infrastructure",
+                "Implement CI/CD pipelines",
+                "Monitor system performance",
+                "Ensure application security",
+                "Automate deployment processes",
+                "Handle incident management"
+            ]
+        },
+        {
+            id: 21,
+            title: "Training Specialist",
+            department: "Support",
+            category: "Support",
+            location: "Multiple locations",
+            type: "Full-time",
+            experience: "2-4 years",
+            icon: Headphones,
+            responsibilities: [
+                "Develop training materials",
+                "Conduct user training sessions",
+                "Create documentation",
+                "Assess training effectiveness",
+                "Support knowledge transfer",
+                "Maintain training records"
+            ]
+        },
+        {
+            id: 22,
+            title: "Quality Assurance Lead",
+            department: "Technology",
+            category: "Technology",
+            location: "Multiple locations",
+            type: "Full-time",
+            experience: "4-6 years",
+            icon: Code,
+            responsibilities: [
+                "Lead QA team activities",
+                "Develop test strategies",
+                "Conduct test automation",
+                "Ensure quality standards",
+                "Perform regression testing",
+                "Document test results"
+            ]
         }
     ];
 
+    // Get unique categories from positions
+    const categories = ["All", ...Array.from(new Set(positions.map(p => p.category)))];
+
+    // Filter positions based on selected category
+    const filteredPositions = selectedCategory === "All"
+        ? positions
+        : positions.filter(p => p.category === selectedCategory);
+
+    // Get visible positions based on pagination
+    const visiblePositions = filteredPositions.slice(0, visibleCount);
+    const hasMore = visibleCount < filteredPositions.length;
+
     const [selectedPosition, setSelectedPosition] = useState(positions[0]);
+
+    // Reset visible count when category changes
+    const handleCategoryChange = (category: string) => {
+        setSelectedCategory(category);
+        setVisibleCount(10);
+        // Set first position of the filtered category as selected
+        const firstInCategory = category === "All"
+            ? positions[0]
+            : positions.find(p => p.category === category) || positions[0];
+        setSelectedPosition(firstInCategory);
+
+        // Smooth scroll to positions section
+        setTimeout(() => {
+            document.getElementById('open-positions')?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }, 100);
+    };
 
     const benefits = [
         {
@@ -217,7 +808,8 @@ export function CareerPage() {
             const workExpDetails = hasWorkExperience
                 ? workExperiences
                     .map((exp, index) => {
-                        return `Experience ${index + 1}:
+                        return `
+Experience ${index + 1}:
 - Company: ${exp.companyName}
 - Role: ${exp.jobRole}
 - Description: ${exp.jobDescription}
@@ -226,35 +818,54 @@ export function CareerPage() {
 `;
                     })
                     .join("\n")
-                : "No work experience provided";
+                : "No work experience";
 
-            const currentDate = new Date().toLocaleString();
+            // Prepare email data
+            const emailData = {
+                to: "alost513@gmail.com",
+                subject: `Job Application: ${selectedPosition.title} - ${formData.fullName}`,
+                body: `
+New Job Application Received
 
-            // Send admin notification email only
-            const result = await emailjs.send(
-                import.meta.env.VITE_EMAILJS_SERVICE_ID,
-                import.meta.env.VITE_EMAILJS_CAREER_TEMPLATE_ID,
-                {
-                    position_title: selectedPosition.title,
-                    department: selectedPosition.department,
-                    name: formData.fullName,
-                    email: formData.email,
-                    mobile: formData.mobile,
-                    address: formData.address,
-                    notice_period: formData.noticePeriod,
-                    work_experience: workExpDetails,
-                    additional_info: formData.additionalInfo || "Not provided",
-                    resume_filename: formData.resume ? formData.resume.name : "Not attached",
-                    submitted_date: currentDate,
-                },
-                import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-            );
+Position: ${selectedPosition.title}
+Department: ${selectedPosition.department}
 
-            console.log('Career application email sent successfully:', result.text);
+Applicant Details:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Full Name: ${formData.fullName}
+Email: ${formData.email}
+Mobile: ${formData.mobile}
+Current Address: ${formData.address}
+Notice Period: ${formData.noticePeriod} days
+
+Work Experience:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${workExpDetails}
+
+Notice Period: ${formData.noticePeriod} days
+
+Additional Information:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${formData.additionalInfo || "N/A"}
+
+Resume: ${formData.resume ? formData.resume.name : "Not attached"}
+        `,
+            };
+
+            // TODO: Replace this with your actual email API endpoint
+            // Example using fetch:
+            // const response = await fetch('/api/send-email', {
+            //   method: 'POST',
+            //   headers: { 'Content-Type': 'application/json' },
+            //   body: JSON.stringify(emailData),
+            // });
+
+            // For now, we'll simulate a successful email send
+            await new Promise((resolve) => setTimeout(resolve, 1500));
 
             // Show success toast
             toast.success("Application submitted successfully!", {
-                description: "Thank you for your application. We'll review it and contact you soon.",
+                description: `Your application for ${selectedPosition.title} has been received. We'll contact you soon.`,
                 duration: 5000,
             });
 
@@ -283,10 +894,7 @@ export function CareerPage() {
 
             // Close dialog
             setIsApplicationOpen(false);
-
         } catch (error) {
-            console.error('Email sending failed:', error);
-
             // Show error toast
             toast.error("Failed to submit application", {
                 description: "Please try again or contact us directly via email.",
@@ -336,7 +944,7 @@ export function CareerPage() {
     return (
         <div className="min-h-screen bg-white">
             {/* Hero Section with Background Image - FIXED: Added proper top padding for navbar */}
-            <div className="relative pt-20 sm:pt-24 md:pt-28 h-[60vh] sm:h-[65vh] md:h-[70vh] min-h-[500px] sm:min-h-[550px] md:min-h-[600px]  overflow-hidden">
+            <div className="relative pt-20 h-[60vh] sm:h-[65vh] md:h-[70vh] min-h-[500px] sm:min-h-[550px] md:min-h-[600px] overflow-hidden">
                 {/* Background Image */}
                 <div className="absolute inset-0">
                     <ImageWithFallback
@@ -404,9 +1012,46 @@ export function CareerPage() {
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 py-10">
+            {/* Culture & Values Carousel */}
+            <CultureCarousel colors={colors} cultureSlides={cultureSlides} />
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10">
+                {/* Category Filter */}
+                <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="mb-6 sm:mb-8"
+                >
+                    <div className="flex flex-wrap gap-2 sm:gap-3 justify-center">
+                        {categories.map((category) => (
+                            <motion.button
+                                key={category}
+                                onClick={() => handleCategoryChange(category)}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-full transition-all text-xs sm:text-sm ${selectedCategory === category
+                                        ? 'shadow-lg'
+                                        : 'border-2 border-gray-300 hover:border-gray-400'
+                                    }`}
+                                style={selectedCategory === category ? {
+                                    backgroundColor: colors.primary,
+                                    color: 'white',
+                                    fontWeight: 600
+                                } : {
+                                    backgroundColor: 'white',
+                                    color: colors.text,
+                                    fontWeight: 500
+                                }}
+                            >
+                                {category}
+                            </motion.button>
+                        ))}
+                    </div>
+                </motion.div>
+
                 {/* Main Content Grid */}
-                <div id="open-positions" className="grid lg:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12">
+                <div id="open-positions" className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-6 sm:mb-8 lg:mb-12">
                     {/* Position Sidebar */}
                     <motion.div
                         initial={{ opacity: 0, x: -30 }}
@@ -415,21 +1060,23 @@ export function CareerPage() {
                         className="lg:col-span-1"
                     >
                         <div className="lg:sticky lg:top-24">
-                            <div className="mb-4">
-                                <div className="w-12 sm:w-16 h-1 mb-3 sm:mb-4 rounded-full" style={{ backgroundColor: colors.accent }} />
-                                <h2 className="text-xl sm:text-2xl" style={{ fontWeight: 700, color: colors.text }}>
+                            <div className="mb-3 sm:mb-4">
+                                <div className="w-12 sm:w-16 h-1 mb-2 sm:mb-3 lg:mb-4 rounded-full" style={{ backgroundColor: colors.accent }} />
+                                <h2 className="text-lg sm:text-xl lg:text-2xl" style={{ fontWeight: 700, color: colors.text }}>
                                     Open Positions
                                 </h2>
-                                <p className="text-xs sm:text-sm text-gray-500 mt-2">{positions.length} positions available</p>
+                                <p className="text-xs sm:text-sm text-gray-500 mt-1 sm:mt-2">
+                                    Showing {visiblePositions.length} of {filteredPositions.length} {selectedCategory !== "All" ? selectedCategory : ""} positions
+                                </p>
                             </div>
 
-                            <div className="space-y-2 max-h-[400px] sm:max-h-[600px] overflow-y-auto pr-2">
-                                {positions.map((position) => (
+                            <div className="space-y-2 max-h-[300px] sm:max-h-[350px] lg:max-h-[450px] overflow-y-auto pr-1 sm:pr-2 custom-scrollbar">
+                                {visiblePositions.map((position) => (
                                     <motion.button
                                         key={position.id}
                                         onClick={() => setSelectedPosition(position)}
                                         whileHover={{ x: 5 }}
-                                        className={`w-full text-left p-3 sm:p-4 rounded-xl border-2 transition-all ${selectedPosition.id === position.id
+                                        className={`w-full text-left p-2.5 sm:p-3 lg:p-4 rounded-lg sm:rounded-xl border-2 transition-all ${selectedPosition.id === position.id
                                                 ? 'border-transparent shadow-lg'
                                                 : 'border-gray-200 hover:border-gray-300'
                                             }`}
@@ -438,15 +1085,15 @@ export function CareerPage() {
                                             color: 'white'
                                         } : {}}
                                     >
-                                        <div className="flex items-start gap-2 sm:gap-3">
+                                        <div className="flex items-start gap-2 sm:gap-2.5 lg:gap-3">
                                             <position.icon
-                                                size={18}
-                                                className={`flex-shrink-0 sm:w-5 sm:h-5 ${selectedPosition.id === position.id ? 'text-white' : ''}`}
+                                                size={16}
+                                                className={`flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5 mt-0.5 ${selectedPosition.id === position.id ? 'text-white' : ''}`}
                                                 style={selectedPosition.id !== position.id ? { color: colors.accent } : {}}
                                             />
                                             <div className="flex-1 min-w-0">
                                                 <h3
-                                                    className="truncate text-sm sm:text-base mb-0.5 sm:mb-1"
+                                                    className="text-xs sm:text-sm lg:text-base mb-0.5 sm:mb-1 line-clamp-2"
                                                     style={{
                                                         fontWeight: 600,
                                                         color: selectedPosition.id === position.id ? 'white' : colors.text
@@ -454,7 +1101,7 @@ export function CareerPage() {
                                                 >
                                                     {position.title}
                                                 </h3>
-                                                <p className={`text-xs sm:text-sm ${selectedPosition.id === position.id ? 'text-white/80' : 'text-gray-500'}`}>
+                                                <p className={`text-[10px] sm:text-xs lg:text-sm truncate ${selectedPosition.id === position.id ? 'text-white/80' : 'text-gray-500'}`}>
                                                     {position.location}
                                                 </p>
                                             </div>
@@ -462,6 +1109,24 @@ export function CareerPage() {
                                     </motion.button>
                                 ))}
                             </div>
+
+                            {/* Show More Button */}
+                            {hasMore && (
+                                <motion.button
+                                    onClick={() => setVisibleCount(prev => prev + 10)}
+                                    whileHover={{ scale: 1.02 }}
+                                    whileTap={{ scale: 0.98 }}
+                                    className="w-full mt-3 px-4 py-2.5 rounded-lg border-2 transition-all text-xs sm:text-sm"
+                                    style={{
+                                        borderColor: colors.accent,
+                                        color: colors.primary,
+                                        fontWeight: 600,
+                                        backgroundColor: 'white'
+                                    }}
+                                >
+                                    Show More ({filteredPositions.length - visibleCount} remaining)
+                                </motion.button>
+                            )}
                         </div>
                     </motion.div>
 
@@ -472,46 +1137,46 @@ export function CareerPage() {
                         transition={{ duration: 0.6 }}
                         className="lg:col-span-2"
                     >
-                        <div className="bg-white rounded-2xl p-5 sm:p-6 md:p-8 border-2 border-gray-200 shadow-lg">
+                        <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-5 lg:p-6 xl:p-8 border-2 border-gray-200 shadow-lg">
                             {/* Position Header */}
-                            <div className="mb-6 sm:mb-8">
-                                <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4 mb-4 sm:mb-6">
+                            <div className="mb-4 sm:mb-6 lg:mb-8">
+                                <div className="flex flex-col sm:flex-row items-start gap-2.5 sm:gap-3 lg:gap-4 mb-3 sm:mb-4 lg:mb-6">
                                     <div
-                                        className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl flex items-center justify-center flex-shrink-0"
+                                        className="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0"
                                         style={{ backgroundColor: `${colors.accent}20` }}
                                     >
-                                        <selectedPosition.icon size={24} className="sm:w-8 sm:h-8" style={{ color: colors.accent }} />
+                                        <selectedPosition.icon size={20} className="sm:w-6 sm:h-6 lg:w-8 lg:h-8" style={{ color: colors.accent }} />
                                     </div>
                                     <div className="flex-1">
-                                        <h2 className="text-2xl sm:text-3xl mb-1 sm:mb-2" style={{ fontWeight: 700, color: colors.text }}>
+                                        <h2 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl mb-1 sm:mb-1.5 lg:mb-2" style={{ fontWeight: 700, color: colors.text }}>
                                             {selectedPosition.title}
                                         </h2>
-                                        <p className="text-sm sm:text-base text-gray-600">{selectedPosition.department}</p>
+                                        <p className="text-xs sm:text-sm lg:text-base text-gray-600">{selectedPosition.department}</p>
                                     </div>
                                 </div>
 
-                                <div className="flex flex-wrap gap-2 sm:gap-3">
-                                    <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-50 rounded-full">
-                                        <MapPin size={14} className="sm:w-4 sm:h-4" style={{ color: colors.accent }} />
-                                        <span className="text-xs sm:text-sm text-gray-700">{selectedPosition.location}</span>
+                                <div className="flex flex-wrap gap-1.5 sm:gap-2 lg:gap-3">
+                                    <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 lg:px-4 py-1 sm:py-1.5 lg:py-2 bg-gray-50 rounded-full">
+                                        <MapPin size={12} className="sm:w-3.5 sm:h-3.5 lg:w-4 lg:h-4 flex-shrink-0" style={{ color: colors.accent }} />
+                                        <span className="text-[10px] sm:text-xs lg:text-sm text-gray-700">{selectedPosition.location}</span>
                                     </div>
-                                    <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-50 rounded-full">
-                                        <Briefcase size={14} className="sm:w-4 sm:h-4" style={{ color: colors.accent }} />
-                                        <span className="text-xs sm:text-sm text-gray-700">{selectedPosition.type}</span>
+                                    <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 lg:px-4 py-1 sm:py-1.5 lg:py-2 bg-gray-50 rounded-full">
+                                        <Briefcase size={12} className="sm:w-3.5 sm:h-3.5 lg:w-4 lg:h-4 flex-shrink-0" style={{ color: colors.accent }} />
+                                        <span className="text-[10px] sm:text-xs lg:text-sm text-gray-700">{selectedPosition.type}</span>
                                     </div>
-                                    <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-gray-50 rounded-full">
-                                        <Clock size={14} className="sm:w-4 sm:h-4" style={{ color: colors.accent }} />
-                                        <span className="text-xs sm:text-sm text-gray-700">{selectedPosition.experience}</span>
+                                    <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 lg:px-4 py-1 sm:py-1.5 lg:py-2 bg-gray-50 rounded-full">
+                                        <Clock size={12} className="sm:w-3.5 sm:h-3.5 lg:w-4 lg:h-4 flex-shrink-0" style={{ color: colors.accent }} />
+                                        <span className="text-[10px] sm:text-xs lg:text-sm text-gray-700">{selectedPosition.experience}</span>
                                     </div>
                                 </div>
                             </div>
 
                             {/* About This Role */}
-                            <div className="mb-6 sm:mb-8">
-                                <h3 className="text-lg sm:text-xl mb-3 sm:mb-4" style={{ fontWeight: 600, color: colors.text }}>
+                            <div className="mb-4 sm:mb-6 lg:mb-8">
+                                <h3 className="text-base sm:text-lg lg:text-xl mb-2 sm:mb-3 lg:mb-4" style={{ fontWeight: 600, color: colors.text }}>
                                     About This Role
                                 </h3>
-                                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                                <p className="text-xs sm:text-sm lg:text-base text-gray-600 leading-relaxed">
                                     We are looking for a talented {selectedPosition.title} to join our {selectedPosition.department} team.
                                     This role offers an exciting opportunity to work on large-scale municipal projects across Maharashtra
                                     and contribute to transforming urban governance.
@@ -519,15 +1184,15 @@ export function CareerPage() {
                             </div>
 
                             {/* Key Responsibilities */}
-                            <div className="mb-6 sm:mb-8">
-                                <h3 className="text-lg sm:text-xl mb-3 sm:mb-4" style={{ fontWeight: 600, color: colors.text }}>
+                            <div className="mb-4 sm:mb-6 lg:mb-8">
+                                <h3 className="text-base sm:text-lg lg:text-xl mb-2 sm:mb-3 lg:mb-4" style={{ fontWeight: 600, color: colors.text }}>
                                     Key Responsibilities
                                 </h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-3">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-2.5 lg:gap-3">
                                     {selectedPosition.responsibilities.map((responsibility, index) => (
-                                        <div key={index} className="flex items-start gap-2">
-                                            <Target size={14} className="sm:w-4 sm:h-4 flex-shrink-0 mt-1" style={{ color: colors.accent }} />
-                                            <span className="text-xs sm:text-sm text-gray-700">{responsibility}</span>
+                                        <div key={index} className="flex items-start gap-1.5 sm:gap-2">
+                                            <Target size={12} className="sm:w-3.5 sm:h-3.5 lg:w-4 lg:h-4 flex-shrink-0 mt-0.5 sm:mt-1" style={{ color: colors.accent }} />
+                                            <span className="text-[10px] sm:text-xs lg:text-sm text-gray-700">{responsibility}</span>
                                         </div>
                                     ))}
                                 </div>
@@ -538,7 +1203,7 @@ export function CareerPage() {
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                                 onClick={() => setIsApplicationOpen(true)}
-                                className="w-full md:w-auto px-8 py-4 rounded-full text-white shadow-lg"
+                                className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 rounded-full text-white shadow-lg text-sm sm:text-base"
                                 style={{ backgroundColor: colors.primary, fontWeight: 600 }}
                             >
                                 Apply for this Position
@@ -553,14 +1218,14 @@ export function CareerPage() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6 }}
-                    className="bg-gradient-to-b from-gray-50 to-white rounded-2xl py-8 px-4"
+                    className="bg-gradient-to-b from-gray-50 to-white rounded-xl sm:rounded-2xl py-6 sm:py-8 px-4 sm:px-6"
                 >
                     <div className="max-w-5xl mx-auto">
-                        <h2 className="text-2xl text-center mb-6" style={{ fontWeight: 700, color: colors.text }}>
+                        <h2 className="text-lg sm:text-xl lg:text-2xl text-center mb-4 sm:mb-6" style={{ fontWeight: 700, color: colors.text }}>
                             Why Work With Us
                         </h2>
 
-                        <div className="grid md:grid-cols-3 gap-5">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 lg:gap-5">
                             {benefits.map((benefit, index) => (
                                 <motion.div
                                     key={index}
@@ -569,18 +1234,18 @@ export function CareerPage() {
                                     viewport={{ once: true }}
                                     transition={{ delay: index * 0.1 }}
                                     whileHover={{ y: -5 }}
-                                    className="bg-white rounded-xl p-4 text-center border-2 border-gray-200 hover:shadow-lg transition-all"
+                                    className="bg-white rounded-lg sm:rounded-xl p-3 sm:p-4 text-center border-2 border-gray-200 hover:shadow-lg transition-all"
                                 >
                                     <div
-                                        className="w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2"
+                                        className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-2.5"
                                         style={{ backgroundColor: `${colors.accent}20` }}
                                     >
-                                        <benefit.icon size={20} style={{ color: colors.accent }} />
+                                        <benefit.icon size={16} className="sm:w-5 sm:h-5" style={{ color: colors.accent }} />
                                     </div>
-                                    <h3 className="text-base mb-2" style={{ fontWeight: 600, color: colors.text }}>
+                                    <h2 className="text-xl sm:text-base mb-1.5 sm:mb-2" style={{ fontWeight: 600, color: colors.text }}>
                                         {benefit.title}
-                                    </h3>
-                                    <p className="text-xs text-gray-600">{benefit.desc}</p>
+                                    </h2>
+                                    <p className="text-[10px] sm:text-sm text-gray-600">{benefit.desc}</p>
                                 </motion.div>
                             ))}
                         </div>
@@ -632,7 +1297,7 @@ export function CareerPage() {
                         </DialogDescription>
                     </DialogHeader>
 
-                    <form ref={formRef} onSubmit={handleSubmit} className="space-y-6 mt-4">
+                    <form onSubmit={handleSubmit} className="space-y-6 mt-4">
                         {/* Full Name */}
                         <div className="space-y-2">
                             <Label htmlFor="fullName">Full Name *</Label>

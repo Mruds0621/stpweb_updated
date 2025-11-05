@@ -352,6 +352,26 @@ img {
         background: linear-gradient(180deg, #7D0A0A 0%, #BF3131 100%);
     }
 
+/* Custom scrollbar for career positions list */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #F5F5F5;
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #BF3131 0%, #7D0A0A 100%);
+    border-radius: 3px;
+    border: 1px solid #F5F5F5;
+}
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, #7D0A0A 0%, #BF3131 100%);
+    }
+
 /* Premium selection */
 ::selection {
     background-color: rgba(191, 49, 49, 0.3);
