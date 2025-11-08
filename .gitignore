@@ -286,6 +286,7 @@ FakesAssemblies/
 node_modules/
 *.rar
 *.zip
+*.gif
 # Visual Studio 6 build log
 *.plg
 
