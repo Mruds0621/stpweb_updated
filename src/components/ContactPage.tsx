@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { useState } from "react";
+import { useState,useRef } from "react";
 import {
     Mail,
     Phone,
@@ -12,7 +12,7 @@ import { useThemeColors } from "./useThemeColors";
 import { Footer } from "./Footer";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { toast } from "sonner@2.0.3";
-
+import emailjs from '@emailjs/browser';
 export function ContactPage() {
     const { colors } = useThemeColors();
 
@@ -24,7 +24,7 @@ export function ContactPage() {
         message: "",
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
-
+    const formRef = useRef<HTMLFormElement>(null);
     // Handle input changes
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -39,37 +39,37 @@ export function ContactPage() {
     // Handle form submission
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        // Validate form
+        if (!formData.name || !formData.email || !formData.message) {
+            toast.error("Please fill in all required fields");
+            return;
+        }
+
         setIsSubmitting(true);
 
         try {
-            // Prepare email data
-            const emailData = {
-                to: "alost513@gmail.com",
-                subject: `New Contact Form Submission from ${formData.name}`,
-                body: `
-Name: ${formData.name}
-Email: ${formData.email}
-Organization: ${formData.organization || "N/A"}
+            const currentDate = new Date().toLocaleString();
 
-Message:
-${formData.message}
-        `,
-            };
+            // Send admin notification email only
+            const result = await emailjs.send(
+                import.meta.env.VITE_EMAILJS_SERVICE_ID,
+                import.meta.env.VITE_EMAILJS_CONTACT_TEMPLATE_ID,
+                {
+                    name: formData.name,
+                    email: formData.email,
+                    organization: formData.organization || "Not provided",
+                    message: formData.message,
+                    submitted_date: currentDate,
+                },
+                import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+            );
 
-            // TODO: Replace this with your actual email API endpoint
-            // Example using fetch:
-            // const response = await fetch('/api/send-email', {
-            //   method: 'POST',
-            //   headers: { 'Content-Type': 'application/json' },
-            //   body: JSON.stringify(emailData),
-            // });
-
-            // For now, we'll simulate a successful email send
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+            console.log('Contact form email sent successfully:', result.text);
 
             // Show success toast
             toast.success("Message sent successfully!", {
-                description: "We'll get back to you within 24 hours.",
+                description: "Thank you for your message. We'll get back to you soon.",
                 duration: 5000,
             });
 
@@ -80,7 +80,10 @@ ${formData.message}
                 organization: "",
                 message: "",
             });
+
         } catch (error) {
+            console.error('Email sending failed:', error);
+
             // Show error toast
             toast.error("Failed to send message", {
                 description: "Please try again or contact us directly via email.",
@@ -122,7 +125,7 @@ ${formData.message}
 
                 <div className="absolute inset-0">
                     <ImageWithFallback
-                        src="https://images.unsplash.com/photo-1748346918817-0b1b6b2f9bab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBvZmZpY2UlMjB0ZWFtd29ya3xlbnwxfHx8fDE3NjE5MTI1NTd8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                        src="/image_data/Website_Hero_Section/contact.webp"
                         alt="Career Opportunities"
                         className="w-full h-full object-cover"
                     />
@@ -428,7 +431,7 @@ ${formData.message}
                                             style={{ transform: 'rotate(-2deg)' }}
                                         >
                                             <ImageWithFallback
-                                                src="https://images.unsplash.com/photo-1600275669439-14e40452d20b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMHdvbWFuJTIwc21pbGluZ3xlbnwxfHx8fDE3NjIyNDgzNTh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                                                src="/image_data/ContactPage/2.webp"
                                                 alt="Team Member"
                                                 className="w-full h-16 sm:h-20 lg:h-24 object-cover"
                                             />
@@ -444,7 +447,7 @@ ${formData.message}
                                             style={{ transform: 'rotate(2deg)' }}
                                         >
                                             <ImageWithFallback
-                                                src="https://images.unsplash.com/photo-1568585105565-e372998a195d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb3Jwb3JhdGUlMjBwcm9mZXNzaW9uYWwlMjBoZWFkc2hvdHxlbnwxfHx8fDE3NjIyMzYzNDJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                                                src="/image_data/ContactPage/4.webp"
                                                 alt="Team Member"
                                                 className="w-full h-16 sm:h-20 lg:h-24 object-cover"
                                             />
@@ -460,7 +463,7 @@ ${formData.message}
                                             style={{ transform: 'rotate(3deg)' }}
                                         >
                                             <ImageWithFallback
-                                                src="https://images.unsplash.com/photo-1758518731468-98e90ffd7430?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjB0ZWFtJTIwcG9ydHJhaXR8ZW58MXx8fHwxNzYyMTcxMTIyfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                                                src="/image_data/ContactPage/3.webp"
                                                 alt="Team Member"
                                                 className="w-full h-16 sm:h-20 lg:h-24 object-cover"
                                             />
@@ -476,7 +479,7 @@ ${formData.message}
                                             style={{ transform: 'rotate(-2deg)' }}
                                         >
                                             <ImageWithFallback
-                                                src="https://images.unsplash.com/photo-1735933109524-52d7f05dc7c1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjBwcm9mZXNzaW9uYWwlMjBvZmZpY2V8ZW58MXx8fHwxNjYyMjQ4MzU4fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                                                src="/image_data/ContactPage/1.webp"
                                                 alt="Team Member"
                                                 className="w-full h-16 sm:h-20 lg:h-24 object-cover"
                                             />
@@ -492,7 +495,7 @@ ${formData.message}
                                             style={{ transform: 'rotate(-3deg)' }}
                                         >
                                             <ImageWithFallback
-                                                src="https://images.unsplash.com/photo-1690264697065-33256aa3729b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0ZWFtJTIwbWVtYmVyJTIwaGFwcHl8ZW58MXx8fHwxNzYyMjQ4MzU5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                                                src="/image_data/ContactPage/6.webp"
                                                 alt="Team Member"
                                                 className="w-full h-16 sm:h-20 lg:h-24 object-cover"
                                             />
@@ -508,7 +511,7 @@ ${formData.message}
                                             style={{ transform: 'rotate(2deg)' }}
                                         >
                                             <ImageWithFallback
-                                                src="https://images.unsplash.com/photo-1570215170761-f056128eda48?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBlbmdpbmVlciUyMHdvcmt8ZW58MXx8fHwxNzYyMjQ4MzU5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                                                src="/image_data/ContactPage/11.webp"
                                                 alt="Team Member"
                                                 className="w-full h-16 sm:h-20 lg:h-24 object-cover"
                                             />
@@ -548,7 +551,7 @@ ${formData.message}
                             </p>
                         </div>
 
-                        <form className="space-y-3 sm:space-y-3.5 md:space-y-4" onSubmit={handleSubmit}>
+                        <form ref={formRef}  className="space-y-3 sm:space-y-3.5 md:space-y-4" onSubmit={handleSubmit}>
                             <div>
                                 <label
                                     className="block text-xs sm:text-sm mb-1 sm:mb-1.5"

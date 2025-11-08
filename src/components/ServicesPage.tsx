@@ -41,7 +41,7 @@ export function ServicesPage() {
             icon: Building2,
             title: "Property Tax Survey",
             desc: "Comprehensive GIS-based property surveys with accurate data collection and digitization.",
-            image: "https://images.unsplash.com/photo-1686488427594-f43de1523dfc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+            image: "/image_data/ServicePage/ptax.webp",
             features: [
                 "Complete property assessment",
                 "GPS-based mapping",
@@ -53,7 +53,7 @@ export function ServicesPage() {
             icon: Droplet,
             title: "Water Tax Management",
             desc: "Efficient water tax assessment and collection systems for urban local bodies.",
-            image: "https://images.unsplash.com/photo-1760776024866-3c68cb05b0b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+            image: "/image_data/ServicePage/wtax.webp",
             features: [
                 "Connection management",
                 "Billing automation",
@@ -65,7 +65,7 @@ export function ServicesPage() {
             icon: MapPin,
             title: "GIS Mapping",
             desc: "High-precision geographic information systems for municipal planning and analysis.",
-            image: "https://images.unsplash.com/photo-1625428354222-ce52b4227b26?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+            image: "/image_data/ServicePage/gisservice.webp",
             features: [
                 "Satellite imagery",
                 "Property mapping",
@@ -77,7 +77,7 @@ export function ServicesPage() {
             icon: Briefcase,
             title: "Trade License",
             desc: "Streamlined trade license management and approval workflows for businesses.",
-            image: "https://images.unsplash.com/photo-1588610990883-3417cb57740e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+            image: "/image_data/ServicePage/trade.webp",
             features: [
                 "Online applications",
                 "Approval workflows",
@@ -89,7 +89,7 @@ export function ServicesPage() {
             icon: Package,
             title: "Asset Management",
             desc: "Comprehensive municipal property and asset tracking systems.",
-            image: "https://images.unsplash.com/photo-1758609554326-ebf110a4c142?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+            image: "/image_data/ServicePage/asset.webp",
             features: [
                 "Asset inventory",
                 "Maintenance scheduling",
@@ -101,7 +101,7 @@ export function ServicesPage() {
             icon: Shield,
             title: "Blockchain Documents",
             desc: "Secure document verification using blockchain technology for authenticity.",
-            image: "https://images.unsplash.com/photo-1664792417230-7dd9485abdf0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+            image: "/image_data/ServicePage/blockchain.webp",
             features: [
                 "Document security",
                 "Tamper-proof records",
@@ -113,7 +113,7 @@ export function ServicesPage() {
             icon: ScanLine,
             title: "Scanning & Digitization",
             desc: "Large-scale document scanning and digitization services for municipal archives.",
-            image: "https://images.unsplash.com/photo-1573932847907-1d82dd790e83?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+            image: "/image_data/ServicePage/ptax.webp",
             features: [
                 "Bulk scanning",
                 "OCR processing",
@@ -125,7 +125,7 @@ export function ServicesPage() {
             icon: MapPin,
             title: "ELU-PLU",
             desc: "Existing Land Use and Proposed Land Use mapping for comprehensive urban planning and development control.",
-            image: "https://images.unsplash.com/photo-1627508080523-2e798cf8eb0a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx1cmJhbiUyMHBsYW5uaW5nJTIwbGFuZCUyMHVzZXxlbnwxfHx8fDE3NjE5MTQ1NTd8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+            image: "/image_data/ServicePage/eluplu.webp",
             features: [
                 "Land use surveys",
                 "Development planning",
@@ -137,7 +137,7 @@ export function ServicesPage() {
             icon: Award,
             title: "Our Commitment to Excellence",
             desc: "With 25 years of experience and 50+ lakh properties surveyed, we continue to set benchmarks in municipal services.",
-            image: "https://images.unsplash.com/photo-1670851050245-d861fd433d06?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjB0ZWFtJTIwY29sbGFib3JhdGlvbiUyMG9mZmljZXxlbnwxfHx8fDE3NjE4OTkwNzV8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+            image: "/image_data/ServicePage/3.webp",
             features: [
                 "100+ ULBs served",
                 "Proven track record",
@@ -150,23 +150,23 @@ export function ServicesPage() {
     const benefits = [
         {
             icon: Globe,
-            title: "State-wide Coverage",
-            desc: "Serving 100+ ULBs across Maharashtra"
+            title: "Trusted Expertise",
+            desc: "Decades of experience delivering reliable and result-oriented solutions."
         },
         {
             icon: Zap,
-            title: "Fast Implementation",
-            desc: "Quick deployment with minimal disruption"
+            title: "Proven Excellence",
+            desc: "Consistent quality and performance that clients trust."
         },
         {
             icon: Shield,
-            title: "Data Security",
-            desc: "Bank-grade security for all citizen data"
+            title: "Smart Governance",
+            desc: "Innovative tools that simplify and strengthen administration."
         },
         {
             icon: Smartphone,
-            title: "Mobile Solutions",
-            desc: "Field-ready apps for on-ground teams"
+            title: "Municipal Innovation",
+            desc: "Modern solutions driving efficiency and transparency in services."
         }
     ];
 
@@ -210,12 +210,10 @@ export function ServicesPage() {
     ];
 
     const techStackItems = [
-        { title: "Cloud Platform", icon: Cloud },
+        { title: "AI chatbot", icon: Cloud },
         { title: "Mobile Apps", icon: Smartphone },
         { title: "Web Portal", icon: Globe },
-        { title: "API Integration", icon: Network },
         { title: "Real-time Data", icon: Database },
-        { title: "Advanced Analytics", icon: Zap },
         { title: "Secure Storage", icon: Lock },
         { title: "24/7 Support", icon: Shield }
     ];
@@ -240,6 +238,16 @@ export function ServicesPage() {
             icon: Shield,
             title: "Digital Signature",
             desc: "Integration with digital signature services for authenticated document processing"
+        },
+        {
+            icon: Network,
+            title: "Citizen Portal",
+            desc: "Integration with digital signature services for authenticated document processing"
+        },
+        {
+            icon: Workflow,
+            title: "Chatbots",
+            desc: "Integration with digital signature services for authenticated document processing"
         }
     ];
 
@@ -257,7 +265,7 @@ export function ServicesPage() {
                         className="w-full h-full object-cover"
                     >
                         <source
-                            src="https://cdn.pixabay.com/video/2020/05/17/39967-421299608_large.mp4"
+                            src="/image_data/Website_Hero_Section/servicepage.webm"
                             type="video/mp4"
                         />
                     </video>
@@ -280,9 +288,9 @@ export function ServicesPage() {
                             className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl mb-4 sm:mb-6 text-white"
                             style={{ fontWeight: 700 }}
                         >
-                            Transforming Urban
+                            Transforming Cities
                             <br />
-                            <span style={{ color: colors.accent }}>Governance</span>
+                            <span style={{ color: colors.accent }}>Empowering People</span>
                         </motion.h1>
 
                         <motion.p
@@ -657,58 +665,6 @@ export function ServicesPage() {
                                     </div>
                                 </motion.div>
 
-                                {/* Technology Stack */}
-                                <motion.div
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.7 }}
-                                    className="mb-8"
-                                >
-                                    <h3 className="text-2xl mb-6 text-white text-center" style={{ fontWeight: 600 }}>
-                                        Powered By
-                                    </h3>
-                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                        {techStack.slice(0, 4).map((tech, idx) => (
-                                            <motion.div
-                                                key={idx}
-                                                initial={{ opacity: 0, scale: 0.9 }}
-                                                animate={{ opacity: 1, scale: 1 }}
-                                                transition={{ delay: 0.8 + idx * 0.05 }}
-                                                className="p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-center hover:bg-white/15 transition-all"
-                                            >
-                                                <tech.icon size={32} style={{ color: colors.accent }} className="mx-auto mb-2" />
-                                                <p className="text-sm text-white" style={{ fontWeight: 600 }}>
-                                                    {tech.title}
-                                                </p>
-                                            </motion.div>
-                                        ))}
-                                    </div>
-                                </motion.div>
-
-                                {/* CTA Button */}
-                                <motion.div
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.9 }}
-                                    className="text-center"
-                                >
-                                    <motion.button
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        onClick={() => {
-                                            setIsModalOpen(false);
-                                            navigate('/contact');
-                                        }}
-                                        className="px-10 py-4 rounded-full text-white transition-all duration-300 shadow-xl hover:shadow-2xl inline-flex items-center gap-3"
-                                        style={{
-                                            background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.accent} 100%)`,
-                                            fontWeight: 600
-                                        }}
-                                    >
-                                        Get Started with This Service
-                                        <ArrowRight size={20} />
-                                    </motion.button>
-                                </motion.div>
                             </div>
                         </motion.div>
                     </>

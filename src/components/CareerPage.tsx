@@ -45,7 +45,7 @@ import {
     CarouselPrevious,
     type CarouselApi
 } from "./ui/carousel";
-
+import emailjs from '@emailjs/browser';
 interface WorkExperience {
     id: number;
     companyName: string;
@@ -277,6 +277,7 @@ export function CareerPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [visibleCount, setVisibleCount] = useState(10);
+    const formRef = useRef<HTMLFormElement>(null);
     const [workExperiences, setWorkExperiences] = useState<WorkExperience[]>([
         {
             id: 1,
@@ -301,7 +302,7 @@ export function CareerPage() {
                 "Awareness about menstrual and menopausal health",
                 "Measures to reduce stress and promote work-life balance"
             ],
-            image: "https://images.unsplash.com/photo-1690264460165-0ff5e1063d86?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0ZWFtJTIwY29sbGFib3JhdGlvbiUyMG9mZmljZXxlbnwxfHx8fDE3NjIyMTIzMDN8MA&ixlib=rb-4.1.0&q=80&w=1080"
+            image: "/image_data/CareerPage/career1.webp"
         },
         {
             id: 2,
@@ -313,7 +314,7 @@ export function CareerPage() {
                 "Career advancement opportunities across departments",
                 "Mentorship from industry leaders and experts"
             ],
-            image: "https://images.unsplash.com/photo-1758876019673-704b039d405c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBncm93dGglMjBzdWNjZXNzfGVufDF8fHx8MTc2MjIzODU4OHww&ixlib=rb-4.1.0&q=80&w=1080"
+            image: "/image_data/CareerPage/career2.webp"
         },
         {
             id: 3,
@@ -325,7 +326,43 @@ export function CareerPage() {
                 "Collaboration with leading technology partners",
                 "Impact-driven projects transforming urban India"
             ],
-            image: "https://images.unsplash.com/photo-1759752393882-1b6587a7c887?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3b3JrcGxhY2UlMjBpbm5vdmF0aW9uJTIwdGVjaG5vbG9neXxlbnwxfHx8fDE3NjIyMzg1OTB8MA&ixlib=rb-4.1.0&q=80&w=1080"
+            image: "/image_data/CareerPage/career3.webp"
+        },
+        {
+            id: 3,
+            title: "#InnovationFirst",
+            subtitle: "Building tomorrow's solutions for municipal governance through",
+            hashtag: "#TechForGood",
+            points: [
+                "Cutting-edge GIS and IT solutions development",
+                "Collaboration with leading technology partners",
+                "Impact-driven projects transforming urban India"
+            ],
+            image: "/image_data/CareerPage/career4.webp"
+        },
+        {
+            id: 3,
+            title: "#InnovationFirst",
+            subtitle: "Building tomorrow's solutions for municipal governance through",
+            hashtag: "#TechForGood",
+            points: [
+                "Cutting-edge GIS and IT solutions development",
+                "Collaboration with leading technology partners",
+                "Impact-driven projects transforming urban India"
+            ],
+            image: "/image_data/CareerPage/career5.webp"
+        },
+        {
+            id: 3, 
+            title: "#InnovationFirst",
+            subtitle: "Building tomorrow's solutions for municipal governance through",
+            hashtag: "#TechForGood",
+            points: [
+                "Cutting-edge GIS and IT solutions development",
+                "Collaboration with leading technology partners",
+                "Impact-driven projects transforming urban India"
+            ],
+            image: "/image_data/CareerPage/career6.webp"
         }
     ];
 
@@ -343,400 +380,398 @@ export function CareerPage() {
     const positions = [
         {
             id: 1,
-            title: "GIS Specialist",
+            title: ".NET Core Developer [Intern]",
             department: "Technology",
             category: "Technology",
-            location: "Multiple locations",
-            type: "Full-time",
-            experience: "2-4 years",
+            location: "Pune, Maharashtra",
+            type: "Internship | Walk-In",
+            experience: "Freshers",
             icon: MapPin,
             responsibilities: [
-                "Develop and maintain GIS databases",
-                "Create detailed maps and spatial analysis",
-                "Train field teams on GIS tools",
-                "Ensure data accuracy and quality",
-                "Collaborate with survey teams",
-                "Generate reports and visualizations"
+                "Develop RESTful APIs using ASP.NET Core, Dapper, SQL, and design patterns.",
+                "Work with Web API, JavaScript / jQuery, and JWT token authentication.",
+                "Collaborate using GitHub and version control systems.",
+                "Exposure to Microservices architecture is a plus.",
+                "Collaborate with teams",
+                
             ]
         },
         {
             id: 2,
-            title: "Field Survey Executive",
-            department: "Operations",
-            category: "Operations",
-            location: "Multiple locations",
-            type: "Full-time",
-            experience: "0-2 years",
+            title: "Full Stack Mobile Developer",
+            department: "Technology",
+            category: "Technology",
+            location: "Pune, Maharashtra",
+            type: "Internship | Walk-In",
+            experience: "Freshers",
             icon: Users,
             responsibilities: [
-                "Conduct on-ground property surveys",
-                "Collect and verify property data",
-                "Use mobile apps for data entry",
-                "Coordinate with local authorities",
-                "Ensure survey completion targets",
+                "Build and maintain Android apps using Java / Kotlin / Flutter / React Native.",
+                "Integrate APIs, Room DB, and Retrofit.",
+                "Collaborate with UI/UX and backend teams.",
+                "Follow MVVM / MVP architecture and Clean Code practices.",
                 "Maintain quality standards"
             ]
         },
         {
             id: 3,
-            title: "Data Analyst",
+            title: "Digital Marketing Intern",
             department: "Analytics",
             category: "Analytics",
-            location: "Multiple locations",
-            type: "Full-time",
-            experience: "1-3 years",
+            location: "Pune, Maharashtra",
+            type: "Internship | Walk-In",
+            experience: "Freshers",
             icon: BarChart,
             responsibilities: [
-                "Analyze municipal data patterns",
-                "Generate insights and reports",
-                "Create data visualization dashboards",
-                "Identify data quality issues",
+                "Create and edit engaging visual content for social media and campaigns",
+                "Work on graphic design and video editing projects.",
+                "Assist in implementing social media optimization strategies.",
                 "Support decision-making processes",
-                "Maintain data integrity"
+                "Hands-on experience with Canva, CorelDRAW, CAPCUT, etc.",
+                "Good knowledge of Graphic Design and Video Editing.",
+                "Understanding of digital trends and analytics."
             ]
         },
         {
             id: 4,
-            title: "Project Manager",
-            department: "Management",
-            category: "Management",
-            location: "Multiple locations",
-            type: "Full-time",
-            experience: "5-8 years",
+            title: "Network Engineer",
+            department: "Technology",
+            category: "Technology",
+            location: "Pune, Maharashtra",
+            type: "Full-Time | Walk-In",
+            experience: "2 years",
             icon: FolderKanban,
             responsibilities: [
-                "Oversee ULB implementation projects",
-                "Manage project timelines and budgets",
-                "Coordinate with stakeholders",
-                "Lead project teams",
-                "Ensure quality deliverables",
+                "Manage and troubleshoot TCP/IP, DNS, DHCP, VLANs, and VPNs.",
+                "Configure and maintain Cisco, MikroTik, and Fortinet network hardware.",
+                "Handle firewall management, monitoring tools, and routing protocols.",
+                "Ensure cybersecurity and access control compliance.",
+                "Certifications like CCNA, CompTIA Network+ preferred.",
                 "Client relationship management"
             ]
         },
         {
             id: 5,
-            title: "Mobile App Developer",
-            department: "Technology",
-            category: "Technology",
-            location: "Multiple locations",
-            type: "Full-time",
-            experience: "2-5 years",
+            title: "Human Resource Intern",
+            department: "Management",
+            category: "Management",
+            location: " Pune, Maharashtra",
+            type: "Internship / Full-Time | Walk-In",
+            experience: "Freshers",
             icon: Code,
             responsibilities: [
-                "Develop mobile applications for field teams",
-                "Implement offline-first architecture",
-                "Optimize app performance",
-                "Integrate with backend systems",
-                "Conduct testing and debugging",
-                "Maintain code documentation"
+                "Assist in recruitment, onboarding, and employee engagement.",
+                "Maintain HR records and support performance processes.",
+                "Learn and apply MS Office tools for HR operations.",
+                "Excellent communication and interpersonal skills.",
+                "Proficiency in MS Office (Excel, Word, Outlook).",
             ]
         },
         {
             id: 6,
-            title: "Customer Support Specialist",
+            title: "Receptionist (Male/Female)",
             department: "Support",
             category: "Support",
-            location: "Multiple locations",
-            type: "Full-time",
-            experience: "0-2 years",
+            location: "Pune, Maharashtra",
+            type: "Internship / Full-Time | Walk-In",
+            experience: "Freshers",
             icon: Headphones,
             responsibilities: [
-                "Provide technical support to ULBs",
-                "Resolve user queries and issues",
-                "Conduct training sessions",
-                "Document support tickets",
-                "Gather user feedback",
-                "Ensure customer satisfaction"
+                "Manage calls, visitors, and front-desk operations.",
+                "Maintain professionalism and confidentiality.",
+                "Support administrative coordination.",
+                "MBA / Bachelor’s in HR or relevant field.",
+                "Excellent communication and interpersonal skills.",
+                "Proficiency in MS Office (Excel, Word, Outlook)."
             ]
         },
         {
             id: 7,
-            title: "Senior GIS Developer",
+            title: "GIS Analyst",
             department: "Technology",
             category: "Technology",
             location: "Pune, Maharashtra",
-            type: "Full-time",
-            experience: "5-7 years",
+            type: " Internship | Walk-In",
+            experience: "Freshers",
             icon: Code,
             responsibilities: [
-                "Design GIS architecture solutions",
-                "Lead GIS development projects",
-                "Mentor junior developers",
-                "Integrate GIS with enterprise systems",
+                "Work on GIS mapping and spatial data analysis.",
+                "Use tools like ArcGIS, QGIS, AutoCAD, and Google Earth.",
+                "Support mapping projects for ULBs and government clients.",
+                "B.E. / B.Tech (Civil), M.Tech, M.Sc (GIS) for GIS role.",
                 "Optimize spatial queries",
                 "Implement advanced mapping features"
             ]
         },
         {
             id: 8,
-            title: "Data Quality Analyst",
+            title: "Data Entry Operator ( Intern )",
             department: "Analytics",
             category: "Analytics",
-            location: "Multiple locations",
-            type: "Full-time",
-            experience: "2-4 years",
+            location: "Pune, Maharashtra",
+            type: "Intern",
+            experience: "Freshers",
             icon: BarChart,
             responsibilities: [
-                "Ensure data accuracy and consistency",
-                "Develop data quality metrics",
-                "Create validation rules",
-                "Audit data collection processes",
-                "Generate quality reports",
-                "Implement data cleaning procedures"
+                "Data entry with accuracy (30–40 WPM).",
+                "Handle Excel and Word documentation.",
+                "Maintain data confidentiality and integrity.",
+                "B.E. / B.Tech (Civil), M.Tech, M.Sc (GIS) for GIS role.",
+                "Any Graduate for Data Entry role."
             ]
         },
-        {
-            id: 9,
-            title: "Field Operations Manager",
-            department: "Operations",
-            category: "Operations",
-            location: "Multiple locations",
-            type: "Full-time",
-            experience: "4-6 years",
-            icon: Users,
-            responsibilities: [
-                "Manage field survey teams",
-                "Plan and execute survey operations",
-                "Monitor survey progress",
-                "Ensure quality compliance",
-                "Handle stakeholder coordination",
-                "Optimize field processes"
-            ]
-        },
-        {
-            id: 10,
-            title: "Business Analyst",
-            department: "Analytics",
-            category: "Analytics",
-            location: "Multiple locations",
-            type: "Full-time",
-            experience: "3-5 years",
-            icon: BarChart,
-            responsibilities: [
-                "Analyze business requirements",
-                "Create functional specifications",
-                "Design process improvements",
-                "Support system implementations",
-                "Generate business insights",
-                "Facilitate stakeholder meetings"
-            ]
-        },
-        {
-            id: 11,
-            title: "Technical Support Lead",
-            department: "Support",
-            category: "Support",
-            location: "Multiple locations",
-            type: "Full-time",
-            experience: "3-5 years",
-            icon: Headphones,
-            responsibilities: [
-                "Lead support team operations",
-                "Handle escalated issues",
-                "Improve support processes",
-                "Conduct training programs",
-                "Monitor support metrics",
-                "Ensure SLA compliance"
-            ]
-        },
-        {
-            id: 12,
-            title: "Senior Project Manager",
-            department: "Management",
-            category: "Management",
-            location: "Multiple locations",
-            type: "Full-time",
-            experience: "8-12 years",
-            icon: FolderKanban,
-            responsibilities: [
-                "Lead multiple ULB projects",
-                "Strategic planning and execution",
-                "Manage project portfolios",
-                "Client relationship management",
-                "Team leadership and development",
-                "Budget and resource optimization"
-            ]
-        },
-        {
-            id: 13,
-            title: "Survey Team Leader",
-            department: "Operations",
-            category: "Operations",
-            location: "Multiple locations",
-            type: "Full-time",
-            experience: "2-4 years",
-            icon: Users,
-            responsibilities: [
-                "Lead survey teams on-ground",
-                "Ensure survey quality standards",
-                "Train new survey members",
-                "Coordinate with local authorities",
-                "Monitor daily targets",
-                "Resolve field challenges"
-            ]
-        },
-        {
-            id: 14,
-            title: "Full Stack Developer",
-            department: "Technology",
-            category: "Technology",
-            location: "Pune, Maharashtra",
-            type: "Full-time",
-            experience: "3-6 years",
-            icon: Code,
-            responsibilities: [
-                "Develop web applications",
-                "Build RESTful APIs",
-                "Database design and optimization",
-                "Implement frontend features",
-                "Code reviews and testing",
-                "Deploy and maintain applications"
-            ]
-        },
-        {
-            id: 15,
-            title: "UI/UX Designer",
-            department: "Technology",
-            category: "Technology",
-            location: "Pune, Maharashtra",
-            type: "Full-time",
-            experience: "2-4 years",
-            icon: Code,
-            responsibilities: [
-                "Design user interfaces",
-                "Create wireframes and prototypes",
-                "Conduct user research",
-                "Develop design systems",
-                "Collaborate with developers",
-                "Ensure accessibility standards"
-            ]
-        },
-        {
-            id: 16,
-            title: "Data Engineer",
-            department: "Analytics",
-            category: "Analytics",
-            location: "Multiple locations",
-            type: "Full-time",
-            experience: "3-5 years",
-            icon: BarChart,
-            responsibilities: [
-                "Build data pipelines",
-                "Design data warehouse solutions",
-                "Optimize ETL processes",
-                "Implement data integration",
-                "Ensure data security",
-                "Monitor data infrastructure"
-            ]
-        },
-        {
-            id: 17,
-            title: "Client Success Manager",
-            department: "Support",
-            category: "Support",
-            location: "Multiple locations",
-            type: "Full-time",
-            experience: "4-6 years",
-            icon: Headphones,
-            responsibilities: [
-                "Manage client relationships",
-                "Ensure client satisfaction",
-                "Drive product adoption",
-                "Identify upsell opportunities",
-                "Conduct business reviews",
-                "Resolve client concerns"
-            ]
-        },
-        {
-            id: 18,
-            title: "Assistant Project Manager",
-            department: "Management",
-            category: "Management",
-            location: "Multiple locations",
-            type: "Full-time",
-            experience: "2-4 years",
-            icon: FolderKanban,
-            responsibilities: [
-                "Support project execution",
-                "Coordinate project activities",
-                "Track project milestones",
-                "Prepare project reports",
-                "Assist in stakeholder management",
-                "Monitor project documentation"
-            ]
-        },
-        {
-            id: 19,
-            title: "Survey Coordinator",
-            department: "Operations",
-            category: "Operations",
-            location: "Multiple locations",
-            type: "Full-time",
-            experience: "1-3 years",
-            icon: Users,
-            responsibilities: [
-                "Plan survey schedules",
-                "Allocate resources",
-                "Monitor survey progress",
-                "Ensure data quality",
-                "Generate progress reports",
-                "Support field teams"
-            ]
-        },
-        {
-            id: 20,
-            title: "DevOps Engineer",
-            department: "Technology",
-            category: "Technology",
-            location: "Pune, Maharashtra",
-            type: "Full-time",
-            experience: "3-5 years",
-            icon: Code,
-            responsibilities: [
-                "Manage cloud infrastructure",
-                "Implement CI/CD pipelines",
-                "Monitor system performance",
-                "Ensure application security",
-                "Automate deployment processes",
-                "Handle incident management"
-            ]
-        },
-        {
-            id: 21,
-            title: "Training Specialist",
-            department: "Support",
-            category: "Support",
-            location: "Multiple locations",
-            type: "Full-time",
-            experience: "2-4 years",
-            icon: Headphones,
-            responsibilities: [
-                "Develop training materials",
-                "Conduct user training sessions",
-                "Create documentation",
-                "Assess training effectiveness",
-                "Support knowledge transfer",
-                "Maintain training records"
-            ]
-        },
-        {
-            id: 22,
-            title: "Quality Assurance Lead",
-            department: "Technology",
-            category: "Technology",
-            location: "Multiple locations",
-            type: "Full-time",
-            experience: "4-6 years",
-            icon: Code,
-            responsibilities: [
-                "Lead QA team activities",
-                "Develop test strategies",
-                "Conduct test automation",
-                "Ensure quality standards",
-                "Perform regression testing",
-                "Document test results"
-            ]
-        }
+        //{
+        //    id: 9,
+        //    title: "Field Operations Manager",
+        //    department: "Operations",
+        //    category: "Operations",
+        //    location: "Multiple locations",
+        //    type: "Full-time",
+        //    experience: "4-6 years",
+        //    icon: Users,
+        //    responsibilities: [
+        //        "Manage field survey teams",
+        //        "Plan and execute survey operations",
+        //        "Monitor survey progress",
+        //        "Ensure quality compliance",
+        //        "Handle stakeholder coordination",
+        //        "Optimize field processes"
+        //    ]
+        //},
+        //{
+        //    id: 10,
+        //    title: "Business Analyst",
+        //    department: "Analytics",
+        //    category: "Analytics",
+        //    location: "Multiple locations",
+        //    type: "Full-time",
+        //    experience: "3-5 years",
+        //    icon: BarChart,
+        //    responsibilities: [
+        //        "Analyze business requirements",
+        //        "Create functional specifications",
+        //        "Design process improvements",
+        //        "Support system implementations",
+        //        "Generate business insights",
+        //        "Facilitate stakeholder meetings"
+        //    ]
+        //},
+        //{
+        //    id: 11,
+        //    title: "Technical Support Lead",
+        //    department: "Support",
+        //    category: "Support",
+        //    location: "Multiple locations",
+        //    type: "Full-time",
+        //    experience: "3-5 years",
+        //    icon: Headphones,
+        //    responsibilities: [
+        //        "Lead support team operations",
+        //        "Handle escalated issues",
+        //        "Improve support processes",
+        //        "Conduct training programs",
+        //        "Monitor support metrics",
+        //        "Ensure SLA compliance"
+        //    ]
+        //},
+        //{
+        //    id: 12,
+        //    title: "Senior Project Manager",
+        //    department: "Management",
+        //    category: "Management",
+        //    location: "Multiple locations",
+        //    type: "Full-time",
+        //    experience: "8-12 years",
+        //    icon: FolderKanban,
+        //    responsibilities: [
+        //        "Lead multiple ULB projects",
+        //        "Strategic planning and execution",
+        //        "Manage project portfolios",
+        //        "Client relationship management",
+        //        "Team leadership and development",
+        //        "Budget and resource optimization"
+        //    ]
+        //},
+        //{
+        //    id: 13,
+        //    title: "Survey Team Leader",
+        //    department: "Operations",
+        //    category: "Operations",
+        //    location: "Multiple locations",
+        //    type: "Full-time",
+        //    experience: "2-4 years",
+        //    icon: Users,
+        //    responsibilities: [
+        //        "Lead survey teams on-ground",
+        //        "Ensure survey quality standards",
+        //        "Train new survey members",
+        //        "Coordinate with local authorities",
+        //        "Monitor daily targets",
+        //        "Resolve field challenges"
+        //    ]
+        //},
+        //{
+        //    id: 14,
+        //    title: "Full Stack Developer",
+        //    department: "Technology",
+        //    category: "Technology",
+        //    location: "Pune, Maharashtra",
+        //    type: "Full-time",
+        //    experience: "3-6 years",
+        //    icon: Code,
+        //    responsibilities: [
+        //        "Develop web applications",
+        //        "Build RESTful APIs",
+        //        "Database design and optimization",
+        //        "Implement frontend features",
+        //        "Code reviews and testing",
+        //        "Deploy and maintain applications"
+        //    ]
+        //},
+        //{
+        //    id: 15,
+        //    title: "UI/UX Designer",
+        //    department: "Technology",
+        //    category: "Technology",
+        //    location: "Pune, Maharashtra",
+        //    type: "Full-time",
+        //    experience: "2-4 years",
+        //    icon: Code,
+        //    responsibilities: [
+        //        "Design user interfaces",
+        //        "Create wireframes and prototypes",
+        //        "Conduct user research",
+        //        "Develop design systems",
+        //        "Collaborate with developers",
+        //        "Ensure accessibility standards"
+        //    ]
+        //},
+        //{
+        //    id: 16,
+        //    title: "Data Engineer",
+        //    department: "Analytics",
+        //    category: "Analytics",
+        //    location: "Multiple locations",
+        //    type: "Full-time",
+        //    experience: "3-5 years",
+        //    icon: BarChart,
+        //    responsibilities: [
+        //        "Build data pipelines",
+        //        "Design data warehouse solutions",
+        //        "Optimize ETL processes",
+        //        "Implement data integration",
+        //        "Ensure data security",
+        //        "Monitor data infrastructure"
+        //    ]
+        //},
+        //{
+        //    id: 17,
+        //    title: "Client Success Manager",
+        //    department: "Support",
+        //    category: "Support",
+        //    location: "Multiple locations",
+        //    type: "Full-time",
+        //    experience: "4-6 years",
+        //    icon: Headphones,
+        //    responsibilities: [
+        //        "Manage client relationships",
+        //        "Ensure client satisfaction",
+        //        "Drive product adoption",
+        //        "Identify upsell opportunities",
+        //        "Conduct business reviews",
+        //        "Resolve client concerns"
+        //    ]
+        //},
+        //{
+        //    id: 18,
+        //    title: "Assistant Project Manager",
+        //    department: "Management",
+        //    category: "Management",
+        //    location: "Multiple locations",
+        //    type: "Full-time",
+        //    experience: "2-4 years",
+        //    icon: FolderKanban,
+        //    responsibilities: [
+        //        "Support project execution",
+        //        "Coordinate project activities",
+        //        "Track project milestones",
+        //        "Prepare project reports",
+        //        "Assist in stakeholder management",
+        //        "Monitor project documentation"
+        //    ]
+        //},
+        //{
+        //    id: 19,
+        //    title: "Survey Coordinator",
+        //    department: "Operations",
+        //    category: "Operations",
+        //    location: "Multiple locations",
+        //    type: "Full-time",
+        //    experience: "1-3 years",
+        //    icon: Users,
+        //    responsibilities: [
+        //        "Plan survey schedules",
+        //        "Allocate resources",
+        //        "Monitor survey progress",
+        //        "Ensure data quality",
+        //        "Generate progress reports",
+        //        "Support field teams"
+        //    ]
+        //},
+        //{
+        //    id: 20,
+        //    title: "DevOps Engineer",
+        //    department: "Technology",
+        //    category: "Technology",
+        //    location: "Pune, Maharashtra",
+        //    type: "Full-time",
+        //    experience: "3-5 years",
+        //    icon: Code,
+        //    responsibilities: [
+        //        "Manage cloud infrastructure",
+        //        "Implement CI/CD pipelines",
+        //        "Monitor system performance",
+        //        "Ensure application security",
+        //        "Automate deployment processes",
+        //        "Handle incident management"
+        //    ]
+        //},
+        //{
+        //    id: 21,
+        //    title: "Training Specialist",
+        //    department: "Support",
+        //    category: "Support",
+        //    location: "Multiple locations",
+        //    type: "Full-time",
+        //    experience: "2-4 years",
+        //    icon: Headphones,
+        //    responsibilities: [
+        //        "Develop training materials",
+        //        "Conduct user training sessions",
+        //        "Create documentation",
+        //        "Assess training effectiveness",
+        //        "Support knowledge transfer",
+        //        "Maintain training records"
+        //    ]
+        //},
+        //{
+        //    id: 22,
+        //    title: "Quality Assurance Lead",
+        //    department: "Technology",
+        //    category: "Technology",
+        //    location: "Multiple locations",
+        //    type: "Full-time",
+        //    experience: "4-6 years",
+        //    icon: Code,
+        //    responsibilities: [
+        //        "Lead QA team activities",
+        //        "Develop test strategies",
+        //        "Conduct test automation",
+        //        "Ensure quality standards",
+        //        "Perform regression testing",
+        //        "Document test results"
+        //    ]
+        //}
     ];
 
     // Get unique categories from positions
@@ -808,8 +843,7 @@ export function CareerPage() {
             const workExpDetails = hasWorkExperience
                 ? workExperiences
                     .map((exp, index) => {
-                        return `
-Experience ${index + 1}:
+                        return `Experience ${index + 1}:
 - Company: ${exp.companyName}
 - Role: ${exp.jobRole}
 - Description: ${exp.jobDescription}
@@ -818,54 +852,35 @@ Experience ${index + 1}:
 `;
                     })
                     .join("\n")
-                : "No work experience";
+                : "No work experience provided";
 
-            // Prepare email data
-            const emailData = {
-                to: "alost513@gmail.com",
-                subject: `Job Application: ${selectedPosition.title} - ${formData.fullName}`,
-                body: `
-New Job Application Received
+            const currentDate = new Date().toLocaleString();
 
-Position: ${selectedPosition.title}
-Department: ${selectedPosition.department}
+            // Send admin notification email only
+            const result = await emailjs.send(
+                import.meta.env.VITE_EMAILJS_SERVICE_ID,
+                import.meta.env.VITE_EMAILJS_CAREER_TEMPLATE_ID,
+                {
+                    position_title: selectedPosition.title,
+                    department: selectedPosition.department,
+                    name: formData.fullName,
+                    email: formData.email,
+                    mobile: formData.mobile,
+                    address: formData.address,
+                    notice_period: formData.noticePeriod,
+                    work_experience: workExpDetails,
+                    additional_info: formData.additionalInfo || "Not provided",
+                    resume_filename: formData.resume ? formData.resume.name : "Not attached",
+                    submitted_date: currentDate,
+                },
+                import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+            );
 
-Applicant Details:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Full Name: ${formData.fullName}
-Email: ${formData.email}
-Mobile: ${formData.mobile}
-Current Address: ${formData.address}
-Notice Period: ${formData.noticePeriod} days
-
-Work Experience:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${workExpDetails}
-
-Notice Period: ${formData.noticePeriod} days
-
-Additional Information:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${formData.additionalInfo || "N/A"}
-
-Resume: ${formData.resume ? formData.resume.name : "Not attached"}
-        `,
-            };
-
-            // TODO: Replace this with your actual email API endpoint
-            // Example using fetch:
-            // const response = await fetch('/api/send-email', {
-            //   method: 'POST',
-            //   headers: { 'Content-Type': 'application/json' },
-            //   body: JSON.stringify(emailData),
-            // });
-
-            // For now, we'll simulate a successful email send
-            await new Promise((resolve) => setTimeout(resolve, 1500));
+            console.log('Career application email sent successfully:', result.text);
 
             // Show success toast
             toast.success("Application submitted successfully!", {
-                description: `Your application for ${selectedPosition.title} has been received. We'll contact you soon.`,
+                description: "Thank you for your application. We'll review it and contact you soon.",
                 duration: 5000,
             });
 
@@ -894,7 +909,10 @@ Resume: ${formData.resume ? formData.resume.name : "Not attached"}
 
             // Close dialog
             setIsApplicationOpen(false);
+
         } catch (error) {
+            console.error('Email sending failed:', error);
+
             // Show error toast
             toast.error("Failed to submit application", {
                 description: "Please try again or contact us directly via email.",
@@ -948,7 +966,7 @@ Resume: ${formData.resume ? formData.resume.name : "Not attached"}
                 {/* Background Image */}
                 <div className="absolute inset-0">
                     <ImageWithFallback
-                        src="https://images.unsplash.com/photo-1748346918817-0b1b6b2f9bab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBvZmZpY2UlMjB0ZWFtd29ya3xlbnwxfHx8fDE3NjE5MTI1NTd8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                        src="/image_data/Website_Hero_Section/career.webp"
                         alt="Career Opportunities"
                         className="w-full h-full object-cover"
                     />
@@ -1297,7 +1315,7 @@ Resume: ${formData.resume ? formData.resume.name : "Not attached"}
                         </DialogDescription>
                     </DialogHeader>
 
-                    <form onSubmit={handleSubmit} className="space-y-6 mt-4">
+                    <form ref={formRef} onSubmit={handleSubmit} className="space-y-6 mt-4">
                         {/* Full Name */}
                         <div className="space-y-2">
                             <Label htmlFor="fullName">Full Name *</Label>

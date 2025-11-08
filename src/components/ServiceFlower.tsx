@@ -3,59 +3,74 @@ import { Building2, Droplet, Map, BarChart3, MapPin, FileCheck, Package, Shield 
 import municipalLogo from "figma:asset/8162476f9add0dba859c2a10919a5bc3ac84a7e8.png";
 import measuringTapeFlower from "figma:asset/b13a83b5d029e2e2aa6a839554617f84a51050ec.png";
 
+//interface Service {
+//    icon: any;
+//    title: string;
+//    description: string;
+//    angle: number;
+//}
 interface Service {
-    icon: any;
+    icon?: any;        
+    image?: string;   
     title: string;
     description: string;
     angle: number;
 }
 
+
 const services: Service[] = [
     {
-        icon: Building2,
-        title: "Property Tax Management",
+        image: "/municiple_logo/panvel.webp",
+        title: "Panvel Municipal Corporation",
         description: "Comprehensive property tax assessment and collection",
-        angle: 0
+        angle: 0,
     },
     {
-        icon: Droplet,
-        title: "Water Tax Management",
+        image: "/municiple_logo/dhule.webp",
+        /*icon: Droplet,*/
+        title: "Dhule Municipal Council",
         description: "Efficient water billing and tax collection system",
         angle: 45
     },
     {
-        icon: Map,
-        title: "ELU/PLU City Mapping",
+        image: "/municiple_logo/thane.webp",
+        /*icon: Map,*/
+        title: "Thane Municipal Corporation",
         description: "Land use mapping for urban planning",
         angle: 90
     },
     {
-        icon: BarChart3,
-        title: "Data Analysis",
+        image: "/municiple_logo/jalgaon.webp",
+        /*icon: BarChart3,*/
+        title: "Jalgaon Municipal Corporation",
         description: "Transform municipal data into insights",
         angle: 135
     },
     {
-        icon: MapPin,
-        title: "GIS Mapping",
+        image: "/municiple_logo/akola.webp",
+        /*icon: MapPin,*/
+        title: "Akola Municipal Corporation",
         description: "Advanced geospatial information systems",
         angle: 180
     },
     {
-        icon: FileCheck,
-        title: "Trade License Management",
+        image: "/municiple_logo/amt.webp",
+        /*icon: FileCheck,*/
+        title: "Amravati Municipal Corporation",
         description: "Digital license management system",
         angle: 225
     },
     {
-        icon: Package,
-        title: "Municipal Asset Management",
+        image: "/municiple_logo/pandharpur.webp",
+        /*icon: Package,*/
+        title: "Pandharpur Municipal Corporation",
         description: "Comprehensive asset tracking",
         angle: 270
     },
     {
-        icon: Shield,
-        title: "Blockchain Document Management",
+        image: "/municiple_logo/washim.webp",
+        /*icon: Shield,*/
+        title: "Washim Municipal Council",
         description: "Secure blockchain document storage",
         angle: 315
     }
@@ -176,6 +191,34 @@ export function ServiceFlower() {
                                     />
 
                                     {/* Service name and icon - rotates with petal */}
+                                    {/*<foreignObject x="-100" y="-250" width="200" height="180">*/}
+                                    {/*    <div className="flex items-center justify-center h-full w-full" style={{ overflow: 'visible' }}>*/}
+                                    {/*        <div*/}
+                                    {/*            style={{*/}
+                                    {/*                transform: 'rotate(-90deg)',*/}
+                                    {/*                display: 'flex',*/}
+                                    {/*                flexDirection: 'column',*/}
+                                    {/*                alignItems: 'center',*/}
+                                    {/*                gap: '6px',*/}
+                                    {/*                transformOrigin: 'center center'*/}
+                                    {/*            }}*/}
+                                    {/*        >*/}
+                                    {/*            <Icon size={24} className="text-black" strokeWidth={2.5} />*/}
+                                    {/*            <span*/}
+                                    {/*                className="text-black"*/}
+                                    {/*                style={{*/}
+                                    {/*                    fontSize: '11px',*/}
+                                    {/*                    fontWeight: 600,*/}
+                                    {/*                    lineHeight: '1.2',*/}
+                                    {/*                    textAlign: 'center',*/}
+                                    {/*                    whiteSpace: 'nowrap'*/}
+                                    {/*                }}*/}
+                                    {/*            >*/}
+                                    {/*                {service.title}*/}
+                                    {/*            </span>*/}
+                                    {/*        </div>*/}
+                                    {/*    </div>*/}
+                                    {/*</foreignObject>*/}
                                     <foreignObject x="-100" y="-250" width="200" height="180">
                                         <div className="flex items-center justify-center h-full w-full" style={{ overflow: 'visible' }}>
                                             <div
@@ -188,7 +231,16 @@ export function ServiceFlower() {
                                                     transformOrigin: 'center center'
                                                 }}
                                             >
-                                                <Icon size={24} className="text-black" strokeWidth={2.5} />
+                                                {service.image ? (
+                                                    <img
+                                                        src={service.image}
+                                                        alt={service.title}
+                                                        className="w-8 h-8 object-contain"
+                                                    />
+                                                ) : (
+                                                    Icon && <Icon size={24} className="text-black" strokeWidth={2.5} />
+                                                )}
+
                                                 <span
                                                     className="text-black"
                                                     style={{
@@ -204,6 +256,7 @@ export function ServiceFlower() {
                                             </div>
                                         </div>
                                     </foreignObject>
+
                                 </g>
                             );
                         })}

@@ -61,64 +61,59 @@ function ServiceSlideshow({ onServiceChange }: { onServiceChange?: (serviceName:
     const { colors } = useThemeColors();
     const services = [
         {
+            name: "Property Tax Management",
+            image:
+                "/image_data/Website_Hero_Section/ptax.webp",
+            direction: "up",
+        },
+        {
             name: "Water Management",
             image:
-                "https://images.unsplash.com/photo-1758826898770-c76ce24b4eff?w=800&q=75&auto=format&fit=crop",
+                "/image_data/Website_Hero_Section/wtax.webp",
             direction: "right",
         },
         {
             name: "Trade License",
             image:
-                "https://images.unsplash.com/photo-1742415888265-d5044039d8e6?w=800&q=75&auto=format&fit=crop",
+                "/image_data/Website_Hero_Section/trade.webp",
             direction: "down",
         },
-        {
-            name: "MPMS",
-            image:
-                "https://images.unsplash.com/photo-1663784294206-9b508132baf9?w=800&q=75&auto=format&fit=crop",
-            direction: "left",
-        },
-        {
-            name: "Property Tax Management",
-            image:
-                "https://images.unsplash.com/photo-1707623988408-ab88c9981730?w=800&q=75&auto=format&fit=crop",
-            direction: "up",
-        },
+       
         {
             name: "Asset Management",
             image:
-                "https://images.unsplash.com/photo-1620228885847-9eab2a1adddc?w=800&q=75&auto=format&fit=crop",
+                "/image_data/Website_Hero_Section/asset.webp",
             direction: "right",
         },
         {
             name: "Data Analysis",
             image:
-                "https://images.unsplash.com/photo-1748609160056-7b95f30041f0?w=800&q=75&auto=format&fit=crop",
+                "/image_data/Website_Hero_Section/data.webp",
             direction: "down",
         },
         {
             name: "Integrated Software & Mobile Apps",
             image:
-                "https://images.unsplash.com/photo-1617777934845-a818fd6e1bcb?w=800&q=75&auto=format&fit=crop",
+                "/image_data/Website_Hero_Section/softwares.webp",
             direction: "left",
         },
         {
             name: "GIS Mapping",
             image:
-                "https://images.unsplash.com/photo-1625428354222-ce52b4227b26?w=800&q=75&auto=format&fit=crop",
+                "/image_data/Website_Hero_Section/gis.webp",
             direction: "up",
         },
         {
             name: "ELU-PLU City Mapping",
             image:
-                "https://images.unsplash.com/photo-1634452639706-fad607966e14?w=800&q=75&auto=format&fit=crop",
+                "/image_data/Website_Hero_Section/eluplu.webp",
             direction: "right",
         },
         {
-            name: "Garbage Collection Management",
+            name: "Driving Smart Governance & Revenue Growth",
             image:
-                "https://images.unsplash.com/photo-1740635313618-35636018c870?w=800&q=75&auto=format&fit=crop",
-            direction: "down",
+                "/image_data/Website_Hero_Section/smartcity.webp",
+            direction: "up",
         },
     ];
 
@@ -347,31 +342,30 @@ const serviceData = [
         color: "#BF3131",
     },
     {
-        icon: Shield,
-        title: "Blockchain Document Management",
-        description:
-            "Secure, tamper-proof document storage using blockchain technology",
+        icon: Package,
+        title: "Driving Smart Governance & Revenue Growth",
+        description: "Mapping public wealth. Maximizing its value.",
         features: [
-            "Immutable Record Storage",
-            "Secure Document Management",
-            "Complete Audit Trail",
-            "Digital Verification System",
-            "Multi-level Access Control",
+            "GIS-tagged inventory of civic assets",
+            "Lease and rent management modules",
+            "Legal and financial system integration",
+            "Monitoring of markets, plots, and buildings",
+            "Optimized monetization of public property",
         ],
-        color: "#7D0A0A",
+        color: "#BF3131",
     },
 ];
 
 // Service-to-Image Mapping
 const serviceImageMap: { [key: string]: string } = {
-    "Property Tax Management": "https://images.unsplash.com/photo-1730094915697-bd504b857145?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9wZXJ0eSUyMHRheCUyMGJ1aWxkaW5nfGVufDF8fHx8MTc2MTkyNzgzMHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    "Water Tax Management": "https://images.unsplash.com/photo-1533077162801-86490c593afb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3YXRlciUyMG1hbmFnZW1lbnR8ZW58MXx8fHwxNzYxOTI3ODMxfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    "ELU/PLU City Mapping": "https://images.unsplash.com/photo-1542382257-80dedb725088?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaXR5JTIwbWFwJTIwYWVyaWFsfGVufDF8fHx8MTc2MTkwNTU4M3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    "Data Analysis": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkYXRhJTIwYW5hbHl0aWNzJTIwZGFzaGJvYXJkfGVufDF8fHx8MTc2MTg0MjY3Mnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    "GIS Mapping & Urban Intelligence Platforms": "https://images.unsplash.com/photo-1628158088936-68ccaaa400dc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnaXMlMjBtYXBwaW5nJTIwdGVjaG5vbG9neXxlbnwxfHx8fDE3NjE5Mjc4MzJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    "Trade License Management": "https://images.unsplash.com/photo-1657114162943-04988ff671d9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMGxpY2Vuc2UlMjBkb2N1bWVudHxlbnwxfHx8fDE3NjE5Mjc4MzJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    "Municipal Asset & Estate Management": "https://images.unsplash.com/photo-1630628535113-e1cc025c8c34?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtdW5pY2lwYWwlMjBpbmZyYXN0cnVjdHVyZXxlbnwxfHx8fDE3NjE5Mjc4MzN8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    "Blockchain Document Management": "https://images.unsplash.com/photo-1666816943035-15c29931e975?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibG9ja2NoYWluJTIwdGVjaG5vbG9neXxlbnwxfHx8fDE3NjE4Nzk3Mjd8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    "Property Tax Management": "/image_data/homeService/ptax.webp",
+    "Water Tax Management": "/image_data/homeService/wtax.webp",
+    "ELU/PLU City Mapping": "/image_data/homeService/eluplu.webp",
+    "Data Analysis": "/image_data/homeService/data.webp",
+    "GIS Mapping & Urban Intelligence Platforms": "/image_data/homeService/gis.webp",
+    "Trade License Management": "/image_data/homeService/trade.webp",
+    "Municipal Asset & Estate Management": "/image_data/homeService/asset.webp",
+    "Driving Smart Governance & Revenue Growth": "/image_data/homeService/smartcity.webp", 
 };
 
 // Service Description Card Component (displays beside service cards)
@@ -958,7 +952,7 @@ export function HomePage() {
                             }}
                         >
                             <span className="inline-block text-white drop-shadow-2xl">
-                                Sthapatya Consultants
+                                STHAPATYA CONSULTANTS
                             </span>
                             <br />
                             <span
@@ -969,7 +963,7 @@ export function HomePage() {
                                     letterSpacing: "0.1em",
                                 }}
                             >
-                                PRIVATE LIMITED
+                                (I) PRIVATE LIMITED
                             </span>
                         </motion.h1>
 
@@ -990,9 +984,9 @@ export function HomePage() {
                             Leading Municipal Service Provider for
                             <span style={{ fontWeight: 800, color: "#fff" }}>
                                 {" "}
-                                GIS-Based Property Tax Survey{" "}
+                                GIS-Based Property Tax Survey,{" "}
                             </span>
-                            & Comprehensive IT Solutions
+                             E-Governance & Comprehensive IT Solutions
                         </motion.p>
 
                         {/* Stats Cards */}
@@ -1184,43 +1178,43 @@ export function HomePage() {
                             const clients = [
                                 {
                                     name: "Pimpri-Chinchwad Municipal Corporation",
-                                    logo: pcmcLogo,
+                                    logo: "/municiple_logo/pcmc.webp",
                                 },
                                 {
                                     name: "Thane Municipal Corporation",
-                                    logo: thaneLogo,
+                                    logo: "/municiple_logo/thane.webp",
                                 },
                                 {
                                     name: "Panvel Municipal Corporation",
-                                    logo: "https://images.unsplash.com/photo-1646298714297-5e13878336c9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnb3Zlcm5tZW50JTIwYnVpbGRpbmclMjBpbmRpYXxlbnwxfHx8fDE3NjE4NTI0MzN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+                                    logo: "/municiple_logo/panvel.webp",
                                 },
                                 {
                                     name: "Amravati Municipal Corporation",
-                                    logo: "https://images.unsplash.com/photo-1639089599556-d1b04651d83a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaXR5JTIwaGFsbCUyMGFyY2hpdGVjdHVyZXxlbnwxfHx8fDE3NjE4ODgzMTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+                                    logo: "/municiple_logo/amt.webp",
                                 },
                                 {
                                     name: "Akola Municipal Corporation",
-                                    logo: "https://images.unsplash.com/photo-1760748291720-b507481afe74?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtdW5pY2lwYWwlMjBidWlsZGluZyUyMG1vZGVybnxlbnwxfHx8fDE3NjE4ODgzMTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+                                    logo: "/municiple_logo/akola.webp",
                                 },
                                 {
                                     name: "Jalgaon Municipal Corporation",
-                                    logo: "https://images.unsplash.com/photo-1558346053-37f3e6eb15be?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZG1pbmlzdHJhdGl2ZSUyMGJ1aWxkaW5nfGVufDF8fHx8MTc2MTg2MzIyMXww&ixlib=rb-4.1.0&q=80&w=1080",
+                                    logo: "/municiple_logo/jalgao.webp",
                                 },
                                 {
                                     name: "Dhule Municipal Corporation",
-                                    logo: "https://images.unsplash.com/photo-1662728132385-11fee9b3db9e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaXZpYyUyMGNlbnRlciUyMGJ1aWxkaW5nfGVufDF8fHx8MTc2MTg4ODMxOXww&ixlib=rb-4.1.0&q=80&w=1080",
+                                    logo: "/municiple_logo/dhule.webp",
                                 },
                                 {
-                                    name: "Baramati Municipal Corporation",
-                                    logo: "https://images.unsplash.com/photo-1748267887992-ed8eb8de4e3d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0b3duJTIwaGFsbCUyMGluZGlhfGVufDF8fHx8MTc2MTg4ODMxOXww&ixlib=rb-4.1.0&q=80&w=1080",
+                                    name: "Baramati Municipal Council",
+                                    logo: "/municiple_logo/baramati.webp",
                                 },
                                 {
-                                    name: "Chakan Municipal Corporation",
-                                    logo: "https://images.unsplash.com/photo-1646298714297-5e13878336c9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnb3Zlcm5tZW50JTIwYnVpbGRpbmclMjBpbmRpYXxlbnwxfHx8fDE3NjE4NTI0MzN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+                                    name: "Chakan Municipal Council",
+                                    logo: "/municiple_logo/chakan.webp",
                                 },
                                 {
-                                    name: "Wadgaon Municipal Corporation",
-                                    logo: "https://images.unsplash.com/photo-1639089599556-d1b04651d83a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaXR5JTIwaGFsbCUyMGFyY2hpdGVjdHVyZXxlbnwxfHx8fDE3NjE4ODgzMTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+                                    name: "Washim Municipal Council",
+                                    logo: "/municiple_logo/washim.webp",
                                 },
                             ];
 
@@ -1326,43 +1320,43 @@ export function HomePage() {
                                         {[
                                             {
                                                 name: "Pimpri-Chinchwad Municipal Corporation",
-                                                logo: "/municiple_logo/pcmc.jpg",
+                                                logo: "/municiple_logo/pcmc.webp",
                                             },
                                             {
                                                 name: "Thane Municipal Corporation",
-                                                logo: "/municiple_logo/thane.jpg",
+                                                logo: "/municiple_logo/thane.webp",
                                             },
                                             {
                                                 name: "Panvel Municipal Corporation",
-                                                logo: "/municiple_logo/panvel.png",
+                                                logo: "/municiple_logo/panvel.webp",
                                             },
                                             {
                                                 name: "Amravati Municipal Corporation",
-                                                logo: "/municiple_logo/amt.jpg",
+                                                logo: "/municiple_logo/amt.webp",
                                             },
                                             {
                                                 name: "Akola Municipal Corporation",
-                                                logo: "/municiple_logo/akola.jpg",
+                                                logo: "/municiple_logo/akola.webp",
                                             },
                                             {
                                                 name: "Jalgaon Municipal Corporation",
-                                                logo: "/municiple_logo/jalgao.jpg",
+                                                logo: "/municiple_logo/jalgao.webp",
                                             },
                                             {
                                                 name: "Dhule Municipal Corporation",
-                                                logo: "/municiple_logo/dhule.jpg",
+                                                logo: "/municiple_logo/dhule.webp",
                                             },
                                             {
-                                                name: "Baramati Municipal Corporation",
-                                                logo: "/municiple_logo/baramati.jpg",
+                                                name: "Baramati Municipal Council",
+                                                logo: "/municiple_logo/baramati.webp",
                                             },
                                             {
-                                                name: "Chakan Municipal Corporation",
-                                                logo: "/municiple_logo/chakan.png",
+                                                name: "Chakan Municipal Council",
+                                                logo: "/municiple_logo/chakan.webp",
                                             },
                                             {
-                                                name: "Washim Municipal Corporation",
-                                                logo: "/municiple_logo/washim.png",
+                                                name: "Washim Municipal Council",
+                                                logo: "/municiple_logo/washim.webp",
                                             },
                                         ].map((client, index) => (
                                             <motion.div
@@ -1502,39 +1496,40 @@ export function HomePage() {
                                 <div className="relative grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-3">
                                     {[
                                         {
-                                            year: "2000",
+                                            year: "2001",
                                             title: "Foundation",
                                             desc: "Started with a vision to transform urban governance in Maharashtra",
                                             position: "top",
                                         },
                                         {
-                                            year: "2005",
+                                            year: "2010",
                                             title: "First Success",
-                                            desc: "Completed first major municipal corporation GIS survey project",
+                                            desc: "Completed over 50 major projects across municipal corporations",
                                             position: "bottom",
                                         },
                                         {
-                                            year: "2010",
-                                            title: "Expansion",
-                                            desc: "Reached 50+ Municipal Councils across Maharashtra",
+                                            year: "2016",
+                                            title: "Recognition",
+                                            desc: "Achieved milestone: 1st DGCA-approved UAV drone flight",
                                             position: "top",
                                         },
                                         {
-                                            year: "2015",
-                                            title: "Innovation",
-                                            desc: "Introduced comprehensive property tax management software",
+                                            year: "2021",
+                                            title: "SCOCH Award",
+                                            desc: "Received SCOCH Award from the Central Government for excellence in innovation",
+
                                             position: "bottom",
                                         },
                                         {
-                                            year: "2020",
-                                            title: "Digital Growth",
-                                            desc: "Launched web & mobile-based payment solutions",
+                                            year: "2023",
+                                            title: "IGR Integration",
+                                            desc: "Completed the first IGR integration for a Maharashtra Urban Local Body",
                                             position: "top",
                                         },
                                         {
                                             year: "2025",
                                             title: "Today",
-                                            desc: "Leading provider with 100+ ULBs, 8+ Corporations and 50L+ properties surveyed",
+                                            desc: "Most experienced company for Property tax Survey and Assessment domain in India",
                                             position: "bottom",
                                         },
                                     ].map((milestone, index) => (
@@ -1787,27 +1782,32 @@ export function HomePage() {
                                     {[
                                         {
                                             image:
-                                                "https://images.unsplash.com/photo-1690264460165-0ff5e1063d86?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0ZWFtJTIwY29sbGFib3JhdGlvbiUyMG9mZmljZXxlbnwxfHx8fDE3NjE2NTkzMzh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+                                                "/image_data/Team_photo/12.webp",
                                             title: "Team Collaboration",
                                         },
                                         {
                                             image:
-                                                "https://images.unsplash.com/photo-1758518731572-7791381c5ce8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMHByb2Zlc3Npb25hbHMlMjBtZWV0aW5nfGVufDF8fHx8MTc2MTcxMTU1Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+                                                "/image_data/Team_photo/3.webp",
                                             title: "Professional Excellence",
                                         },
                                         {
                                             image:
-                                                "https://images.unsplash.com/photo-1758873268631-fa944fc5cad2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvZmZpY2UlMjB0ZWFtd29yayUyMGRpdmVyc2V8ZW58MXx8fHwxNzYxNzIyNDcxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+                                                "/image_data/Team_photo/5.webp",
                                             title: "Diverse Teamwork",
                                         },
                                         {
                                             image:
-                                                "https://images.unsplash.com/photo-1611736539111-2245a9f97a59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb3Jwb3JhdGUlMjB0ZWFtJTIwd29ya2luZ3xlbnwxfHx8fDE3NjE3MjI0NzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+                                                "/image_data/Team_photo/2.webp",
                                             title: "Innovation & Growth",
                                         },
                                         {
                                             image:
-                                                "https://images.unsplash.com/photo-1630283017802-785b7aff9aac?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBvZmZpY2UlMjB3b3Jrc3BhY2V8ZW58MXx8fHwxNzYxNjM5MDUzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+                                                "/image_data/Team_photo/4.webp",
+                                            title: "Modern Workspace",
+                                        },
+                                        {
+                                            image:
+                                                "/image_data/Team_photo/13.webp",
                                             title: "Modern Workspace",
                                         },
                                     ].map((item, index) => (
@@ -2033,7 +2033,7 @@ export function HomePage() {
                                 type: "Head Office",
                                 address: "Amravati, Maharashtra",
                                 image:
-                                    "https://images.unsplash.com/photo-1756044064036-dec5e34ce189?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvZmZpY2UlMjBoZWFkcXVhcnRlcnMlMjBidWlsZGluZ3xlbnwxfHx8fDE3NjE3MjEwOTJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+                                    "/image_data/Our_Offices/amt.webp",
                                 isHeadOffice: true,
                                 mapsUrl: "https://maps.app.goo.gl/oyq5cLpRp3ac8iq8A",
                             },
@@ -2042,7 +2042,7 @@ export function HomePage() {
                                 type: "Regional Office",
                                 address: "Pune, Maharashtra",
                                 image:
-                                    "https://images.unsplash.com/photo-1674981208693-de5a9c4c4f44?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMGJ1aWxkaW5nJTIwYXJjaGl0ZWN0dXJlfGVufDF8fHx8MTc2MTcyMTA5MXww&ixlib=rb-4.1.0&q=80&w=1080",
+                                    "/image_data/Our_Offices/pn.webp",
                                 isHeadOffice: false,
                                 mapsUrl: "https://maps.app.goo.gl/6tUHWSNHjfYSj6UF9",
                             },
@@ -2051,7 +2051,7 @@ export function HomePage() {
                                 type: "Regional Office",
                                 address: "Thane, Maharashtra",
                                 image:
-                                    "https://images.unsplash.com/photo-1694702740570-0a31ee1525c7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBvZmZpY2UlMjBidWlsZGluZ3xlbnwxfHx8fDE3NjE2Mzc2MTJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+                                    "/image_data/Our_Offices/th.webp",
                                 isHeadOffice: false,
                                 mapsUrl: "https://maps.app.goo.gl/YCK7vUYffYDTAAKz6",
                             },
@@ -2060,9 +2060,9 @@ export function HomePage() {
                                 type: "Regional Office",
                                 address: "Panvel, Maharashtra",
                                 image:
-                                    "https://images.unsplash.com/photo-1691161372406-4c65ac71ccb0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb3Jwb3JhdGUlMjBvZmZpY2UlMjBleHRlcmlvcnxlbnwxfHx8fDE3NjE3MjEwOTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+                                    "/image_data/Our_Offices/pv.webp",
                                 isHeadOffice: false,
-                                mapsUrl: "#", // Add Panvel Google Maps link here
+                                mapsUrl: "#", 
                             },
                         ].map((office, index) => (
                             <motion.div

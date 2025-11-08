@@ -53,7 +53,7 @@ export function AboutPage() {
                 {/* Background Image */}
                 <div className="absolute inset-0">
                     <ImageWithFallback
-                        src="https://images.unsplash.com/photo-1611021317203-37e3da396a29?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBjaXR5JTIwZ292ZXJuYW5jZSUyMHRlY2hub2xvZ3l8ZW58MXx8fHwxNzYxODAzNDAzfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                        src="/image_data/Website_Hero_Section/aboutpage.webp"
                         alt="City Governance Technology Background"
                         className="w-full h-full object-cover"
                     />
@@ -117,11 +117,9 @@ export function AboutPage() {
 
                         <div className="space-y-4 text-gray-700 leading-relaxed">
                             <p>
-                                Since our establishment, we have been at the forefront of transforming municipal governance across Maharashtra. With over 25 years of experience, we have successfully implemented comprehensive property tax surveys and IT solutions for more than 100 Urban Local Bodies.
-                            </p>
+                                For over two and a half decades, Sthapatya Consultants Pvt. Ltd. has been a trusted name in transforming municipal governance through innovation, precision, and technology. With a strong foundation in property tax survey, GIS-based asset mapping, e-governance systems, and smart municipal solutions, we have successfully partnered with over 150 Urban Local Bodies (ULBs) across Maharashtra and India.                            </p>
                             <p>
-                                Our journey began with a simple vision: to modernize and streamline municipal operations through technology. Today, we are proud to have surveyed over 50 lakh properties, serving 8+ Municipal Corporations and establishing ourselves as Maharashtra's most trusted municipal service provider.
-                            </p>
+                                Our journey reflects a legacy of excellence from manual surveys to AI-driven smart governance maintaining our core values of integrity, trust, and performance. As we step into the future, we continue to innovate through AI, cloud infrastructure, blockchain-enabled verification, and citizen-centric mobile solutions, ensuring that governance is not only digital but also intelligent, inclusive, and sustainable.                            </p>
                             <p className="px-6 py-4 bg-gray-50 rounded-xl border-l-4 italic" style={{ borderLeftColor: colors.primary }}>
                                 "Transforming urban governance through innovation, dedication, and excellence"
                             </p>
@@ -133,11 +131,13 @@ export function AboutPage() {
                                             Integrated with Major Portals
                                         </h4>
                                         <p className="text-sm text-gray-600">
-                                            Our systems seamlessly integrate with the IGR (Inspector General of Registration) and Aaple Sarkar Portal, ensuring efficient data flow and compliance with government standards.
+                                            At Sthapatya, we don't just create systems - we build confidence, compliance, and capability for a stronger and more connected municipal future.
                                         </p>
+                                        
                                     </div>
                                 </div>
                             </div>
+                            
                         </div>
                     </motion.div>
 
@@ -178,6 +178,15 @@ export function AboutPage() {
                                 </motion.div>
                             ))}
                         </div>
+                        <div className="mt-6 p-6 bg-gray-50 rounded-xl border-2 border-gray-200">
+                            <div className="flex items-center justify-between h-full">
+                                <img src="/image_data/AboutPage/1.webp" alt="Logo 1" className="h-20 w-20 object-contain" />
+                                <img src="/image_data/AboutPage/2.webp" alt="Logo 2" className="h-20 w-20 object-contain" />
+                                <img src="/image_data/AboutPage/3.webp" alt="Logo 3" className="h-20 w-20 object-contain" />
+                                <img src="/image_data/AboutPage/4.webp" alt="Logo 4" className="h-20 w-20 object-contain" />
+                            </div>
+                        </div>
+
                     </motion.div>
                 </div>
 

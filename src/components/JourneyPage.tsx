@@ -9,46 +9,60 @@ export function JourneyPage() {
 
     const milestones = [
         {
-            year: "2008",
+            year: "2001",
             title: "Foundation",
             desc: "Vision to transform urban governance",
             icon: Building,
-            stats: "5 ULBs",
+            stats: "Commitment",
         },
         {
-            year: "2012",
-            title: "GIS Integration",
-            desc: "Advanced mapping technology",
+            year: "2010",
+            title: "Achievement",
+            desc: "Completed 50+ Projects",
             icon: MapPin,
-            stats: "20+ ULBs",
+            stats: "50+ Projects",
         },
         {
-            year: "2015",
+            year: "2016",
             title: "Major Expansion",
-            desc: "Thane & major corporations",
+            desc: "1st UAV DGCA approved Drone Fying 5CM Data in Maharashtra's ULBs",
             icon: TrendingUp,
-            stats: "50+ ULBs",
+            stats: "1st UAV DGCA",
         },
         {
-            year: "2018",
-            title: "Tech Innovation",
-            desc: "Mobile apps & cloud systems",
+            year: "2017",
+            title: "Growth",
+            desc: "MMR Region ULBs undertaken and Completed 100+ ULBs.",
             icon: Award,
-            stats: "25L+ Properties",
+            stats: "100+ ULBs",
         },
         {
-            year: "2020",
+            year: "2021",
             title: "Recognition",
-            desc: "Maharashtra's leading provider",
+            desc: "SCOCH Award by central government & received ",
             icon: Award,
-            stats: "75+ ULBs",
+            stats: "75+ Projects",
         },
         {
             year: "2023",
-            title: "Market Leader",
-            desc: "Industry leadership achieved",
+            title: "Recognition",
+            desc: "1st IGR Integration in Maharashtra ULB",
             icon: Rocket,
             stats: "100+ ULBs",
+        },
+        {
+            year: "2024",
+            title: "Growth",
+            desc: "THANE | PCMC | PANVEL , 9L Properties completed with 150+ projects",
+            icon: TrendingUp,
+            stats: "9L Properties",
+        },
+        {
+            year: "2025",
+            title: "Growth",
+            desc: "4000Cr+ Revenue generated | Completed 50L+ properties and 150+ ULBs",
+            icon: MapPin,
+            stats: "4500Cr+ Revenue",
         },
     ];
 
@@ -93,7 +107,7 @@ export function JourneyPage() {
                 {/* Background Image */}
                 <div className="absolute inset-0">
                     <ImageWithFallback
-                        src="https://images.unsplash.com/photo-1699602050604-698045645108?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzbWFydCUyMGNpdHklMjB0ZWNobm9sb2d5fGVufDF8fHx8MTc2MTc5Mjg2OXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                        src="/image_data/Website_Hero_Section/journey.webp"
                         alt="Smart City Technology Background"
                         className="w-full h-full object-cover"
                     />
@@ -260,7 +274,7 @@ export function JourneyPage() {
                                                 Journey Continues...
                                             </h3>
                                             <p className="text-xs sm:text-sm" style={{ color: '#7D0A0A' }}>
-                                                Growing forward with innovation and excellence
+                                                Became the most experienced company for Property tax Survey and Assessment domain in India.
                                             </p>
                                         </div>
                                         <motion.div
