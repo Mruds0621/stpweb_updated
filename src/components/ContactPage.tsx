@@ -133,7 +133,6 @@ export function ContactPage() {
                     <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70" />
                 </div>
 
-
                 {/* Hero Content */}
                 <div className="relative z-10 h-full flex items-center justify-center px-4 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8 lg:py-10">
                     <motion.div
