@@ -55,10 +55,13 @@ export function AboutPage() {
                     <ImageWithFallback
                         src="/image_data/Website_Hero_Section/aboutpage.webp"
                         alt="City Governance Technology Background"
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain sm:object-cover"
+                        style={{
+                            objectPosition: 'center'
+                        }}
                     />
                     {/* Dark Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/30 to-black/40" />
                 </div>
 
                 {/* Hero Content */}
@@ -76,16 +79,16 @@ export function AboutPage() {
                             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-4 sm:mb-5 text-white px-4"
                             style={{ fontWeight: 700 }}
                         >
-                            Empowering
+                            Empowering ULBs for Property Tax
                             <br />
-                            <span style={{ color: "white" }}>Urban India</span>
+                            <span style={{ color: "white" }}>Revenue Generation and Management</span>
                         </motion.h1>
 
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.6 }}
-                            className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-200 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-4"
+                            className="text-2xl sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-200 mb-6 sm:mb-8 max-w-4xl mx-auto leading-relaxed px-4"
                         >
                             Leading the transformation of municipal governance with innovative technology,
                             trusted expertise, and unwavering commitment to excellence
@@ -100,7 +103,7 @@ export function AboutPage() {
             {/* Main Content */}
             <div className="max-w-6xl mx-auto px-4 pt-4 pb-8">
                 {/* Main Content Grid */}
-                <div className="grid lg:grid-cols-2 gap-8 mb-12">
+                <div className="grid lg:grid-cols-2 gap-8 mb-16">
                     {/* Our Story */}
                     <motion.div
                         initial={{ opacity: 0, x: -30 }}
@@ -109,8 +112,14 @@ export function AboutPage() {
                         transition={{ duration: 0.6 }}
                     >
                         <div className="mb-4">
-                            <div className="w-16 h-1 mb-3 rounded-full" style={{ backgroundColor: colors.accent }} />
-                            <h2 className="text-3xl mb-4" style={{ fontWeight: 700, color: colors.text }}>
+                            <div
+                                className="w-16 h-1 mb-3 rounded-full"
+                                style={{ backgroundColor: colors.accent }}
+                            />
+                            <h2
+                                className="text-3xl mb-4"
+                                style={{ fontWeight: 700, color: colors.text }}
+                            >
                                 Our Story
                             </h2>
                         </div>
@@ -124,20 +133,13 @@ export function AboutPage() {
                                 "Transforming urban governance through innovation, dedication, and excellence"
                             </p>
                             <div className="mt-6 p-6 bg-gray-50 rounded-xl border-2 border-gray-200">
-                                <div className="flex items-start gap-3">
-                                    <Zap size={24} style={{ color: colors.accent }} className="flex-shrink-0 mt-1" />
-                                    <div>
-                                        <h4 className="mb-2" style={{ fontWeight: 600, color: colors.text }}>
-                                            Integrated with Major Portals
-                                        </h4>
-                                        <p className="text-sm text-gray-600">
-                                            At Sthapatya, we don't just create systems - we build confidence, compliance, and capability for a stronger and more connected municipal future.
-                                        </p>
-                                        
-                                    </div>
+                                <div className="flex items-center justify-between h-full">
+                                    <img src="/image_data/AboutPage/1.webp" alt="Logo 1" className="h-20 w-20 object-contain" />
+                                    <img src="/image_data/AboutPage/2.webp" alt="Logo 2" className="h-20 w-20 object-contain" />
+                                    <img src="/image_data/AboutPage/3.webp" alt="Logo 3" className="h-20 w-20 object-contain" />
+                                    <img src="/image_data/AboutPage/4.webp" alt="Logo 4" className="h-20 w-20 object-contain" />
                                 </div>
                             </div>
-                            
                         </div>
                     </motion.div>
 
@@ -178,14 +180,25 @@ export function AboutPage() {
                                 </motion.div>
                             ))}
                         </div>
-                        <div className="mt-6 p-6 bg-gray-50 rounded-xl border-2 border-gray-200">
-                            <div className="flex items-center justify-between h-full">
-                                <img src="/image_data/AboutPage/1.webp" alt="Logo 1" className="h-20 w-20 object-contain" />
-                                <img src="/image_data/AboutPage/2.webp" alt="Logo 2" className="h-20 w-20 object-contain" />
-                                <img src="/image_data/AboutPage/3.webp" alt="Logo 3" className="h-20 w-20 object-contain" />
-                                <img src="/image_data/AboutPage/4.webp" alt="Logo 4" className="h-20 w-20 object-contain" />
+
+                        <div className="mt-6 flex justify-center gap-6">
+                            {/* Left card */}
+                            <div className="w-1/2 bg-gray-50 rounded-xl border-2 border-gray-200 p-6 flex justify-center items-center gap-6">
+                                <img src="/image_data/AboutPage/5.webp" alt="Logo 5" className="h-20 w-20 object-contain" />
+                                <img src="/image_data/AboutPage/6.webp" alt="Logo 6" className="h-20 w-20 object-contain" />
+                            </div>
+
+                            {/* Right card */}
+                            <div className="w-1/2 bg-gray-50 rounded-xl border-2 border-gray-200 p-6 flex justify-center items-center gap-6">
+                                <img src="/image_data/AboutPage/7.webp" alt="Logo 7" className="h-20 w-20 object-contain" />
+                                <img src="/image_data/AboutPage/8.webp" alt="Logo 8" className="h-20 w-20 object-contain" />
                             </div>
                         </div>
+
+
+
+
+
 
                     </motion.div>
                 </div>

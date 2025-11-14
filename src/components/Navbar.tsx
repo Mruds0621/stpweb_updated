@@ -37,8 +37,8 @@ export function Navbar() {
         <motion.nav
             style={{ opacity: navOpacity }}
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
-                    ? "bg-white/98 backdrop-blur-xl shadow-2xl shadow-[#2563eb]/10"
-                    : "bg-white/95 backdrop-blur-md"
+                ? "bg-white/98 backdrop-blur-xl shadow-2xl shadow-[#2563eb]/10"
+                : "bg-white/95 backdrop-blur-md"
                 }`}
         >
             {/* Decorative top border - Modern Professional - Now Theme Aware */}
@@ -83,26 +83,25 @@ export function Navbar() {
                                         color: colors.primary
                                     }}
                                 >
-                                    Sthapatya Consultants India
+                                    Sthapatya Consultants
                                 </span>
                                 <span
                                     className="-mt-1 block truncate"
                                     style={{
-                                        fontFamily: "'Dancing Script', 'Brush Script MT', cursive",
                                         fontWeight: 500,
-                                        fontSize: 'clamp(0.75rem, 1.5vw, 1rem)',
-                                        letterSpacing: '0.01em',
-                                        color: colors.primaryLight
+                                        fontSize: 'clamp(0.7rem, 2vw, 1.5rem)',
+                                        letterSpacing: '0.05em',
+                                        color: colors.primary
                                     }}
                                 >
-                                    Timely Tested & Heartily Trusted
+                                    India Private Limited
                                 </span>
                             </div>
                         </motion.div>
                     </Link>
 
-                    {/* Desktop Navigation - Hidden below 1320px */}
-                    <div className="hidden min-[1320px]:flex items-center gap-1">
+                    {/* Desktop Navigation - Hidden below xl (1280px) */}
+                    <div className="hidden xl:flex items-center gap-1">
                         {navLinks.map((link, index) => (
                             <Link key={link.path} to={link.path}>
                                 <motion.div
@@ -136,11 +135,11 @@ export function Navbar() {
                         ))}
                     </div>
 
-                    {/* Mobile Menu Button - Shown below 1320px */}
+                    {/* Mobile Menu Button - Shown below xl (1280px) */}
                     <motion.button
                         whileTap={{ scale: 0.9 }}
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        className="min-[1320px]:hidden p-2 rounded-lg transition-colors"
+                        className="xl:hidden p-2 rounded-lg transition-colors"
                         style={{
                             color: colors.primary
                         }}
@@ -150,13 +149,13 @@ export function Navbar() {
                 </div>
             </div>
 
-            {/* Mobile Menu - Shown below 1320px */}
+            {/* Mobile Menu - Shown below xl (1280px) */}
             {mobileMenuOpen && (
                 <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
-                    className="min-[1320px]:hidden bg-white/98 backdrop-blur-xl"
+                    className="xl:hidden bg-white/98 backdrop-blur-xl"
                     style={{
                         borderTop: `1px solid ${colors.primary}20`
                     }}

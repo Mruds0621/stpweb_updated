@@ -110,9 +110,12 @@ export function JourneyPage() {
                         src="/image_data/Website_Hero_Section/journey.webp"
                         alt="Smart City Technology Background"
                         className="w-full h-full object-cover"
+                        style={{
+                            objectPosition: 'center center'
+                        }}
                     />
                     {/* Dark Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/30 to-black/40" />
                 </div>
 
                 {/* Hero Content */}
@@ -139,7 +142,7 @@ export function JourneyPage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.6 }}
-                            className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-200 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-4"
+                            className="text-2xl sm:text-xl md:text-2xl lg:text-3xl text-gray-200 mb-6 sm:mb-8 max-w-4xl mx-auto leading-relaxed px-4"
                         >
                             From a visionary start to becoming Maharashtra's leading urban governance partner —
                             our journey of innovation, growth, and unwavering commitment
@@ -411,26 +414,54 @@ export function JourneyPage() {
                             </p>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 sm:gap-3 max-w-5xl mx-auto">
-                            {upcomingEnhancements.map((enhancement, index) => (
-                                <motion.div
-                                    key={index}
-                                    initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                                    whileInView={{ opacity: 1, x: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: 0.1 + index * 0.05 }}
-                                    whileHover={{ x: 5 }}
-                                    className="flex items-start gap-2 sm:gap-3 transition-all"
-                                >
-                                    <div
-                                        className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full flex-shrink-0 mt-1.5 sm:mt-2"
-                                        style={{ backgroundColor: colors.accent }}
-                                    />
-                                    <p className="text-xs sm:text-sm leading-relaxed" style={{ fontWeight: 600, color: "white" }}>
-                                        {enhancement}
-                                    </p>
-                                </motion.div>
-                            ))}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-5xl mx-auto px-4">
+                            {/* Left Column - First 4 points */}
+                            <div className="space-y-4">
+                                {upcomingEnhancements.slice(0, 4).map((enhancement, index) => (
+                                    <motion.div
+                                        key={index}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: 0.1 + index * 0.1 }}
+                                        className="flex items-start gap-3"
+                                    >
+                                        <div
+                                            className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+                                            style={{ backgroundColor: colors.accent }}
+                                        >
+                                            <Sparkles className="text-white" size={16} />
+                                        </div>
+                                        <p className="text-sm sm:text-base lg:text-lg text-white/95 leading-relaxed" style={{ fontWeight: 500 }}>
+                                            {enhancement}
+                                        </p>
+                                    </motion.div>
+                                ))}
+                            </div>
+
+                            {/* Right Column - Last 4 points */}
+                            <div className="space-y-4">
+                                {upcomingEnhancements.slice(4, 8).map((enhancement, index) => (
+                                    <motion.div
+                                        key={index + 4}
+                                        initial={{ opacity: 0, x: 20 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: 0.1 + index * 0.1 }}
+                                        className="flex items-start gap-3"
+                                    >
+                                        <div
+                                            className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+                                            style={{ backgroundColor: colors.accent }}
+                                        >
+                                            <Sparkles className="text-white" size={16} />
+                                        </div>
+                                        <p className="text-sm sm:text-base lg:text-lg text-white/95 leading-relaxed" style={{ fontWeight: 500 }}>
+                                            {enhancement}
+                                        </p>
+                                    </motion.div>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </motion.div>

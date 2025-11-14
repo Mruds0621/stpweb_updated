@@ -1,5 +1,5 @@
-import { motion } from "motion/react";
-import { useState,useRef } from "react";
+﻿import { motion } from "motion/react";
+import { useState } from "react";
 import {
     Mail,
     Phone,
@@ -12,7 +12,7 @@ import { useThemeColors } from "./useThemeColors";
 import { Footer } from "./Footer";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { toast } from "sonner@2.0.3";
-import emailjs from '@emailjs/browser';
+import axios from "axios";
 export function ContactPage() {
     const { colors } = useThemeColors();
 
@@ -24,7 +24,7 @@ export function ContactPage() {
         message: "",
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const formRef = useRef<HTMLFormElement>(null);
+ 
     // Handle input changes
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -39,57 +39,31 @@ export function ContactPage() {
     // Handle form submission
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        // Validate form
+        setIsSubmitting(true);
         if (!formData.name || !formData.email || !formData.message) {
-            toast.error("Please fill in all required fields");
+            alert("Please fill in all required fields.");
             return;
         }
-
-        setIsSubmitting(true);
-
         try {
-            const currentDate = new Date().toLocaleString();
-
-            // Send admin notification email only
-            const result = await emailjs.send(
-                import.meta.env.VITE_EMAILJS_SERVICE_ID,
-                import.meta.env.VITE_EMAILJS_CONTACT_TEMPLATE_ID,
-                {
-                    name: formData.name,
-                    email: formData.email,
-                    organization: formData.organization || "Not provided",
-                    message: formData.message,
-                    submitted_date: currentDate,
-                },
-                import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-            );
-
-            console.log('Contact form email sent successfully:', result.text);
-
-            // Show success toast
-            toast.success("Message sent successfully!", {
-                description: "Thank you for your message. We'll get back to you soon.",
-                duration: 5000,
+            // ✅ Call your .NET backend API
+            const response = await axios.post("http://sthapatyabackend.tabamc.in/api/contact/submit", {
+                name: formData.name,
+                email: formData.email,
+                organization: formData.organization,
+                message: formData.message,
             });
 
-            // Clear form
-            setFormData({
-                name: "",
-                email: "",
-                organization: "",
-                message: "",
-            });
-
+            if (response.data.success) {
+                toast.success("✅ Your message has been sent successfully!");
+                setFormData({ name: "", email: "", organization: "", message: "" });
+            } else {
+                toast.error("⚠️ " + (response.data.message || "Failed to send message."));
+            }
         } catch (error) {
-            console.error('Email sending failed:', error);
-
-            // Show error toast
-            toast.error("Failed to send message", {
-                description: "Please try again or contact us directly via email.",
-                duration: 5000,
-            });
-        } finally {
+            console.error("Error submitting form:", error);
+            toast.error("❌ Something went wrong. Please try again later.");
+        }
+        finally {
             setIsSubmitting(false);
         }
     };
@@ -98,21 +72,25 @@ export function ContactPage() {
         {
             city: "Amravati",
             address: "4, Swapnashri Colony,Siddhivinayak Nagar, Ashiyad Square,Shegaon Road, Amravati, Maharashtra, India 444604",
+            phone: "1800 833 2700, 0721-2970300",
             hours: "Mon-Sat: 9:00 AM - 6:00 PM",
         },
         {
             city: "Pune",
             address: "8th floor, Velocity, MONT VERT, Baner - Pashan Link Rd, Pashan, Pune, Maharashtra 411021",
+            phone: " 8975758104, +91 20-46700861",
             hours: "Mon-Sat: 9:00 AM - 6:00 PM",
         },
         {
             city: "Thane",
             address: "1101, Lodha Supremus, Lodha Business District 2,Off Kolshet Road, Thane-West, Maharashtra, India 400607",
+            phone: "7028791416, + 91 20 - 46700861",
             hours: "Mon-Sat: 9:00 AM - 6:00 PM",
         },
         {
             city: "Panvel",
             address: "Saisakshi Apartment, Plot No. 96,Near Saraswat Bank,Panvel, Maharashtra",
+            phone: "+91 7774091416",
             hours: "Mon-Sat: 9:00 AM - 6:00 PM",
         },
     ];
@@ -128,10 +106,14 @@ export function ContactPage() {
                         src="/image_data/Website_Hero_Section/contact.webp"
                         alt="Career Opportunities"
                         className="w-full h-full object-cover"
+                        style={{
+                            objectPosition: 'center center'
+                        }}
                     />
                     {/* Dark Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70" />
                 </div>
+
 
                 {/* Hero Content */}
                 <div className="relative z-10 h-full flex items-center justify-center px-4 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8 lg:py-10">
@@ -159,7 +141,7 @@ export function ContactPage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.6 }}
-                            className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-white mb-4 sm:mb-5 md:mb-6 lg:mb-8 max-w-3xl mx-auto leading-relaxed px-2 sm:px-4"
+                            className="text-2xl sm:text-xl md:text-2xl lg:text-3xl text-gray-200 mb-6 sm:mb-8 max-w-4xl mx-auto leading-relaxed px-4"
                         >
                             Connect with us for any inquiries or support.
                             We're committed to helping you transform municipal
@@ -310,9 +292,9 @@ export function ContactPage() {
                             background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.accent} 100%)`
                         }}
                     >
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+                        <div className="grid grid-cols-1 lg:grid-cols-5 gap-0">
                             {/* Left Side - Text Content */}
-                            <div className="p-4 sm:p-5 md:p-5 lg:p-6 xl:p-7 flex flex-col justify-center order-2 lg:order-1">
+                            <div className="p-4 sm:p-5 md:p-5 lg:p-6 xl:p-7 flex flex-col justify-center order-2 lg:order-1 max-w-md lg:max-w-sm xl:max-w-md lg:col-span-2">
                                 <motion.div
                                     initial={{ opacity: 0, x: -30 }}
                                     whileInView={{ opacity: 1, x: 0 }}
@@ -398,123 +380,70 @@ export function ContactPage() {
                             </div>
 
                             {/* Right Side - Image Collage */}
-                            <div className="relative h-[200px] sm:h-[220px] lg:h-full min-h-[200px] order-1 lg:order-2 bg-gradient-to-br from-white/5 to-white/10">
-                                <div className="relative w-full h-full p-2 sm:p-2.5 lg:p-3">
-                                    {/* Decorative colored squares - Background accent */}
-                                    <motion.div
-                                        initial={{ opacity: 0, scale: 0.5, rotate: 0 }}
-                                        whileInView={{ opacity: 0.2, scale: 1, rotate: 45 }}
-                                        viewport={{ once: true }}
-                                        transition={{ duration: 0.5, delay: 0.2 }}
-                                        className="absolute top-1 left-1 w-7 h-7 sm:w-8 sm:h-8 rounded-md z-0"
-                                        style={{ backgroundColor: '#4FC3F7' }}
-                                    />
-                                    <motion.div
-                                        initial={{ opacity: 0, scale: 0.5, rotate: 0 }}
-                                        whileInView={{ opacity: 0.2, scale: 1, rotate: 45 }}
-                                        viewport={{ once: true }}
-                                        transition={{ duration: 0.5, delay: 0.4 }}
-                                        className="absolute bottom-2 right-2 w-8 h-8 sm:w-9 sm:h-9 rounded-md z-0"
-                                        style={{ backgroundColor: '#4FC3F7' }}
-                                    />
-
-                                    {/* Grid Layout - 2 columns x 3 rows */}
-                                    <div className="grid grid-cols-2 gap-1 sm:gap-1.5 lg:gap-2 h-full relative z-10">
-                                        {/* Image 1 - Top Left */}
+                            <div className="relative h-[200px] sm:h-[220px] lg:h-full min-h-[200px] order-1 lg:order-2 bg-gradient-to-br from-white/5 to-white/10 lg:col-span-3">
+                                <div className="relative w-full h-full flex items-center justify-center px-3 sm:px-4 lg:px-6">
+                                    {/* Single Row Layout for 6 Square Images */}
+                                    <div className="flex gap-2 sm:gap-3 lg:gap-4">
+                                        {/* Image 1 */}
                                         <motion.div
-                                            initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                                            initial={{ opacity: 0, scale: 0.8 }}
+                                            whileInView={{ opacity: 1, scale: 1 }}
                                             viewport={{ once: true }}
-                                            transition={{ duration: 0.6, delay: 0.3 }}
-                                            className="rounded-md overflow-hidden shadow-lg border border-white h-16 sm:h-20 lg:h-24"
-                                            style={{ transform: 'rotate(-2deg)' }}
+                                            transition={{ duration: 0.5, delay: 0.2 }}
+                                            className="w-28 h-28 sm:w-36 sm:h-36 lg:w-40 lg:h-40 rounded-lg overflow-hidden shadow-xl border-2 border-white flex-shrink-0"
                                         >
                                             <ImageWithFallback
                                                 src="/image_data/ContactPage/2.webp"
                                                 alt="Team Member"
-                                                className="w-full h-16 sm:h-20 lg:h-24 object-cover"
+                                                className="w-full h-full object-cover"
                                             />
                                         </motion.div>
 
-                                        {/* Image 2 - Top Right */}
+                                        {/* Image 2 */}
                                         <motion.div
-                                            initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                                            initial={{ opacity: 0, scale: 0.8 }}
+                                            whileInView={{ opacity: 1, scale: 1 }}
                                             viewport={{ once: true }}
-                                            transition={{ duration: 0.6, delay: 0.4 }}
-                                            className="rounded-md overflow-hidden shadow-lg border border-white h-16 sm:h-20 lg:h-24"
-                                            style={{ transform: 'rotate(2deg)' }}
+                                            transition={{ duration: 0.5, delay: 0.3 }}
+                                            className="w-28 h-28 sm:w-36 sm:h-36 lg:w-40 lg:h-40 rounded-lg overflow-hidden shadow-xl border-2 border-white flex-shrink-0"
                                         >
                                             <ImageWithFallback
-                                                src="/image_data/ContactPage/4.webp"
+                                                src="/image_data/ContactPage/16.webp"
                                                 alt="Team Member"
-                                                className="w-full h-16 sm:h-20 lg:h-24 object-cover"
+                                                className="w-full h-full object-cover"
                                             />
                                         </motion.div>
 
-                                        {/* Image 3 - Middle Left */}
+                                        {/* Image 3 */}
                                         <motion.div
-                                            initial={{ opacity: 0, x: -20, scale: 0.9 }}
-                                            whileInView={{ opacity: 1, x: 0, scale: 1 }}
+                                            initial={{ opacity: 0, scale: 0.8 }}
+                                            whileInView={{ opacity: 1, scale: 1 }}
                                             viewport={{ once: true }}
-                                            transition={{ duration: 0.6, delay: 0.5 }}
-                                            className="rounded-md overflow-hidden shadow-lg border border-white h-16 sm:h-20 lg:h-24"
-                                            style={{ transform: 'rotate(3deg)' }}
-                                        >
-                                            <ImageWithFallback
-                                                src="/image_data/ContactPage/3.webp"
-                                                alt="Team Member"
-                                                className="w-full h-16 sm:h-20 lg:h-24 object-cover"
-                                            />
-                                        </motion.div>
-
-                                        {/* Image 4 - Middle Right */}
-                                        <motion.div
-                                            initial={{ opacity: 0, x: 20, scale: 0.9 }}
-                                            whileInView={{ opacity: 1, x: 0, scale: 1 }}
-                                            viewport={{ once: true }}
-                                            transition={{ duration: 0.6, delay: 0.6 }}
-                                            className="rounded-md overflow-hidden shadow-lg border border-white h-16 sm:h-20 lg:h-24"
-                                            style={{ transform: 'rotate(-2deg)' }}
-                                        >
-                                            <ImageWithFallback
-                                                src="/image_data/ContactPage/1.webp"
-                                                alt="Team Member"
-                                                className="w-full h-16 sm:h-20 lg:h-24 object-cover"
-                                            />
-                                        </motion.div>
-
-                                        {/* Image 5 - Bottom Left */}
-                                        <motion.div
-                                            initial={{ opacity: 0, y: -20, scale: 0.9 }}
-                                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                                            viewport={{ once: true }}
-                                            transition={{ duration: 0.6, delay: 0.7 }}
-                                            className="rounded-md overflow-hidden shadow-lg border border-white h-16 sm:h-20 lg:h-24"
-                                            style={{ transform: 'rotate(-3deg)' }}
+                                            transition={{ duration: 0.5, delay: 0.4 }}
+                                            className="w-28 h-28 sm:w-36 sm:h-36 lg:w-40 lg:h-40 rounded-lg overflow-hidden shadow-xl border-2 border-white flex-shrink-0"
                                         >
                                             <ImageWithFallback
                                                 src="/image_data/ContactPage/6.webp"
                                                 alt="Team Member"
-                                                className="w-full h-16 sm:h-20 lg:h-24 object-cover"
+                                                className="w-full h-full object-cover"
                                             />
                                         </motion.div>
 
-                                        {/* Image 6 - Bottom Right */}
+                                        {/* Image 4 */}
                                         <motion.div
-                                            initial={{ opacity: 0, y: -20, scale: 0.9 }}
-                                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                                            initial={{ opacity: 0, scale: 0.8 }}
+                                            whileInView={{ opacity: 1, scale: 1 }}
                                             viewport={{ once: true }}
-                                            transition={{ duration: 0.6, delay: 0.8 }}
-                                            className="rounded-md overflow-hidden shadow-lg border border-white h-16 sm:h-20 lg:h-24"
-                                            style={{ transform: 'rotate(2deg)' }}
+                                            transition={{ duration: 0.5, delay: 0.5 }}
+                                            className="w-28 h-28 sm:w-36 sm:h-36 lg:w-40 lg:h-40 rounded-lg overflow-hidden shadow-xl border-2 border-white flex-shrink-0"
                                         >
                                             <ImageWithFallback
-                                                src="/image_data/ContactPage/11.webp"
+                                                src="/image_data/ContactPage/1.webp"
                                                 alt="Team Member"
-                                                className="w-full h-16 sm:h-20 lg:h-24 object-cover"
+                                                className="w-full h-full object-cover"
                                             />
                                         </motion.div>
+
                                     </div>
                                 </div>
                             </div>
@@ -550,7 +479,7 @@ export function ContactPage() {
                             </p>
                         </div>
 
-                        <form ref={formRef}  className="space-y-3 sm:space-y-3.5 md:space-y-4" onSubmit={handleSubmit}>
+                        <form className="space-y-3 sm:space-y-3.5 md:space-y-4" onSubmit={handleSubmit}>
                             <div>
                                 <label
                                     className="block text-xs sm:text-sm mb-1 sm:mb-1.5"
@@ -751,7 +680,16 @@ export function ContactPage() {
                                                 {office.address}
                                             </p>
                                         </div>
-
+                                        <div className="flex items-center gap-2 sm:gap-2.5 md:gap-3">
+                                            <Clock
+                                                size={13}
+                                                className="sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 flex-shrink-0"
+                                                style={{ color: colors.accent }}
+                                            />
+                                            <p className="text-[11px] sm:text-xs md:text-sm text-gray-700">
+                                                {office.phone}
+                                            </p>
+                                        </div>
                                         <div className="flex items-center gap-2 sm:gap-2.5 md:gap-3">
                                             <Clock
                                                 size={13}

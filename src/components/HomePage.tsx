@@ -1,7 +1,9 @@
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import { useEffect, useState, useRef } from "react";
 import { HomeSidebar } from "./HomeSidebar";
 import { Link } from "react-router-dom";
+import footerImage from "figma:asset/59263491af8ae03a52cb8fe15c937d756a384555.png";
+import droneImage from "figma:asset/5806fe64d8a6f9a82961b389fbe7bbc65b91928a.png";
 import {
     ArrowRight,
     MapPin,
@@ -67,7 +69,7 @@ function ServiceSlideshow({ onServiceChange }: { onServiceChange?: (serviceName:
             direction: "up",
         },
         {
-            name: "Water Management",
+            name: "Municipal Water Bill Management",
             image:
                 "/image_data/Website_Hero_Section/wtax.webp",
             direction: "right",
@@ -78,7 +80,7 @@ function ServiceSlideshow({ onServiceChange }: { onServiceChange?: (serviceName:
                 "/image_data/Website_Hero_Section/trade.webp",
             direction: "down",
         },
-       
+
         {
             name: "Asset Management",
             image:
@@ -199,13 +201,14 @@ function ServiceSlideshow({ onServiceChange }: { onServiceChange?: (serviceName:
                 <img
                     src={currentService.image}
                     alt={currentService.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain sm:object-cover"
                     loading="eager"
                     decoding="async"
                     onLoad={() => setIsLoaded(true)}
                     style={{
                         willChange: "transform",
                         transform: "translateZ(0)",
+                        objectPosition: "center",
                     }}
                 />
                 {/* Service Name Badge - Hidden on mobile, shown on sm and up */}
@@ -230,8 +233,8 @@ function ServiceSlideshow({ onServiceChange }: { onServiceChange?: (serviceName:
                     <div
                         key={index}
                         className={`h-1 sm:h-1.5 rounded-full transition-all duration-300 ${index === currentIndex
-                                ? "w-6 sm:w-10 bg-white shadow-lg"
-                                : "w-1 sm:w-1.5 bg-white/40 hover:bg-white/60"
+                            ? "w-6 sm:w-10 bg-white shadow-lg"
+                            : "w-1 sm:w-1.5 bg-white/40 hover:bg-white/60"
                             }`}
                     />
                 ))}
@@ -244,7 +247,7 @@ function ServiceSlideshow({ onServiceChange }: { onServiceChange?: (serviceName:
 const serviceData = [
     {
         icon: Building2,
-        title: "Property Tax Management",
+        title: "Municipal Property Tax Management",
         description:
             "Transforming property data into municipal revenue.",
         features: [
@@ -260,7 +263,7 @@ const serviceData = [
     },
     {
         icon: Droplet,
-        title: "Water Tax Management",
+        title: "Municipal Water Bill Management",
         description:
             "Every drop accounted. Every source optimized.",
         features: [
@@ -275,21 +278,22 @@ const serviceData = [
     },
     {
         icon: Map,
-        title: "ELU/PLU City Mapping",
+        title: "Municipal ELU/PLU City Mapping",
         description:
             "Land use mapping for urban planning and development with GIS integration",
         features: [
-            "Comprehensive Land Use Analysis",
-            "Detailed Zoning Maps",
-            "Urban Planning Support",
-            "Regulation Compliance Tools",
-            "Future Development Planning",
+            "ELU & PLU projects at Shegaon, Parbhani",
+            "GIS-based planning and mapping expertise",
+            "Statutory compliance and accuracy ensured",
+            "Data-driven zoning and land analysis",
+            "Sustainable and future-ready development plans",
+            "Collaborative approach with stakeholders",
         ],
         color: "#BF3131",
     },
     {
         icon: BarChart3,
-        title: "Data Analysis",
+        title: "Municipal Smart Valuation Analytics",
         description:
             "Transform municipal data into actionable insights for better decision-making",
         features: [
@@ -303,7 +307,7 @@ const serviceData = [
     },
     {
         icon: MapPin,
-        title: "GIS Mapping & Urban Intelligence Platforms",
+        title: "Municipal GIS Mapping & Urban Intelligence Platforms",
         description: "Spatial intelligence for smarter cities.",
         features: [
             "Creation of base maps and ward boundaries",
@@ -316,7 +320,7 @@ const serviceData = [
     },
     {
         icon: FileCheck,
-        title: "Trade License Management",
+        title: "Municipal Trade License Management",
         description:
             "Empowering local businesses. Enabling municipal compliance.",
         features: [
@@ -358,14 +362,14 @@ const serviceData = [
 
 // Service-to-Image Mapping
 const serviceImageMap: { [key: string]: string } = {
-    "Property Tax Management": "/image_data/homeService/ptax.webp",
-    "Water Tax Management": "/image_data/homeService/wtax.webp",
-    "ELU/PLU City Mapping": "/image_data/homeService/eluplu.webp",
-    "Data Analysis": "/image_data/homeService/data.webp",
-    "GIS Mapping & Urban Intelligence Platforms": "/image_data/homeService/gis.webp",
-    "Trade License Management": "/image_data/homeService/trade.webp",
+    "Municipal Property Tax Management": "/image_data/homeService/ptax.webp",
+    "Municipal Water Bill Management": "/image_data/homeService/wtax.webp",
+    "Municipal ELU/PLU City Mapping": "/image_data/homeService/eluplu.webp",
+    "Municipal Smart Valuation Analytics": "/image_data/homeService/data.webp",
+    "Municipal GIS Mapping & Urban Intelligence Platforms": "/image_data/homeService/gis.webp",
+    "Municipal Trade License Management": "/image_data/homeService/trade.webp",
     "Municipal Asset & Estate Management": "/image_data/homeService/asset.webp",
-    "Driving Smart Governance & Revenue Growth": "/image_data/homeService/smartcity.webp", 
+    "Driving Smart Governance & Revenue Growth": "/image_data/homeService/smartcity.webp",
 };
 
 // Service Description Card Component (displays beside service cards)
@@ -423,12 +427,12 @@ function ServiceDescriptionCard({
                     <ImageWithFallback
                         src={serviceImageMap[service.title] || "https://images.unsplash.com/photo-1710367847938-c92cf56a7a9b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMHRlY2hub2xvZ3klMjBzZXJ2aWNlc3xlbnwxfHx8fDE3NjE4MzMxMjR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"}
                         alt={service.title}
-                        className="w-full h-28 sm:h-32 md:h-48 lg:h-56 xl:h-60 object-cover rounded-t-xl md:rounded-t-2xl"
+                        className="w-full h-32 sm:h-36 md:h-48 lg:h-56 xl:h-60 object-fill rounded-t-xl md:rounded-t-2xl transition-transform duration-500 mb-4"
                     />
                 </div>
 
                 {/* Header */}
-                <div className="flex items-center gap-2 md:gap-2.5 lg:gap-3 mb-1.5 sm:mb-2 md:mb-3 lg:mb-4 flex-shrink-0">
+                <div className="flex items-center gap-2 md:gap-2.5 lg:gap-3 mb-1.5 sm:mb-2 md:mb-3 lg:mb-4 flex-shrink-0 mt-3 md:mt-4">
                     <motion.div
                         initial={{ scale: 0.8 }}
                         animate={{ scale: 1 }}
@@ -459,9 +463,9 @@ function ServiceDescriptionCard({
                 </p>
 
                 {/* Features List */}
-                <div className="flex-1 overflow-y-auto min-h-0">
+                <div className="flex-1 overflow-y-auto min-h-0 mt-4 md:mt-6">
                     <h4
-                        className="text-xs sm:text-sm md:text-base mb-1 sm:mb-1.5 md:mb-2 flex-shrink-0"
+                        className="text-sm sm:text-sm md:text-base mb-1 sm:mb-1.5 md:mb-2 flex-shrink-0"
                         style={{ fontWeight: 700, color: "#000000" }}
                     >
                         Key Features:
@@ -591,21 +595,9 @@ function AboutSection({
                     </motion.div>
 
                     {/* Three Column Layout: Service Flower | Service List | Description Card */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8 mb-6 sm:mb-8 items-start justify-items-center">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6 lg:gap-8 mb-6 sm:mb-8 items-start justify-items-center max-w-7xl mx-auto">
                         {/* Left Column: Service Flower - HIDDEN ON MOBILE, VISIBLE FROM TABLET */}
-                        <motion.div
-                            initial={{ opacity: 0, x: -50 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.8, delay: 0.1 }}
-                            className="hidden md:flex w-full h-auto md:h-[600px] lg:h-[650px] xl:h-[700px] items-center justify-center"
-                        >
-                            <div className="w-full h-full flex items-center justify-center overflow-visible">
-                                <div className="md:scale-[0.85] lg:scale-[0.92] xl:scale-100">
-                                    <ServiceFlower />
-                                </div>
-                            </div>
-                        </motion.div>
+
 
                         {/* Middle Column: Service List */}
                         <motion.div
@@ -613,10 +605,10 @@ function AboutSection({
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.8, delay: 0.2 }}
-                            className="w-full max-w-[530px] md:max-w-none md:justify-self-center"
+                            className="w-full max-w-[530px] md:max-w-none"
                         >
                             <div
-                                className="bg-white rounded-xl md:rounded-2xl shadow-xl p-3 sm:p-4 md:p-6 w-full h-auto md:h-[600px] lg:h-[650px] xl:h-[700px]"
+                                className="bg-white rounded-xl md:rounded-2xl shadow-xl p-3 sm:p-4 md:p-6 w-[95%] h-auto md:h-[600px] lg:h-[650px] xl:h-[700px]"
                                 style={{
                                     borderColor: "#000000",
                                     overflow: "hidden",
@@ -756,7 +748,7 @@ function AboutSection({
                         </motion.div>
 
                         {/* Third Column: Service Description Card */}
-                        <div className="w-full max-w-[550px] md:max-w-none md:justify-self-center">
+                        <div className="w-full max-w-[650px] md:max-w-none">
                             <ServiceDescriptionCard
                                 service={selectedService}
                             />
@@ -803,14 +795,90 @@ export function HomePage() {
         text: themeText,
     } = useThemeColors();
     const [activeSection, setActiveSection] = useState("hero");
-    const [currentServiceName, setCurrentServiceName] = useState("Water Management");
+    const [currentServiceName, setCurrentServiceName] = useState("Municipal Water Bill Management");
+    const [currentSlide, setCurrentSlide] = useState(0);
+    const [alternatingWord, setAlternatingWord] = useState<"Consultants" | "Softwares">("Consultants");
     const containerRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll();
 
+    const heroSlides = [
+        {
+            image: "/image_data/Website_Hero_Section/smartcity1.webp",
+            title: "Sthapatya Consultants",
+            titleWords: ["Sthapatya", "Consultants", "Softwares", "(I) Private Limited"],
+            subtitle: "(I) PRIVATE LIMITED",
+            description: "Leading Municipal Service Provider for GIS-Based Property Tax Survey & Comprehensive IT Solutions",
+            showStats: true,
+            stats: [
+                { value: "100", suffix: "+", label: "Municipal Councils" },
+                { value: "8", suffix: "+", label: "Municipal Corporations" },
+                { value: "50L", suffix: "+", label: "Properties Surveyed" },
+                { value: "25", suffix: "+", label: "Years Experience" },
+            ]
+        },
+        {
+            image: "/image_data/Website_Hero_Section/ptax.webp",
+            title: "Property Tax Management",
+            subtitle: "SMART ASSESSMENT",
+            description: "Door-to-Door Surveys for building Transparent Governance",
+            showStats: false,
+        },
+        {
+            image: "/image_data/Website_Hero_Section/gis.webp",
+            title: " GIS Mapping",
+            subtitle: "DGCA Approved Drone Imaging",
+            description: "Mapping today for tomorrow's urban clarity and accountability",
+            showStats: false,
+        },
+        {
+            image: "/image_data/Website_Hero_Section/wtax.webp",
+            title: " Water Bill Management",
+            subtitle: "SMART COLLECTION",
+            description: "From Meter to Management — Simplifying Water Tax Systems.",
+            showStats: false,
+        },
+        {
+            image: "/image_data/Website_Hero_Section/trade.webp",
+            title: " Trade License",
+            subtitle: "SIMPLIFIED LICENSING",
+            description: "Self-service licensing with digital inspections and instant certificate download",
+            showStats: false,
+        },
+        {
+            image: "/image_data/Website_Hero_Section/asset.webp",
+            title: " Asset Management",
+            subtitle: "RESOURCE MONITORING",
+            description: "Transforming Municipal Assets into Growth Opportunities",
+            showStats: false,
+        },
+        {
+            image: "/image_data/Website_Hero_Section/data.webp",
+            title: " Smart Valuation Analytics",
+            subtitle: "PERFORMANCE METRICS",
+            description: "Every Data Point Counts — for Better Governance and Higher Revenue.",
+            showStats: false,
+        },
+        {
+            image: "/image_data/Website_Hero_Section/software.webp",
+            title: " Integrated Software & Mobile Apps",
+            subtitle: "DIGITAL INTEGRATION",
+            description: "Smart governance powered by seamless web and mobile integration",
+            showStats: false,
+        },
+
+        {
+            image: "/image_data/Website_Hero_Section/eluplu.webp",
+            title: " ELU-PLU DP Consultants",
+            subtitle: "City GIS Mapping",
+            description: "GIS-powered ELU–PLU mapping for planning, monitoring, and compliance",
+            showStats: false,
+        },
+    ];
+
     const sections = [
         { id: "hero", name: "Home" },
-        { id: "about", name: "About" },
         { id: "clients", name: "Clients" },
+        { id: "about", name: "About" },
         { id: "journey", name: "Journey" },
         { id: "career", name: "Career" },
         { id: "contact", name: "Contact" },
@@ -825,6 +893,19 @@ export function HomePage() {
             });
         }
     };
+
+    // Alternating word animation for first slide
+    useEffect(() => {
+        if (currentSlide === 0) {
+            const interval = setInterval(() => {
+                setAlternatingWord((prev) =>
+                    prev === "Consultants" ? "Softwares" : "Consultants"
+                );
+            }, 3000); // Switch every 3 seconds
+
+            return () => clearInterval(interval);
+        }
+    }, [currentSlide]);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -851,6 +932,15 @@ export function HomePage() {
             window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    // Auto-advance hero slides
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+        }, 5000); // Change slide every 5 seconds
+
+        return () => clearInterval(interval);
+    }, [heroSlides.length]);
+
     const heroOpacity = useTransform(
         scrollYProgress,
         [0, 0.2],
@@ -876,63 +966,77 @@ export function HomePage() {
                 style={{ opacity: heroOpacity, scale: heroScale }}
                 className="relative h-screen pt-20 sm:pt-20 flex items-center justify-center overflow-hidden"
             >
-                {/* Gradient Background */}
-                <div
-                    className="absolute inset-0"
-                    style={{
-                        background: `linear-gradient(to bottom right, ${colors.primaryDark}, ${colors.primary}, #A52020)`,
-                    }}
-                />
-
-                {/* Animated Background Shapes */}
-                <div className="absolute inset-0 overflow-hidden opacity-30">
-                    <motion.div
-                        animate={{
-                            scale: [1, 1.3, 1],
-                            rotate: [0, 180, 360],
-                        }}
-                        transition={{
-                            duration: 25,
-                            repeat: Infinity,
-                            ease: "linear",
-                        }}
-                        className="absolute -top-20 -left-20 w-96 h-96 rounded-full blur-3xl"
-                        style={{ backgroundColor: `${colors.accent}4D` }}
-                    />
-                    <motion.div
-                        animate={{
-                            scale: [1.3, 1, 1.3],
-                            rotate: [360, 180, 0],
-                        }}
-                        transition={{
-                            duration: 20,
-                            repeat: Infinity,
-                            ease: "linear",
-                        }}
-                        className="absolute -bottom-20 -right-20 w-96 h-96 rounded-full blur-3xl"
-                        style={{ backgroundColor: `${colors.primary}4D` }}
-                    />
-                    <motion.div
-                        animate={{
-                            y: [-20, 20, -20],
-                            x: [-20, 20, -20],
-                        }}
-                        transition={{
-                            duration: 15,
-                            repeat: Infinity,
-                            ease: "easeInOut",
-                        }}
-                        className="absolute top-1/2 left-1/2 w-64 h-64 rounded-full blur-2xl"
-                        style={{ backgroundColor: `${colors.accent}33` }}
-                    />
+                {/* Slide Background Images */}
+                <div className="absolute inset-0">
+                    {heroSlides.map((slide, index) => (
+                        <motion.div
+                            key={index}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: currentSlide === index ? 1 : 0 }}
+                            transition={{ duration: 1 }}
+                            className="absolute inset-0"
+                        >
+                            <ImageWithFallback
+                                src={slide.image}
+                                alt={slide.title}
+                                className="w-full h-full object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/50 to-black/55" />
+                        </motion.div>
+                    ))}
                 </div>
 
-                {/* Service Slideshow Background */}
-                <ServiceSlideshow onServiceChange={setCurrentServiceName} />
+                {/* ServiceFlower Overlay - Positioned on Left Side */}
+                <div className="absolute left-[20%] top-[55%] -translate-y-1/2 z-20 hidden lg:block pointer-events-none">
+                    <motion.div
+                        initial={{ opacity: 0, x: -50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, delay: 0.1 }}
+                        className="hidden md:flex w-full h-auto md:h-[600px] lg:h-[650px] xl:h-[700px] items-center justify-center"
+                    >
+                        <div className="w-full h-full flex items-center justify-center overflow-visible">
+                            <div className="md:scale-[0.85] lg:scale-[0.92] xl:scale-100">
+                                <ServiceFlower />
+                            </div>
+                        </div>
+                    </motion.div>
+                </div>
+
+                {/* Animated Drone for GIS Mapping Slide (index 2) */}
+                {currentSlide === 2 && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="absolute inset-0 z-10 pointer-events-none overflow-hidden"
+                    >
+                        <motion.img
+                            src="/image_data/Website_Hero_Section/drone.webp"
+                            alt="Drone"
+                            className="absolute w-32 h-32 md:w-48 md:h-48 lg:w-64 lg:h-64 object-contain drop-shadow-2xl"
+                            initial={{ left: "80%", top: "10%" }}
+                            animate={{
+                                left: ["80%", "10%", "10%", "80%"],
+                                top: ["10%", "80%", "10%", "80%"],
+                            }}
+                            transition={{
+                                duration: 5,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                                times: [0, 0.33, 0.66, 1],
+                            }}
+                            style={{ transform: "translate(-50%, -50%)" }}
+                        />
+                    </motion.div>
+                )}
+
 
                 {/* Hero Content */}
                 <div className="relative z-10 text-center px-3 sm:px-4 max-w-6xl mx-auto pb-32 sm:pb-16 md:pb-0">
                     <motion.div
+                        key={currentSlide}
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
@@ -951,20 +1055,85 @@ export function HomePage() {
                                 lineHeight: 1.1,
                             }}
                         >
-                            <span className="inline-block text-white drop-shadow-2xl">
-                                STHAPATYA CONSULTANTS
-                            </span>
-                            <br />
-                            <span
-                                className="inline-block text-white/95"
-                                style={{
-                                    fontSize: "0.5em",
-                                    fontWeight: 700,
-                                    letterSpacing: "0.1em",
-                                }}
-                            >
-                                (I) PRIVATE LIMITED
-                            </span>
+                            {currentSlide === 0 ? (
+                                <span className="text-white drop-shadow-2xl">
+                                    {/* Sthapatya - Static */}
+                                    <motion.span
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.2, duration: 0.6 }}
+                                        className="block"
+                                    >
+                                        Sthapatya
+                                    </motion.span>
+
+                                    {/* Consultants / Softwares - Alternating */}
+                                    <div className="relative h-[1.2em] overflow-hidden">
+                                        <AnimatePresence mode="wait">
+                                            <motion.span
+                                                key={alternatingWord}
+                                                initial={{
+                                                    x: alternatingWord === "Consultants" ? -100 : 100,
+                                                    opacity: 0
+                                                }}
+                                                animate={{
+                                                    x: 0,
+                                                    opacity: 1
+                                                }}
+                                                exit={{
+                                                    x: alternatingWord === "Consultants" ? 100 : -100,
+                                                    opacity: 0
+                                                }}
+                                                transition={{
+                                                    duration: 0.8,
+                                                    ease: [0.22, 1, 0.36, 1]
+                                                }}
+                                                className="block absolute inset-0"
+                                            >
+                                                {alternatingWord}
+                                            </motion.span>
+                                        </AnimatePresence>
+                                    </div>
+
+                                    {/* Private Limited - Static */}
+                                    <motion.span
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.8, duration: 0.6 }}
+                                        className="block"
+                                    >
+                                        (I) Private Limited
+                                    </motion.span>
+                                </span>
+                            ) : (
+                                <>
+                                    <span
+                                        className="inline-block text-white/95"
+                                        style={{
+                                            fontSize: "0.5em",
+                                            fontWeight: 700,
+                                            letterSpacing: "0.1em",
+                                        }}
+                                    >
+                                        E-Governance and Municipal
+                                    </span>
+                                    <br />
+                                    <span className="inline-block text-white drop-shadow-2xl">
+                                        {heroSlides[currentSlide].title}
+                                    </span>
+                                    <br />
+                                    <span
+                                        className="inline-block text-white/95"
+                                        style={{
+                                            fontSize: "0.5em",
+                                            fontWeight: 700,
+                                            letterSpacing: "0.1em",
+                                        }}
+                                    >
+                                        {heroSlides[currentSlide].subtitle}
+                                    </span>
+                                </>
+                            )}
                         </motion.h1>
 
                         {/* Subheading */}
@@ -981,88 +1150,64 @@ export function HomePage() {
                                 textShadow: "0 2px 20px rgba(0,0,0,0.5)",
                             }}
                         >
-                            Leading Municipal Service Provider for
-                            <span style={{ fontWeight: 800, color: "#fff" }}>
-                                {" "}
-                                GIS-Based Property Tax Survey,{" "}
-                            </span>
-                             E-Governance & Comprehensive IT Solutions
+                            {heroSlides[currentSlide].description}
                         </motion.p>
 
-                        {/* Stats Cards */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.6, duration: 0.8 }}
-                            className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 max-w-5xl mx-auto mb-2 sm:mb-6 md:mb-8"
-                        >
-                            {[
-                                {
-                                    value: "100",
-                                    suffix: "+",
-                                    label: "Municipal Councils",
-                                },
-                                {
-                                    value: "8",
-                                    suffix: "+",
-                                    label: "Municipal Corporations",
-                                },
-                                {
-                                    value: "50L",
-                                    suffix: "+",
-                                    label: "Properties Surveyed",
-                                },
-                                {
-                                    value: "25",
-                                    suffix: "+",
-                                    label: "Years Experience",
-                                },
-                            ].map((stat, index) => (
-                                <motion.div
-                                    key={index}
-                                    initial={{ opacity: 0, scale: 0.8 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{
-                                        delay: 0.8 + index * 0.1,
-                                        type: "spring",
-                                    }}
-                                    whileHover={{ scale: 1.05, y: -5 }}
-                                    className="relative px-2 py-2 sm:px-5 sm:py-4 md:px-6 md:py-5 backdrop-blur-xl rounded-lg sm:rounded-2xl border border-white/40 shadow-2xl overflow-hidden group cursor-pointer"
-                                    style={{
-                                        backgroundColor: "rgba(255, 255, 255, 0.1)",
-                                    }}
-                                >
-                                    <div
-                                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                                        style={{
-                                            backgroundColor:
-                                                "rgba(255, 255, 255, 0.15)",
+                        {/* Stats Cards - Only show on first slide */}
+                        {heroSlides[currentSlide].showStats && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.6, duration: 0.8 }}
+                                className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 max-w-5xl mx-auto mb-2 sm:mb-6 md:mb-8"
+                            >
+                                {heroSlides[currentSlide].stats?.map((stat, index) => (
+                                    <motion.div
+                                        key={index}
+                                        initial={{ opacity: 0, scale: 0.8 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{
+                                            delay: 0.8 + index * 0.1,
+                                            type: "spring",
                                         }}
-                                    />
-                                    <p
-                                        className="relative text-2xl sm:text-4xl md:text-5xl text-white mb-0.5 sm:mb-2"
+                                        whileHover={{ scale: 1.05, y: -5 }}
+                                        className="relative px-2 py-2 sm:px-5 sm:py-4 md:px-6 md:py-5 backdrop-blur-xl rounded-lg sm:rounded-2xl border border-white/40 shadow-2xl overflow-hidden group cursor-pointer"
                                         style={{
-                                            fontWeight: 900,
-                                            textShadow: "0 4px 20px rgba(0,0,0,0.4)",
+                                            backgroundColor: "rgba(255, 255, 255, 0.1)",
                                         }}
                                     >
-                                        {stat.value}
-                                        <span className="text-base sm:text-2xl md:text-3xl">
-                                            {stat.suffix}
-                                        </span>
-                                    </p>
-                                    <p
-                                        className="relative text-[10px] sm:text-sm text-white/95 leading-tight"
-                                        style={{
-                                            fontWeight: 600,
-                                            letterSpacing: "0.03em",
-                                        }}
-                                    >
-                                        {stat.label}
-                                    </p>
-                                </motion.div>
-                            ))}
-                        </motion.div>
+                                        <div
+                                            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                                            style={{
+                                                backgroundColor:
+                                                    "rgba(255, 255, 255, 0.15)",
+                                            }}
+                                        />
+                                        <p
+                                            className="relative text-2xl sm:text-4xl md:text-5xl text-white mb-0.5 sm:mb-2"
+                                            style={{
+                                                fontWeight: 900,
+                                                textShadow: "0 4px 20px rgba(0,0,0,0.4)",
+                                            }}
+                                        >
+                                            {stat.value}
+                                            <span className="text-base sm:text-2xl md:text-3xl">
+                                                {stat.suffix}
+                                            </span>
+                                        </p>
+                                        <p
+                                            className="relative text-[10px] sm:text-sm text-white/95 leading-tight"
+                                            style={{
+                                                fontWeight: 600,
+                                                letterSpacing: "0.03em",
+                                            }}
+                                        >
+                                            {stat.label}
+                                        </p>
+                                    </motion.div>
+                                ))}
+                            </motion.div>
+                        )}
 
                         {/* CTA Button */}
                         <motion.div
@@ -1081,28 +1226,27 @@ export function HomePage() {
                             </AnimatedButton>
                         </motion.div>
 
-                        {/* Service Name - Mobile Only (below button) */}
+                        {/* Slide Indicators */}
                         <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 1.2 }}
-                            className="sm:hidden flex justify-end mt-3"
+                            className="flex justify-center gap-2 mt-6"
                         >
-                            <div className="bg-white/10 backdrop-blur-md px-3 py-2 rounded-lg border border-white/30 shadow-2xl">
-                                <p
-                                    className="text-white text-[11px] text-right"
-                                    style={{ fontWeight: 600, letterSpacing: "0.02em" }}
-                                >
-                                    {currentServiceName}
-                                </p>
-                            </div>
+                            {heroSlides.map((_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => setCurrentSlide(index)}
+                                    className={`h-2 rounded-full transition-all duration-300 ${index === currentSlide
+                                        ? "w-8 bg-white shadow-lg"
+                                        : "w-2 bg-white/40 hover:bg-white/60"
+                                        }`}
+                                />
+                            ))}
                         </motion.div>
                     </motion.div>
                 </div>
             </motion.section>
-
-            {/* About Section */}
-            <AboutSection scrollToSection={scrollToSection} />
 
             {/* Clients Section - Enhanced */}
             <section
@@ -1177,12 +1321,12 @@ export function HomePage() {
                         {(() => {
                             const clients = [
                                 {
-                                    name: "Pimpri-Chinchwad Municipal Corporation",
-                                    logo: "/municiple_logo/pcmc.webp",
-                                },
-                                {
                                     name: "Thane Municipal Corporation",
                                     logo: "/municiple_logo/thane.webp",
+                                },
+                                {
+                                    name: "Pimpri-Chinchwad Municipal Corporation",
+                                    logo: "/municiple_logo/pcmc.webp",
                                 },
                                 {
                                     name: "Panvel Municipal Corporation",
@@ -1198,7 +1342,7 @@ export function HomePage() {
                                 },
                                 {
                                     name: "Jalgaon Municipal Corporation",
-                                    logo: "/municiple_logo/jalgao.webp",
+                                    logo: "/municiple_logo/jalgaon.webp",
                                 },
                                 {
                                     name: "Dhule Municipal Corporation",
@@ -1223,6 +1367,11 @@ export function HomePage() {
                                 const row = Math.floor(index / 5);
                                 const isEvenRow = row % 2 === 0;
 
+                                // Alternate between red and gray colors
+                                const cardColor = index % 2 === 0
+                                    ? { bg: '#7D0A0A', border: '#A01010', icon: '#BF3131' } // Primary dark red
+                                    : { bg: '#B3B3B3', border: '#999999', icon: '#BF3131' }; // Light gray with red accent
+
                                 return (
                                     <motion.div
                                         initial={{
@@ -1240,26 +1389,42 @@ export function HomePage() {
                                             ease: [0.22, 1, 0.36, 1]
                                         }}
                                         whileHover={{
-                                            scale: 1.05,
-                                            y: -8,
-                                            boxShadow: `0 20px 40px ${colors.accent}33`,
+                                            scale: 1.08,
+                                            y: -10,
                                         }}
-                                        className="p-4 sm:p-6 bg-white border-2 rounded-xl sm:rounded-2xl shadow-lg transition-all duration-300 flex flex-col items-center justify-center text-center group h-full"
-                                        style={{ borderColor: colors.accent }}
+                                        transition={{ duration: 0.2, ease: "easeOut" }}
+                                        className="p-4 sm:p-6 border-2 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl flex flex-col items-center justify-center text-center group h-full relative overflow-hidden cursor-pointer will-change-transform"
+                                        style={{
+                                            borderColor: cardColor.border,
+                                            backgroundColor: cardColor.bg,
+                                            boxShadow: `0 4px 15px rgba(0,0,0,0.2)`,
+                                        }}
                                         onMouseEnter={(e) => {
-                                            e.currentTarget.style.borderColor = colors.primary;
+                                            // Keep gray border for gray cards, red border for red cards
+                                            const hoverBorderColor = index % 2 === 0 ? cardColor.icon : cardColor.border;
+                                            e.currentTarget.style.borderColor = hoverBorderColor;
+                                            e.currentTarget.style.boxShadow = `0 20px 50px rgba(0,0,0,0.3), 0 0 0 2px ${hoverBorderColor}`;
                                         }}
                                         onMouseLeave={(e) => {
-                                            e.currentTarget.style.borderColor = colors.accent;
+                                            e.currentTarget.style.borderColor = cardColor.border;
+                                            e.currentTarget.style.boxShadow = `0 4px 15px rgba(0,0,0,0.2)`;
                                         }}
                                     >
+                                        {/* Top accent bar */}
+                                        <div
+                                            className="absolute top-0 left-0 right-0 h-1 transition-all duration-200 group-hover:h-2"
+                                            style={{ backgroundColor: cardColor.icon }}
+                                        />
+
                                         {/* Municipal Emblem */}
                                         <motion.div
-                                            className="mb-3 sm:mb-4 relative"
-                                            whileHover={{ rotate: 0 }}
-                                            transition={{ duration: 0.6 }}
+                                            className="mb-3 sm:mb-4 relative z-10"
+                                            whileHover={{ scale: 1.1 }}
+                                            transition={{ duration: 0.2 }}
                                         >
-                                            <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center">
+                                            <div
+                                                className="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center p-2 rounded-lg transition-shadow duration-300"
+                                            >
                                                 <img
                                                     src={client.logo}
                                                     alt={`${client.name} Logo`}
@@ -1270,10 +1435,10 @@ export function HomePage() {
 
                                         {/* Client Name */}
                                         <h3
-                                            className="text-sm sm:text-base"
+                                            className="text-sm sm:text-base relative z-10 transition-all duration-300"
                                             style={{
                                                 fontWeight: 700,
-                                                color: colors.text,
+                                                color: 'white',
                                                 lineHeight: 1.4,
                                             }}
                                         >
@@ -1319,12 +1484,12 @@ export function HomePage() {
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
                                         {[
                                             {
-                                                name: "Pimpri-Chinchwad Municipal Corporation",
-                                                logo: "/municiple_logo/pcmc.webp",
-                                            },
-                                            {
                                                 name: "Thane Municipal Corporation",
                                                 logo: "/municiple_logo/thane.webp",
+                                            },
+                                            {
+                                                name: "Pimpri-Chinchwad Municipal Corporation",
+                                                logo: "/municiple_logo/pcmc.webp",
                                             },
                                             {
                                                 name: "Panvel Municipal Corporation",
@@ -1335,12 +1500,12 @@ export function HomePage() {
                                                 logo: "/municiple_logo/amt.webp",
                                             },
                                             {
-                                                name: "Akola Municipal Corporation",
-                                                logo: "/municiple_logo/akola.webp",
+                                                name: "Jalgaon Municipal Corporation",
+                                                logo: "/municiple_logo/jalgaon.webp",
                                             },
                                             {
-                                                name: "Jalgaon Municipal Corporation",
-                                                logo: "/municiple_logo/jalgao.webp",
+                                                name: "Akola Municipal Corporation",
+                                                logo: "/municiple_logo/akola.webp",
                                             },
                                             {
                                                 name: "Dhule Municipal Corporation",
@@ -1358,59 +1523,77 @@ export function HomePage() {
                                                 name: "Washim Municipal Council",
                                                 logo: "/municiple_logo/washim.webp",
                                             },
-                                        ].map((client, index) => (
-                                            <motion.div
-                                                key={index}
-                                                initial={{ opacity: 0, y: 20 }}
-                                                whileInView={{ opacity: 1, y: 0 }}
-                                                viewport={{ once: true }}
-                                                transition={{ delay: index * 0.05 }}
-                                                whileHover={{
-                                                    scale: 1.05,
-                                                    y: -8,
-                                                    boxShadow: `0 20px 40px ${colors.accent}33`,
-                                                }}
-                                                className="p-6 bg-white border-2 rounded-2xl shadow-lg transition-all duration-300 flex flex-col items-center justify-center text-center group"
-                                                style={{ borderColor: colors.accent }}
-                                                onMouseEnter={(e) => {
-                                                    e.currentTarget.style.borderColor =
-                                                        colors.primary;
-                                                }}
-                                                onMouseLeave={(e) => {
-                                                    e.currentTarget.style.borderColor =
-                                                        colors.accent;
-                                                }}
-                                            >
-                                                {/* Municipal Emblem */}
-                                                <motion.div
-                                                    className="mb-4 relative"
-                                                    whileHover={{
-                                                        rotate: 0,
-                                                    }}
-                                                    transition={{ duration: 0.6 }}
-                                                >
-                                                    <div className="w-20 h-20 flex items-center justify-center">
-                                                        <img
-                                                            src={client.logo}
-                                                            alt={`${client.name} Logo`}
-                                                            className="w-full h-full object-contain"
-                                                        />
-                                                    </div>
-                                                </motion.div>
+                                        ].map((client, index) => {
+                                            // Alternate between red and gray colors
+                                            const cardColor = index % 2 === 0
+                                                ? { bg: '#7D0A0A', border: '#A01010', icon: '#BF3131' } // Primary dark red
+                                                : { bg: '#B3B3B3', border: '#999999', icon: '#BF3131' }; // Light gray with red accent
 
-                                                {/* Client Name */}
-                                                <h3
-                                                    className="text-base"
+                                            return (
+                                                <motion.div
+                                                    key={index}
+                                                    initial={{ opacity: 0, y: 20 }}
+                                                    whileInView={{ opacity: 1, y: 0 }}
+                                                    viewport={{ once: true }}
+                                                    transition={{ delay: index * 0.05 }}
+                                                    whileHover={{
+                                                        scale: 1.08,
+                                                        y: -10,
+                                                    }}
+                                                    transition={{ duration: 0.2, ease: "easeOut" }}
+                                                    className="p-6 border-2 rounded-2xl shadow-lg hover:shadow-2xl flex flex-col items-center justify-center text-center group relative overflow-hidden cursor-pointer will-change-transform"
                                                     style={{
-                                                        fontWeight: 700,
-                                                        color: colors.text,
-                                                        lineHeight: 1.4,
+                                                        borderColor: cardColor.border,
+                                                        backgroundColor: cardColor.bg,
+                                                        boxShadow: `0 4px 15px rgba(0,0,0,0.2)`,
+                                                    }}
+                                                    onMouseEnter={(e) => {
+                                                        // Keep gray border for gray cards, red border for red cards
+                                                        const hoverBorderColor = index % 2 === 0 ? cardColor.icon : cardColor.border;
+                                                        e.currentTarget.style.borderColor = hoverBorderColor;
+                                                        e.currentTarget.style.boxShadow = `0 20px 50px rgba(0,0,0,0.3), 0 0 0 2px ${hoverBorderColor}`;
+                                                    }}
+                                                    onMouseLeave={(e) => {
+                                                        e.currentTarget.style.borderColor = cardColor.border;
+                                                        e.currentTarget.style.boxShadow = `0 4px 15px rgba(0,0,0,0.2)`;
                                                     }}
                                                 >
-                                                    {client.name}
-                                                </h3>
-                                            </motion.div>
-                                        ))}
+                                                    {/* Top accent bar */}
+
+
+                                                    {/* Municipal Emblem */}
+                                                    <motion.div
+                                                        className="mb-4 relative z-10"
+                                                        whileHover={{
+                                                            scale: 1.1,
+                                                        }}
+                                                        transition={{ duration: 0.2 }}
+                                                    >
+                                                        <div
+                                                            className="w-28 h-28 flex items-center justify-center p-2 rounded-lg transition-shadow duration-300"
+                                                        >
+                                                            <img
+                                                                src={client.logo}
+                                                                alt={`${client.name} Logo`}
+                                                                className="w-full h-full object-contain"
+                                                            />
+                                                        </div>
+                                                    </motion.div>
+
+                                                    {/* Client Name */}
+                                                    <h3
+                                                        className="text-base relative z-10 transition-all duration-300"
+                                                        style={{
+                                                            fontWeight: 700,
+                                                            color: 'white',
+                                                            lineHeight: 1.4,
+                                                        }}
+                                                    >
+                                                        {client.name}
+                                                    </h3>
+                                                </motion.div>
+                                            );
+                                        })}
                                     </div>
                                 </>
                             );
@@ -1423,6 +1606,20 @@ export function HomePage() {
                             viewport={{ once: true }}
                             className="text-center"
                         >
+                            <motion.p
+                                initial={{ opacity: 0, y: 10 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.2 }}
+                                className="mb-6"
+                                style={{
+                                    fontSize: 'clamp(1rem, 1.5vw, 1.2rem)',
+                                    color: colors.textLight,
+                                    fontWeight: 600,
+                                }}
+                            >
+                                ...and <span style={{ color: colors.primary, fontWeight: 700 }}>100+ more projects</span> delivered across Maharashtra
+                            </motion.p>
                             <Link to="/projects">
                                 <AnimatedButton
                                     variant="secondary"
@@ -1436,6 +1633,79 @@ export function HomePage() {
                     </motion.div>
                 </div>
             </section>
+
+            {/* Certifications Section */}
+            <section className="py-8 px-4 bg-white">
+                <div className="max-w-7xl mx-auto">
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                    >
+                        {/* Section Title */}
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="text-center mb-8"
+                            style={{
+                                fontSize: 'clamp(1.8rem, 3vw, 2.5rem)',
+                                color: colors.primary,
+                                fontWeight: 800,
+                            }}
+                        >
+                            Certifications & Co-partners
+                        </motion.h2>
+
+                        {/* Horizontal Certificate Card */}
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.2, duration: 0.5 }}
+                            className="bg-gradient-to-r from-gray-50 to-white border-2 rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-shadow duration-300"
+                            style={{ borderColor: colors.accent }}
+                        >
+                            {/* Certificate Logos Grid */}
+                            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 items-center">
+                                {[
+                                    { name: "ISO 9001:2015", logo: "/image_data/AboutPage/1.webp" },
+                                    { name: "Quality Management", logo: "/image_data/AboutPage/2.webp" },
+                                    { name: "Professional Seal", logo: "/image_data/AboutPage/3.webp" },
+                                    { name: "Business Excellence", logo: "/image_data/AboutPage/4.webp" },
+                                    { name: "Industry Award", logo: "/image_data/AboutPage/5.webp" },
+                                    { name: "Excellence Badge", logo: "/image_data/AboutPage/6.webp" },
+                                    { name: "Quality Certificate", logo: "/image_data/AboutPage/7.webp" },
+                                    { name: "Accreditation", logo: "/image_data/AboutPage/8.webp" },
+                                ].map((cert, index) => (
+                                    <motion.div
+                                        key={index}
+                                        initial={{ opacity: 0, scale: 0.8 }}
+                                        whileInView={{ opacity: 1, scale: 1 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: index * 0.08, duration: 0.4 }}
+                                        whileHover={{ scale: 1.15, y: -5 }}
+                                        className="flex items-center justify-center"
+                                    >
+                                        <div className="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center transition-all duration-300">
+                                            <ImageWithFallback
+                                                src={cert.logo}
+                                                alt={cert.name}
+                                                className="w-full h-full object-contain"
+                                            />
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </motion.div>
+
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* About Section */}
+            <AboutSection scrollToSection={scrollToSection} />
 
             {/* Journey Preview - Compact */}
             <section
@@ -1503,33 +1773,32 @@ export function HomePage() {
                                         },
                                         {
                                             year: "2010",
-                                            title: "First Success",
+                                            title: "Benchmark",
                                             desc: "Completed over 50 major projects across municipal corporations",
                                             position: "bottom",
                                         },
                                         {
                                             year: "2016",
                                             title: "Recognition",
-                                            desc: "Achieved milestone: 1st DGCA-approved UAV drone flight",
+                                            desc: "Central India’s 1st DGCA-Approved UAV Flight | 10L+ Properties Surveyed",
                                             position: "top",
                                         },
                                         {
                                             year: "2021",
                                             title: "SCOCH Award",
-                                            desc: "Received SCOCH Award from the Central Government for excellence in innovation",
-
+                                            desc: "Received the Skoch Award from the Central Government for Excellence in Innovation, with 18L+ Properties Surveyed",
                                             position: "bottom",
                                         },
                                         {
                                             year: "2023",
                                             title: "IGR Integration",
-                                            desc: "Completed the first IGR integration for a Maharashtra Urban Local Body",
+                                            desc: "Completed Maharashtra’s first ULB–IGR integration; surveyed 35L+ properties",
                                             position: "top",
                                         },
                                         {
                                             year: "2025",
                                             title: "Today",
-                                            desc: "Most experienced company for Property tax Survey and Assessment domain in India",
+                                            desc: "Most experienced in India for Property Tax Survey and Assessment, with 50L+ properties completed",
                                             position: "bottom",
                                         },
                                     ].map((milestone, index) => (
@@ -1556,8 +1825,8 @@ export function HomePage() {
                                                 stiffness: 100,
                                             }}
                                             className={`flex flex-col items-center ${milestone.position === "top"
-                                                    ? "pt-4 pb-20"
-                                                    : "pt-20 pb-4"
+                                                ? "pt-4 pb-20"
+                                                : "pt-20 pb-4"
                                                 }`}
                                         >
                                             {/* Connector Line to Path */}
@@ -1575,8 +1844,8 @@ export function HomePage() {
                                                     duration: 0.4,
                                                 }}
                                                 className={`w-0.5 bg-gradient-to-b from-[#BF3131] to-transparent ${milestone.position === "top"
-                                                        ? "order-2 mt-2"
-                                                        : "order-1 mb-2"
+                                                    ? "order-2 mt-2"
+                                                    : "order-1 mb-2"
                                                     }`}
                                             />
 
@@ -1757,219 +2026,221 @@ export function HomePage() {
                                 color: "#BF3131",
                             }}
                         >
-                            Join Our Team
+                            Our Strength
                         </h2>
+
+                        {/* Team Size Badge */}
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            whileInView={{ scale: 1, opacity: 1 }}
+                            viewport={{ once: true }}
+                            className="inline-flex items-center gap-3 px-7 py-4 rounded-full shadow-lg"
+                            style={{
+                                background:
+                                    "linear-gradient(to right, #BF3131, #7D0A0A)",
+                            }}
+                        >
+                            <Users size={22} className="text-white" />
+                            <span
+                                className="text-white"
+                                style={{
+                                    fontWeight: 700,
+                                    fontSize: "1.15rem",
+                                }}
+                            >
+                                700+ Team Members
+                            </span>
+                        </motion.div>
                     </motion.div>
 
-                    {/* Two Column Layout: Carousel Left, Description Right */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
-                        {/* Left Column: Image Carousel */}
+                    {/* Image Gallery Layout */}
+                    <div className="flex justify-center">
+                        {/* 5 Image Grid Layout */}
                         <motion.div
-                            initial={{ opacity: 0, x: -50 }}
-                            whileInView={{ opacity: 1, x: 0 }}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.8 }}
                             className="relative"
                         >
-                            <Carousel
-                                className="w-full h-full"
-                                opts={{
-                                    align: "start",
-                                    loop: true,
-                                }}
-                            >
-                                <CarouselContent>
-                                    {[
-                                        {
-                                            image:
-                                                "/image_data/Team_photo/12.webp",
-                                            title: "Team Collaboration",
-                                        },
-                                        {
-                                            image:
-                                                "/image_data/Team_photo/3.webp",
-                                            title: "Professional Excellence",
-                                        },
-                                        {
-                                            image:
-                                                "/image_data/Team_photo/5.webp",
-                                            title: "Diverse Teamwork",
-                                        },
-                                        {
-                                            image:
-                                                "/image_data/Team_photo/2.webp",
-                                            title: "Innovation & Growth",
-                                        },
-                                        {
-                                            image:
-                                                "/image_data/Team_photo/4.webp",
-                                            title: "Modern Workspace",
-                                        },
-                                        {
-                                            image:
-                                                "/image_data/Team_photo/13.webp",
-                                            title: "Modern Workspace",
-                                        },
-                                    ].map((item, index) => (
-                                        <CarouselItem key={index}>
-                                            <div className="relative group h-full">
-                                                <div className="relative overflow-hidden rounded-2xl shadow-2xl h-full">
-                                                    <ImageWithFallback
-                                                        src={item.image}
-                                                        alt={item.title}
-                                                        className="w-full h-[400px] object-cover transition-transform duration-700 group-hover:scale-110"
-                                                    />
-                                                </div>
+                            <div className="flex gap-4 h-[600px] w-full max-w-[1420px] mx-auto">
+                                {/* Far Left Side - 2 Square Images */}
+                                <div className="flex flex-col gap-4 w-[260px]">
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: 0.05 }}
+                                        className="relative group flex-1 overflow-hidden rounded-2xl shadow-xl"
+                                    >
+                                        <ImageWithFallback
+                                            src="/image_data/Team_photo/13.webp"
+                                            alt="Professional Team"
+                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                        />
+                                        <div
+                                            className="absolute inset-0 rounded-2xl border-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                            style={{ borderColor: colors.accent }}
+                                        />
+                                    </motion.div>
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: 0.1 }}
+                                        className="relative group flex-1 overflow-hidden rounded-2xl shadow-xl"
+                                    >
+                                        <ImageWithFallback
+                                            src="/image_data/Team_photo/16.webp"
+                                            alt="Office Collaboration"
+                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                        />
+                                        <div
+                                            className="absolute top-0 bottom-0 left-[-30px] right-[-30px] rounded-2xl border-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                            style={{ borderColor: colors.accent }}
+                                        />
+                                    </motion.div>
+                                </div>
 
-                                                {/* Decorative Border */}
-                                                <div
-                                                    className="absolute inset-0 rounded-2xl border-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                                                    style={{
-                                                        borderColor: `${colors.accent}33`,
-                                                    }}
-                                                />
-                                            </div>
-                                        </CarouselItem>
-                                    ))}
-                                </CarouselContent>
-                                <CarouselPrevious
-                                    className="left-4 bg-white/90 hover:bg-white"
-                                    style={{ borderColor: colors.accent }}
-                                />
-                                <CarouselNext
-                                    className="right-4 bg-white/90 hover:bg-white"
-                                    style={{ borderColor: colors.accent }}
-                                />
-                            </Carousel>
+                                {/* Left Side - 2 Square Images */}
+                                <div className="flex flex-col gap-4 w-[260px]">
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: 0.15 }}
+                                        className="relative group flex-1 overflow-hidden rounded-2xl shadow-xl"
+                                    >
+                                        <ImageWithFallback
+                                            src="/image_data/Team_photo/7.webp"
+                                            alt="Team Collaboration"
+                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                        />
+                                        <div
+                                            className="absolute inset-0 rounded-2xl border-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                            style={{ borderColor: colors.accent }}
+                                        />
+                                    </motion.div>
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: 0.2 }}
+                                        className="relative group flex-1 overflow-hidden rounded-2xl shadow-xl"
+                                    >
+                                        <ImageWithFallback
+                                            src="/image_data/Team_photo/5.webp"
+                                            alt="Professional Excellence"
+                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                        />
+                                        <div
+                                            className="absolute inset-0 rounded-2xl border-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                            style={{ borderColor: colors.accent }}
+                                        />
+                                    </motion.div>
+                                </div>
+
+                                {/* Center - 1 Vertical Rectangular Image */}
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: 0.25 }}
+                                    className="relative group w-[400px] overflow-hidden rounded-2xl shadow-2xl"
+                                >
+                                    <ImageWithFallback
+                                        src="/image_data/Team_photo/16.webp"
+                                        alt="Diverse Teamwork"
+                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    />
+                                    <div
+                                        className="absolute inset-0 rounded-2xl border-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                        style={{ borderColor: colors.accent }}
+                                    />
+                                </motion.div>
+
+                                {/* Right Side - 2 Square Images */}
+                                <div className="flex flex-col gap-4 w-[260px]">
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: 0.3 }}
+                                        className="relative group flex-1 overflow-hidden rounded-2xl shadow-xl"
+                                    >
+                                        <ImageWithFallback
+                                            src="/image_data/Team_photo/3.webp"
+                                            alt="Innovation & Growth"
+                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                        />
+                                        <div
+                                            className="absolute inset-0 rounded-2xl border-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                            style={{ borderColor: colors.accent }}
+                                        />
+                                    </motion.div>
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: 0.35 }}
+                                        className="relative group flex-1 overflow-hidden rounded-2xl shadow-xl"
+                                    >
+                                        <ImageWithFallback
+                                            src="/image_data/Team_photo/2.webp"
+                                            alt="Modern Workspace"
+                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                        />
+                                        <div
+                                            className="absolute inset-0 rounded-2xl border-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                            style={{ borderColor: colors.accent }}
+                                        />
+                                    </motion.div>
+                                </div>
+
+                                {/* Far Right Side - 2 Square Images */}
+                                <div className="flex flex-col gap-4 w-[260px]">
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: 0.4 }}
+                                        className="relative group flex-1 overflow-hidden rounded-2xl shadow-xl"
+                                    >
+                                        <ImageWithFallback
+                                            src="/image_data/Team_photo/12.webp"
+                                            alt="Business Professionals"
+                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                        />
+                                        <div
+                                            className="absolute inset-0 rounded-2xl border-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                            style={{ borderColor: colors.accent }}
+                                        />
+                                    </motion.div>
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: 0.45 }}
+                                        className="relative group flex-1 overflow-hidden rounded-2xl shadow-xl"
+                                    >
+                                        <ImageWithFallback
+                                            src="/image_data/Team_photo/17.webp"
+                                            alt="Corporate Culture"
+                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                        />
+                                        <div
+                                            className="absolute inset-0 rounded-2xl border-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                            style={{ borderColor: colors.accent }}
+                                        />
+                                    </motion.div>
+                                </div>
+                            </div>
 
                             {/* Decorative Elements */}
                             <div className="absolute -top-4 -left-4 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl" />
                             <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl" />
                         </motion.div>
 
-                        {/* Right Column: Description */}
-                        <motion.div
-                            initial={{ opacity: 0, x: 50 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.8, delay: 0.2 }}
-                            className="flex flex-col justify-center space-y-8 h-full"
-                        >
-                            {/* Team Size Badge */}
-                            <motion.div
-                                initial={{ scale: 0.9, opacity: 0 }}
-                                whileInView={{ scale: 1, opacity: 1 }}
-                                viewport={{ once: true }}
-                                className="inline-flex items-center gap-3 px-7 py-4 rounded-full shadow-lg self-start"
-                                style={{
-                                    background:
-                                        "linear-gradient(to right, #BF3131, #7D0A0A)",
-                                }}
-                            >
-                                <Users size={22} className="text-white" />
-                                <span
-                                    className="text-white"
-                                    style={{
-                                        fontWeight: 700,
-                                        fontSize: "1.15rem",
-                                    }}
-                                >
-                                    700+ Team Members
-                                </span>
-                            </motion.div>
-
-                            {/* Description Text */}
-                            <motion.p
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: 0.3 }}
-                                className="leading-relaxed"
-                                style={{
-                                    fontSize: "clamp(1.05rem, 1.5vw, 1.2rem)",
-                                    color: colors.text,
-                                    fontWeight: 500,
-                                    lineHeight: 1.8,
-                                }}
-                            >
-                                Be a part of our{" "}
-                                <span
-                                    style={{
-                                        fontWeight: 700,
-                                        color: colors.primary,
-                                    }}
-                                >
-                                    700+ strong and growing family
-                                </span>
-                                , where every individual's effort fuels our
-                                collective success. At our company, teams{" "}
-                                <span
-                                    style={{
-                                        fontWeight: 700,
-                                        color: colors.primary,
-                                    }}
-                                >
-                                    collaborate, innovate, and work passionately
-                                </span>{" "}
-                                to drive growth and excellence. Join us to build
-                                your career in an environment that values{" "}
-                                <span
-                                    style={{
-                                        fontWeight: 700,
-                                        color: colors.primary,
-                                    }}
-                                >
-                                    dedication, teamwork, and continuous learning
-                                </span>
-                                .
-                            </motion.p>
-
-                            {/* CTA Button */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: 0.5 }}
-                                className="flex justify-start"
-                            >
-                                <Link to="/career">
-                                    <motion.button
-                                        whileHover={{ scale: 1.05, y: -2 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        className="group relative overflow-hidden rounded-full px-8 py-4 shadow-xl hover:shadow-2xl transition-all duration-300"
-                                        style={{ backgroundColor: colors.accent }}
-                                    >
-                                        <div className="relative flex items-center gap-3">
-                                            <Briefcase
-                                                size={20}
-                                                className="text-white"
-                                            />
-                                            <span
-                                                className="text-white"
-                                                style={{
-                                                    fontWeight: 700,
-                                                    fontSize: "1.05rem",
-                                                }}
-                                            >
-                                                Explore Career Opportunities
-                                            </span>
-                                            <motion.div
-                                                animate={{ x: [0, 5, 0] }}
-                                                transition={{
-                                                    duration: 1.5,
-                                                    repeat: Infinity,
-                                                }}
-                                            >
-                                                <ArrowRight
-                                                    size={20}
-                                                    className="text-white"
-                                                />
-                                            </motion.div>
-                                        </div>
-                                    </motion.button>
-                                </Link>
-                            </motion.div>
-                        </motion.div>
                     </div>
                 </div>
             </section>
@@ -1999,6 +2270,51 @@ export function HomePage() {
                         transition={{ duration: 0.8 }}
                         className="text-center mb-16"
                     >
+                        {/* CTA Button - Explore Career Opportunities */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.2 }}
+                            className="flex justify-center mb-12"
+                        >
+                            <Link to="/career">
+                                <motion.button
+                                    whileHover={{ scale: 1.05, y: -2 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    className="group relative overflow-hidden rounded-full px-8 py-4 shadow-xl hover:shadow-2xl transition-all duration-300"
+                                    style={{ backgroundColor: colors.accent }}
+                                >
+                                    <div className="relative flex items-center gap-3">
+                                        <Briefcase
+                                            size={20}
+                                            className="text-white"
+                                        />
+                                        <span
+                                            className="text-white"
+                                            style={{
+                                                fontWeight: 700,
+                                                fontSize: "1.05rem",
+                                            }}
+                                        >
+                                            Explore Career Opportunities
+                                        </span>
+                                        <motion.div
+                                            animate={{ x: [0, 5, 0] }}
+                                            transition={{
+                                                duration: 1.5,
+                                                repeat: Infinity,
+                                            }}
+                                        >
+                                            <ArrowRight
+                                                size={20}
+                                                className="text-white"
+                                            />
+                                        </motion.div>
+                                    </div>
+                                </motion.button>
+                            </Link>
+                        </motion.div>
 
                         <h2
                             className="mb-2"
@@ -2062,7 +2378,7 @@ export function HomePage() {
                                 image:
                                     "/image_data/Our_Offices/pv.webp",
                                 isHeadOffice: false,
-                                mapsUrl: "#", 
+                                mapsUrl: "#",
                             },
                         ].map((office, index) => (
                             <motion.div
@@ -2078,29 +2394,27 @@ export function HomePage() {
                                 className="group relative"
                             >
                                 <div className="relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-500 border-2 border-black-100 hover:border-black-300">
-                                    {/* Head Office Badge */}
-                                    {office.isHeadOffice && (
-                                        <motion.div
-                                            initial={{ scale: 0, rotate: -45 }}
-                                            whileInView={{ scale: 1, rotate: 0 }}
-                                            viewport={{ once: true }}
-                                            transition={{
-                                                delay: 0.5,
-                                                type: "spring",
-                                            }}
-                                            className="absolute top-4 right-4 z-20 px-3 py-1 bg-gradient-to-r from-amber-500 to-amber-600 rounded-full shadow-lg"
+                                    {/* Office Badge */}
+                                    <motion.div
+                                        initial={{ scale: 0, rotate: -45 }}
+                                        whileInView={{ scale: 1, rotate: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{
+                                            delay: 0.5,
+                                            type: "spring",
+                                        }}
+                                        className="absolute top-4 right-4 z-20 px-3 py-1 bg-gradient-to-r from-amber-500 to-amber-600 rounded-full shadow-lg"
+                                    >
+                                        <span
+                                            className="text-white text-xs"
+                                            style={{ fontWeight: 700 }}
                                         >
-                                            <span
-                                                className="text-white text-xs"
-                                                style={{ fontWeight: 700 }}
-                                            >
-                                                HEAD OFFICE
-                                            </span>
-                                        </motion.div>
-                                    )}
+                                            {office.isHeadOffice ? "HEAD OFFICE" : "REGIONAL OFFICE"}
+                                        </span>
+                                    </motion.div>
 
                                     {/* Office Image */}
-                                    <div className="relative h-32 overflow-hidden">
+                                    <div className="relative h-60 overflow-hidden">
                                         <motion.div
                                             whileHover={{ scale: 1.1 }}
                                             transition={{ duration: 0.6 }}
@@ -2113,34 +2427,11 @@ export function HomePage() {
                                             />
                                         </motion.div>
                                         {/* Gradient Overlay */}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                                        <div className="absolute inset-x-0 top-0 bottom-[-30%] bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                                     </div>
 
                                     {/* Office Details */}
                                     <div className="p-4">
-                                        <h3
-                                            className="text-lg mb-1"
-                                            style={{
-                                                fontWeight: 800,
-                                                ...themeText.gradient,
-                                            }}
-                                        >
-                                            {office.name}
-                                        </h3>
-
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <div className="w-1.5 h-1.5 rounded-full bg-black" />
-                                            <p
-                                                className="text-xs"
-                                                style={{
-                                                    color: "black",
-                                                    fontWeight: 600,
-                                                }}
-                                            >
-                                                {office.type}
-                                            </p>
-                                        </div>
-
                                         <p
                                             className="text-xs mb-3"
                                             style={{
@@ -2239,9 +2530,9 @@ export function HomePage() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
-                        className="pt-12 border-t-2 border-black-400"
+                        className="pt-6 border-t-2 border-black-400"
                     >
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-4">
                             {/* Company Info */}
                             <motion.div
                                 initial={{ opacity: 0, x: -20 }}
@@ -2249,50 +2540,12 @@ export function HomePage() {
                                 viewport={{ once: true }}
                                 transition={{ delay: 0.1 }}
                             >
-                                <h3
-                                    className="text-xl mb-4"
-                                    style={{
-                                        fontWeight: 800,
-                                        ...themeText.gradient,
-                                    }}
-                                >
-                                    Sthapatya Consultants
-                                </h3>
-                                <p
-                                    className="mb-4 leading-relaxed"
-                                    style={{
-                                        fontSize: "0.9rem",
-                                        color: colors.textLight,
-                                        fontWeight: 500,
-                                    }}
-                                >
-                                    Leading municipal service provider for
-                                    GIS-based property tax surveys and IT
-                                    solutions across Maharashtra.
-                                </p>
-                                <div className="flex gap-3">
-                                    {[
-                                        { icon: Linkedin, href: "#" },
-                                        { icon: Mail, href: "#" },
-                                    ].map((social, index) => (
-                                        <motion.a
-                                            key={index}
-                                            href={social.href}
-                                            whileHover={{ scale: 1.2, rotate: 5 }}
-                                            whileTap={{ scale: 0.9 }}
-                                            className="w-10 h-10 rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300"
-                                            style={{
-                                                background:
-                                                    "linear-gradient(to bottom right, #BF3131, #7D0A0A)",
-                                            }}
-                                        >
-                                            <social.icon
-                                                size={18}
-                                                className="text-white"
-                                            />
-                                        </motion.a>
-                                    ))}
-                                </div>
+                                <img
+                                    src="/image_data/Website_Hero_Section/footer.webp"
+                                    alt="Sthapatya Consultants - Municipal Services"
+                                    className="mb-4 w-full max-w-[320px] h-auto rounded-lg"
+                                />
+
                             </motion.div>
 
                             {/* Quick Links */}
@@ -2345,7 +2598,7 @@ export function HomePage() {
                                         >
                                             <Link
                                                 to={link.path}
-                                                className="flex items-center gap-2 text-sm transition-colors duration-300"
+                                                className="flex items-center gap-2 text-base transition-colors duration-300"
                                                 style={{
                                                     color: colors.textLight,
                                                     fontWeight: 500,
@@ -2401,7 +2654,7 @@ export function HomePage() {
                                         >
                                             <Link
                                                 to={link.path}
-                                                className="flex items-center gap-2 text-sm transition-colors duration-300"
+                                                className="flex items-center gap-2 text-base transition-colors duration-300"
                                                 style={{
                                                     color: colors.textLight,
                                                     fontWeight: 500,
@@ -2444,7 +2697,7 @@ export function HomePage() {
                                         <div className="flex flex-col gap-1">
                                             <a
                                                 href="mailto:support@sthapatya.in"
-                                                className="text-sm transition-colors duration-300"
+                                                className="text-base transition-colors duration-300"
                                                 style={{
                                                     color: colors.textLight,
                                                     fontWeight: 500,
@@ -2454,7 +2707,7 @@ export function HomePage() {
                                             </a>
                                             <a
                                                 href="mailto:recruitment@sthapatya.in"
-                                                className="text-sm transition-colors duration-300"
+                                                className="text-base transition-colors duration-300"
                                                 style={{
                                                     color: colors.textLight,
                                                     fontWeight: 500,
@@ -2472,7 +2725,7 @@ export function HomePage() {
                                         />
                                         <a
                                             href="tel:+917774091416"
-                                            className="text-sm transition-colors duration-300"
+                                            className="text-base transition-colors duration-300"
                                             style={{
                                                 color: colors.textLight,
                                                 fontWeight: 500,
@@ -2488,7 +2741,7 @@ export function HomePage() {
                                             style={{ color: "#BF3131" }}
                                         />
                                         <span
-                                            className="text-sm"
+                                            className="text-base"
                                             style={{
                                                 color: colors.textLight,
                                                 fontWeight: 500,
@@ -2507,7 +2760,7 @@ export function HomePage() {
                             whileInView={{ opacity: 1 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.5 }}
-                            className="pt-8 border-t border-black-100 text-center"
+                            className="pt-8 text-center"
                         >
                             <p
                                 className="text-sm"

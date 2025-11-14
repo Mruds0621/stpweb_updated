@@ -57,27 +57,34 @@ export function ProjectsPage() {
     const featuredProjects = [
         {
             title: "Akola Municipal Corporation",
-            location: "Akola, Maharashtra",
             image: "/image_data/ProjectPage/akola.webp",
             tag: "Growth Partner"
         },
         {
             title: "Panvel Municipal Corporation",
-            location: "Panvel, Pune",
             image: "/image_data/ProjectPage/panvel.webp",
             tag: "Smart City"
         },
         {
-            title: "Pimpri-Chinchwad Municipal Corporation",
-            location: "Pimpri-Chinchwad, Maharashtra",
+            title: "Pimpri Municipal Corporation",
+            location: "Pimpri, Maharashtra",
             image: "/image_data/ProjectPage/pcmc.webp",
             tag: "Flagship Project"
         },
         {
             title: "Thane Municipal Corporation",
-            location: "Thane, Maharashtra",
             image: "/image_data/ProjectPage/thane.webp",
             tag: "Digital Transform"
+        },
+        {
+            title: "Amravati Municipal Corporation",
+            image: "/image_data/ProjectPage/amc.webp",
+            tag: "Tech Innovation"
+        },
+        {
+            title: "Jalgaon Municipal Corporation",
+            image: "/image_data/ProjectPage/jalgaon.webp",
+            tag: "GIS Excellence"
         }
     ];
 
@@ -127,9 +134,12 @@ export function ProjectsPage() {
                         src="/image_data/Website_Hero_Section/project.webp"
                         alt="Urban Development"
                         className="w-full h-full object-cover"
+                        style={{
+                            objectPosition: 'center center'
+                        }}
                     />
                     {/* Single Dark Overlay - more natural */}
-                    <div className="absolute inset-0 bg-black opacity-30" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/30 to-black/40" />
                 </div>
 
                 {/* Hero Content */}
@@ -150,7 +160,7 @@ export function ProjectsPage() {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
-                        className="text-sm sm:text-lg md:text-xl lg:text-2xl text-white/90 mb-4 sm:mb-6 md:mb-10 max-w-3xl mx-auto px-2 sm:px-4"
+                        className="text-2xl sm:text-xl md:text-2xl lg:text-3xl text-gray-200 mb-6 sm:mb-8 max-w-4xl mx-auto leading-relaxed px-4"
                     >
                         Empowering 100+ Municipal Bodies with cutting-edge GIS technology
                     </motion.p>
@@ -183,7 +193,7 @@ export function ProjectsPage() {
             </motion.div>
 
             {/* Main Content Container */}
-            <div className="max-w-7xl w-full mx-auto px-3 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-16 md:py-20 space-y-10 sm:space-y-16 md:space-y-20">
+            <div className="max-w-7xl w-full mx-auto px-3 sm:px-6 md:px-8 lg:px-12 py-6 sm:py-10 md:py-12 space-y-6 sm:space-y-10 md:space-y-12">
 
                 {/* Featured Projects Section */}
                 <motion.section
@@ -192,10 +202,10 @@ export function ProjectsPage() {
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ duration: 0.8 }}
                 >
-                    <div className="text-center mb-6 sm:mb-8">
+                    <div className="text-center mb-4 sm:mb-5">
 
 
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-3 sm:mb-5" style={{ fontWeight: 700, color: colors.primary }}>
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-2 sm:mb-3" style={{ fontWeight: 700, color: colors.primary }}>
                             Our Success Stories
                         </h2>
                         <p className="text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-2 sm:px-0" style={{ color: colors.secondary }}>
@@ -203,20 +213,20 @@ export function ProjectsPage() {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 sm:gap-4">
                         {featuredProjects.map((project, index) => (
                             <motion.div
                                 key={index}
                                 initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
-                                transition={{ delay: index * 0.2 }}
-                                whileHover={{ y: -8 }}
-                                className="group relative overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all bg-white border-2"
+                                transition={{ delay: index * 0.1 }}
+                                whileHover={{ y: -6 }}
+                                className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all bg-white border-2"
                                 style={{ borderColor: `${colors.primary}30` }}
                             >
                                 {/* Project Image */}
-                                <div className="relative h-64 overflow-hidden">
+                                <div className="relative aspect-square overflow-hidden">
                                     <ImageWithFallback
                                         src={project.image}
                                         alt={project.title}
@@ -226,14 +236,10 @@ export function ProjectsPage() {
                                 </div>
 
                                 {/* Project Details */}
-                                <div className="p-6">
-                                    <h3 className="text-xl mb-2" style={{ fontWeight: 700, color: colors.text }}>
+                                <div className="p-3">
+                                    <h3 className="text-sm leading-tight text-center" style={{ fontWeight: 700, color: colors.text }}>
                                         {project.title}
                                     </h3>
-                                    <p className="text-sm flex items-center gap-1.5" style={{ color: colors.primary }}>
-                                        <MapPin size={14} />
-                                        {project.location}
-                                    </p>
                                 </div>
                             </motion.div>
                         ))}
@@ -247,10 +253,10 @@ export function ProjectsPage() {
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ duration: 0.8 }}
                 >
-                    <div className="text-center mb-6 sm:mb-8">
+                    <div className="text-center mb-4 sm:mb-5">
 
 
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-3 sm:mb-5" style={{ fontWeight: 700, color: colors.primary }}>
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-2 sm:mb-3" style={{ fontWeight: 700, color: colors.primary }}>
                             Trusted by 100+ Urban Local Bodies
                         </h2>
                         <p className="text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-2 sm:px-0" style={{ color: colors.secondary }}>

@@ -22,7 +22,7 @@ import {
     Globe,
     Smartphone,
     Award,
-    X
+    X,
 } from "lucide-react";
 import { useThemeColors } from "./useThemeColors";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
@@ -33,7 +33,9 @@ import { useState } from "react";
 export function ServicesPage() {
     const { colors } = useThemeColors();
     const navigate = useNavigate();
-    const [selectedService, setSelectedService] = useState<number | null>(null);
+    const [selectedService, setSelectedService] = useState<
+        number | null
+    >(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const services = [
@@ -51,7 +53,7 @@ export function ServicesPage() {
         },
         {
             icon: Droplet,
-            title: "Water Tax Management",
+            title: "Municipal Water Bill Management",
             desc: "Efficient water tax assessment and collection systems for urban local bodies.",
             image: "/image_data/ServicePage/wtax.webp",
             features: [
@@ -65,7 +67,7 @@ export function ServicesPage() {
             icon: MapPin,
             title: "GIS Mapping",
             desc: "High-precision geographic information systems for municipal planning and analysis.",
-            image: "/image_data/ServicePage/gisservice.webp",
+            image: "/image_data/ServicePage/gis.webp",
             features: [
                 "Satellite imagery",
                 "Property mapping",
@@ -99,9 +101,9 @@ export function ServicesPage() {
         },
         {
             icon: Shield,
-            title: "Blockchain Documents",
-            desc: "Secure document verification using blockchain technology for authenticity.",
-            image: "/image_data/ServicePage/blockchain.webp",
+            title: "Data Analysis",
+            desc: "Predictive models for revenue, demand, and service delivery outcomes",
+            image: "/image_data/ServicePage/software.webp",
             features: [
                 "Document security",
                 "Tamper-proof records",
@@ -113,7 +115,7 @@ export function ServicesPage() {
             icon: ScanLine,
             title: "Scanning & Digitization",
             desc: "Large-scale document scanning and digitization services for municipal archives.",
-            image: "/image_data/ServicePage/ptax.webp",
+            image: "/image_data/ServicePage/data.webp",
             features: [
                 "Bulk scanning",
                 "OCR processing",
@@ -263,6 +265,9 @@ export function ServicesPage() {
                         muted
                         playsInline
                         className="w-full h-full object-cover"
+                        style={{
+                            objectPosition: 'center center'
+                        }}
                     >
                         <source
                             src="/image_data/Website_Hero_Section/servicepage.webm"
@@ -270,7 +275,7 @@ export function ServicesPage() {
                         />
                     </video>
                     {/* Dark Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/30 to-black/40" />
                 </div>
 
                 {/* Hero Content */}
@@ -297,7 +302,7 @@ export function ServicesPage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.6 }}
-                            className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed"
+                            className="text-2xl sm:text-xl md:text-2xl lg:text-3xl text-gray-200 mb-6 sm:mb-8 max-w-4xl mx-auto leading-relaxed px-4"
                         >
                             Comprehensive digital solutions for modern urban development and municipal excellence across Maharashtra
                         </motion.p>
@@ -310,10 +315,12 @@ export function ServicesPage() {
                         >
                             <button
                                 onClick={() => {
-                                    document.getElementById('services')?.scrollIntoView({
-                                        behavior: 'smooth',
-                                        block: 'start'
-                                    });
+                                    document
+                                        .getElementById("services")
+                                        ?.scrollIntoView({
+                                            behavior: "smooth",
+                                            block: "start",
+                                        });
                                 }}
                                 className="px-8 py-4 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-xl"
                                 style={{
@@ -336,9 +343,12 @@ export function ServicesPage() {
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 py-10">
+            <div className="max-w-7xl mx-auto px-4 py-6">
                 {/* Services Grid */}
-                <div id="services" className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
+                <div
+                    id="services"
+                    className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
+                >
                     {services.map((service, index) => (
                         <motion.div
                             key={index}
@@ -364,7 +374,7 @@ export function ServicesPage() {
                                     alt={service.title}
                                     className="w-full h-full object-cover"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
+                                <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/35 to-black/45" />
                             </div>
 
                             {/* Content */}
@@ -414,7 +424,10 @@ export function ServicesPage() {
                     className="bg-gradient-to-b from-gray-50 to-white rounded-3xl py-12 px-4 mb-16"
                 >
                     <div className="max-w-5xl mx-auto">
-                        <h2 className="text-4xl text-center mb-10" style={{ fontWeight: 700, color: colors.text }}>
+                        <h2
+                            className="text-4xl text-center mb-10"
+                            style={{ fontWeight: 700, color: colors.text }}
+                        >
                             Why Choose Our Services
                         </h2>
 
@@ -455,7 +468,10 @@ export function ServicesPage() {
                         transition={{ duration: 0.6 }}
                     >
                         <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200 h-full">
-                            <h2 className="text-3xl mb-6" style={{ fontWeight: 600, color: colors.text }}>
+                            <h2
+                                className="text-3xl mb-6"
+                                style={{ fontWeight: 600, color: colors.text }}
+                            >
                                 Technology Stack
                             </h2>
 
@@ -474,7 +490,12 @@ export function ServicesPage() {
                                             style={{ color: colors.accent }}
                                             className="flex-shrink-0"
                                         />
-                                        <span style={{ color: colors.accent, fontWeight: 500 }}>
+                                        <span
+                                            style={{
+                                                color: colors.accent,
+                                                fontWeight: 500,
+                                            }}
+                                        >
                                             {item.title}
                                         </span>
                                     </motion.div>
@@ -491,7 +512,10 @@ export function ServicesPage() {
                         transition={{ duration: 0.6, delay: 0.1 }}
                     >
                         <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200 h-full">
-                            <h2 className="text-3xl mb-6" style={{ fontWeight: 600, color: colors.text }}>
+                            <h2
+                                className="text-3xl mb-6"
+                                style={{ fontWeight: 600, color: colors.text }}
+                            >
                                 Seamless Integration
                             </h2>
 
@@ -510,7 +534,12 @@ export function ServicesPage() {
                                             style={{ color: colors.accent }}
                                             className="flex-shrink-0"
                                         />
-                                        <span style={{ color: colors.accent, fontWeight: 500 }}>
+                                        <span
+                                            style={{
+                                                color: colors.accent,
+                                                fontWeight: 500,
+                                            }}
+                                        >
                                             {integration.title}
                                         </span>
                                     </motion.div>
@@ -555,7 +584,7 @@ export function ServicesPage() {
                                     alt={services[selectedService].title}
                                     className="w-full h-full object-cover"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/85 to-black/90" />
+                                <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/50 to-black/55" />
                             </div>
 
                             {/* Close Button */}
@@ -570,7 +599,7 @@ export function ServicesPage() {
                             </button>
 
                             {/* Scrollable Content */}
-                            <div className="relative z-10 overflow-y-auto max-h-[90vh] p-8 md:p-12">
+                            <div className="relative z-10 overflow-y-auto max-h-[85vh] p-8 md:p-12">
                                 {/* Header */}
                                 <motion.div
                                     initial={{ opacity: 0, y: 20 }}
@@ -664,7 +693,6 @@ export function ServicesPage() {
                                         ))}
                                     </div>
                                 </motion.div>
-
                             </div>
                         </motion.div>
                     </>

@@ -45,7 +45,7 @@ import {
     CarouselPrevious,
     type CarouselApi
 } from "./ui/carousel";
-import emailjs from '@emailjs/browser';
+import axios from "axios";
 interface WorkExperience {
     id: number;
     companyName: string;
@@ -55,7 +55,17 @@ interface WorkExperience {
     endDate: string;
     currentlyWorking: boolean;
 }
+interface CareerFormData {
 
+    fullName: string;
+    email: string;
+    mobile: string;
+    address: string;
+    noticePeriod: string;
+
+    additionalInfo: string;
+    resume: File | null;
+}
 interface CultureSlide {
     id: number;
     title: string;
@@ -255,8 +265,8 @@ function CultureCarousel({ colors, cultureSlides }: { colors: any; cultureSlides
                         >
                             <div
                                 className={`rounded-full transition-all duration-300 ${idx === currentIndex
-                                        ? 'w-6 h-1.5 sm:w-7 sm:h-2 md:w-8 md:h-2'
-                                        : 'w-1.5 h-1.5 sm:w-2 sm:h-2'
+                                    ? 'w-6 h-1.5 sm:w-7 sm:h-2 md:w-8 md:h-2'
+                                    : 'w-1.5 h-1.5 sm:w-2 sm:h-2'
                                     }`}
                                 style={{
                                     backgroundColor: idx === currentIndex ? colors.primary : '#D1D5DB'
@@ -294,7 +304,7 @@ export function CareerPage() {
     const cultureSlides = [
         {
             id: 1,
-            title: "#WellnessMatters",
+            title: "#InnovationFirst",
             subtitle: "Nurturing everyone's physical and mental wellness through",
             hashtag: "#ThriveAtSthapatya",
             points: [
@@ -302,7 +312,7 @@ export function CareerPage() {
                 "Awareness about menstrual and menopausal health",
                 "Measures to reduce stress and promote work-life balance"
             ],
-            image: "/image_data/CareerPage/career1.webp"
+            image: "/image_data/CareerPage/career6.webp"
         },
         {
             id: 2,
@@ -314,11 +324,23 @@ export function CareerPage() {
                 "Career advancement opportunities across departments",
                 "Mentorship from industry leaders and experts"
             ],
+            image: "/image_data/CareerPage/career1.webp"
+        },
+        {
+            id: 3,
+            title: "#WellnessMatters",
+            subtitle: "Building tomorrow's solutions for municipal governance through",
+            hashtag: "#TechForGood",
+            points: [
+                "Cutting-edge GIS and IT solutions development",
+                "Collaboration with leading technology partners",
+                "Impact-driven projects transforming urban India"
+            ],
             image: "/image_data/CareerPage/career2.webp"
         },
         {
             id: 3,
-            title: "#InnovationFirst",
+            title: "#Growth",
             subtitle: "Building tomorrow's solutions for municipal governance through",
             hashtag: "#TechForGood",
             points: [
@@ -326,19 +348,7 @@ export function CareerPage() {
                 "Collaboration with leading technology partners",
                 "Impact-driven projects transforming urban India"
             ],
-            image: "/image_data/CareerPage/career3.webp"
-        },
-        {
-            id: 3,
-            title: "#InnovationFirst",
-            subtitle: "Building tomorrow's solutions for municipal governance through",
-            hashtag: "#TechForGood",
-            points: [
-                "Cutting-edge GIS and IT solutions development",
-                "Collaboration with leading technology partners",
-                "Impact-driven projects transforming urban India"
-            ],
-            image: "/image_data/CareerPage/career4.webp"
+            image: "/image_data/CareerPage/career7.webp"
         },
         {
             id: 3,
@@ -353,8 +363,8 @@ export function CareerPage() {
             image: "/image_data/CareerPage/career5.webp"
         },
         {
-            id: 3, 
-            title: "#InnovationFirst",
+            id: 3,
+            title: "#HappyTeam",
             subtitle: "Building tomorrow's solutions for municipal governance through",
             hashtag: "#TechForGood",
             points: [
@@ -362,19 +372,19 @@ export function CareerPage() {
                 "Collaboration with leading technology partners",
                 "Impact-driven projects transforming urban India"
             ],
-            image: "/image_data/CareerPage/career6.webp"
+            image: "/image_data/CareerPage/career3.webp"
         }
     ];
 
     // Form state
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<CareerFormData>({
         fullName: "",
         email: "",
         mobile: "",
         address: "",
         noticePeriod: "",
         additionalInfo: "",
-        resume: null as File | null,
+        resume: null,
     });
 
     const positions = [
@@ -393,7 +403,7 @@ export function CareerPage() {
                 "Collaborate using GitHub and version control systems.",
                 "Exposure to Microservices architecture is a plus.",
                 "Collaborate with teams",
-                
+
             ]
         },
         {
@@ -415,7 +425,7 @@ export function CareerPage() {
         },
         {
             id: 3,
-            title: "Digital Marketing Intern",
+            title: "Digital Marketing Intern", 
             department: "Analytics",
             category: "Analytics",
             location: "Pune, Maharashtra",
@@ -839,64 +849,80 @@ export function CareerPage() {
         setIsSubmitting(true);
 
         try {
-            // Prepare work experience details
-            const workExpDetails = hasWorkExperience
-                ? workExperiences
-                    .map((exp, index) => {
-                        return `Experience ${index + 1}:
-- Company: ${exp.companyName}
-- Role: ${exp.jobRole}
-- Description: ${exp.jobDescription}
-- Start Date: ${exp.startDate}
-- End Date: ${exp.currentlyWorking ? "Present" : exp.endDate}
-`;
-                    })
-                    .join("\n")
-                : "No work experience provided";
+            const formDataToSend = new FormData();
 
-            const currentDate = new Date().toLocaleString();
+            // Set position and department from selected position
+            formDataToSend.append("PositionTitle", selectedPosition.title);
+            formDataToSend.append("Department", selectedPosition.department);
 
-            // Send admin notification email only
-            const result = await emailjs.send(
-                import.meta.env.VITE_EMAILJS_SERVICE_ID,
-                import.meta.env.VITE_EMAILJS_CAREER_TEMPLATE_ID,
-                {
-                    position_title: selectedPosition.title,
-                    department: selectedPosition.department,
-                    name: formData.fullName,
-                    email: formData.email,
-                    mobile: formData.mobile,
-                    address: formData.address,
-                    notice_period: formData.noticePeriod,
-                    work_experience: workExpDetails,
-                    additional_info: formData.additionalInfo || "Not provided",
-                    resume_filename: formData.resume ? formData.resume.name : "Not attached",
-                    submitted_date: currentDate,
-                },
-                import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-            );
+            // Other fields
+            formDataToSend.append("FullName", formData.fullName || "");
+            formDataToSend.append("Email", formData.email || "");
+            formDataToSend.append("Mobile", formData.mobile || "");
+            formDataToSend.append("Address", formData.address || "");
+            formDataToSend.append("NoticePeriod", formData.noticePeriod || "");
 
-            console.log('Career application email sent successfully:', result.text);
+            // Format work experience properly for email readability
+            let workExpString;
+            if (hasWorkExperience && workExperiences.length > 0) {
+                workExpString = workExperiences.map((exp, index) => {
+                    const currentWorkingText = exp.currentlyWorking ? " (Currently Working)" : "";
+                    const endDateText = exp.currentlyWorking ? "Present" : exp.endDate;
 
-            // Show success toast
-            toast.success("Application submitted successfully!", {
-                description: "Thank you for your application. We'll review it and contact you soon.",
-                duration: 5000,
+                    return `Experience ${index + 1}:
+Company: ${exp.companyName}
+Role: ${exp.jobRole}
+Description: ${exp.jobDescription}
+Period: ${exp.startDate} to ${endDateText}${currentWorkingText}`;
+                }).join('\n\n');
+            } else {
+                workExpString = "No work experience provided";
+            }
+
+            formDataToSend.append("WorkExperience", workExpString);
+            formDataToSend.append("AdditionalInfo", formData.additionalInfo || "");
+
+            // Resume file
+            if (formData.resume instanceof File) {
+                formDataToSend.append("ResumeFile", formData.resume);
+            }
+
+            // Debug: Log all form data
+            console.log("=== FORM DATA BEING SENT ===");
+            for (const [key, value] of formDataToSend.entries()) {
+                console.log(`${key}:`, value);
+            }
+
+            // API call with better error handling
+            const response = await fetch("http://sthapatyabackend.tabamc.in/api/career/apply", {
+                method: "POST",
+                body: formDataToSend,
             });
 
-            // Reset form
-            setFormData({
-                fullName: "",
-                email: "",
-                mobile: "",
-                address: "",
-                noticePeriod: "",
-                additionalInfo: "",
-                resume: null,
-            });
-            setHasWorkExperience(false);
-            setWorkExperiences([
-                {
+            console.log("Response status:", response.status);
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error("Server error response:", errorText);
+                throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+            }
+
+            const result = await response.json();
+            console.log("Success response:", result);
+
+            if (result.success) {
+                toast.success("✅ Application submitted successfully!");
+                // Reset form
+                setFormData({
+                    fullName: "",
+                    email: "",
+                    mobile: "",
+                    address: "",
+                    noticePeriod: "",
+                    additionalInfo: "",
+                    resume: null,
+                });
+                setWorkExperiences([{
                     id: 1,
                     companyName: "",
                     jobRole: "",
@@ -904,20 +930,15 @@ export function CareerPage() {
                     startDate: "",
                     endDate: "",
                     currentlyWorking: false,
-                },
-            ]);
-
-            // Close dialog
-            setIsApplicationOpen(false);
-
+                }]);
+                setHasWorkExperience(false);
+                setIsApplicationOpen(false);
+            } else {
+                toast.error(`❌ ${result.message || "Failed to submit application"}`);
+            }
         } catch (error) {
-            console.error('Email sending failed:', error);
-
-            // Show error toast
-            toast.error("Failed to submit application", {
-                description: "Please try again or contact us directly via email.",
-                duration: 5000,
-            });
+            console.error("Error submitting form:", error);
+            toast.error("❌ Something went wrong. Please try again later.");
         } finally {
             setIsSubmitting(false);
         }
@@ -998,7 +1019,7 @@ export function CareerPage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.6 }}
-                            className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-200 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-4"
+                            className="text-2xl sm:text-xl md:text-2xl lg:text-3xl text-gray-200 mb-6 sm:mb-8 max-w-4xl mx-auto leading-relaxed px-4"
                         >
                             Join 800+ professionals making a real impact on municipal governance across Maharashtra
                         </motion.p>
@@ -1049,8 +1070,8 @@ export function CareerPage() {
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                                 className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-full transition-all text-xs sm:text-sm ${selectedCategory === category
-                                        ? 'shadow-lg'
-                                        : 'border-2 border-gray-300 hover:border-gray-400'
+                                    ? 'shadow-lg'
+                                    : 'border-2 border-gray-300 hover:border-gray-400'
                                     }`}
                                 style={selectedCategory === category ? {
                                     backgroundColor: colors.primary,
@@ -1095,8 +1116,8 @@ export function CareerPage() {
                                         onClick={() => setSelectedPosition(position)}
                                         whileHover={{ x: 5 }}
                                         className={`w-full text-left p-2.5 sm:p-3 lg:p-4 rounded-lg sm:rounded-xl border-2 transition-all ${selectedPosition.id === position.id
-                                                ? 'border-transparent shadow-lg'
-                                                : 'border-gray-200 hover:border-gray-300'
+                                            ? 'border-transparent shadow-lg'
+                                            : 'border-gray-200 hover:border-gray-300'
                                             }`}
                                         style={selectedPosition.id === position.id ? {
                                             backgroundColor: colors.primary,
@@ -1315,7 +1336,7 @@ export function CareerPage() {
                         </DialogDescription>
                     </DialogHeader>
 
-                    <form ref={formRef} onSubmit={handleSubmit} className="space-y-6 mt-4">
+                    <form onSubmit={handleSubmit} className="space-y-6 mt-4">
                         {/* Full Name */}
                         <div className="space-y-2">
                             <Label htmlFor="fullName">Full Name *</Label>
