@@ -2091,7 +2091,7 @@ export function HomePage() {
                                         className="relative group flex-1 overflow-hidden rounded-2xl shadow-xl"
                                     >
                                         <ImageWithFallback
-                                            src="/image_data/Team_photo/16.webp"
+                                            src="/image_data/Team_photo/21.webp"
                                             alt="Office Collaboration"
                                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                         />
@@ -2169,7 +2169,7 @@ export function HomePage() {
                                         className="relative group flex-1 overflow-hidden rounded-2xl shadow-xl"
                                     >
                                         <ImageWithFallback
-                                            src="/image_data/Team_photo/3.webp"
+                                            src="/image_data/Team_photo/20.webp"
                                             alt="Innovation & Growth"
                                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                         />
