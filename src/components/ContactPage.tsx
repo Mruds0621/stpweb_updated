@@ -72,7 +72,7 @@ export function ContactPage() {
         {
             city: "Amravati",
             address: "4, Swapnashri Colony,Siddhivinayak Nagar, Ashiyad Square,Shegaon Road, Amravati, Maharashtra, India 444604",
-            phone: "1800 833 2700, 0721-2970300",
+            phone: "0721-2970300,7058791416",
             hours: "Mon-Sat: 9:00 AM - 6:00 PM",
         },
         {

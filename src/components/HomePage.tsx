@@ -1657,6 +1657,19 @@ export function HomePage() {
                         >
                             Certifications & Co-partners
                         </motion.h2>
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.2, duration: 0.6 }}
+                            className="text-center mb-8"
+                            style={{
+                                fontSize: 'clamp(1rem, 2.2vw, 1.25rem)',
+                                color: colors.secondary,
+                            }}
+                        >
+                            Recognized for excellence and compliance in quality management
+                        </motion.p>
 
                         {/* Horizontal Certificate Card */}
                         <motion.div
@@ -1734,7 +1747,19 @@ export function HomePage() {
                         >
                             Our Journey
                         </h2>
-
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.2, duration: 0.6 }}
+                            className="text-center mb-6"
+                            style={{
+                                fontSize: 'clamp(1rem, 2.2vw, 1.25rem)',
+                                color: colors.secondary,
+                            }}
+                        >
+                            Two decades of innovation and excellence in urban governance
+                        </motion.p>
                         <div className="relative px-4 md:px-8">
                             {/* Horizontal Zigzag Path */}
                             <div className="relative">
@@ -2724,14 +2749,14 @@ export function HomePage() {
                                             style={{ color: "#BF3131" }}
                                         />
                                         <a
-                                            href="tel:+917774091416"
+                                            href="tel:0721-2970300"
                                             className="text-base transition-colors duration-300"
                                             style={{
                                                 color: colors.textLight,
                                                 fontWeight: 500,
                                             }}
                                         >
-                                            +91 7774091416
+                                            0721-2970300
                                         </a>
                                     </li>
                                     <li className="flex items-start gap-2">

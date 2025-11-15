@@ -48,7 +48,7 @@ export function ProjectsPage() {
     );
 
     const heroStats = [
-        { icon: Building2, label: "Urban Local Bodies", value: 100, suffix: "+", color: colors.primary },
+        { icon: Building2, label: "Urban Local Bodies", value: 120, suffix: "+", color: colors.primary },
         { icon: MapPin, label: "Properties Surveyed", value: 50, suffix: "L+", color: colors.secondary },
         { icon: TrendingUp, label: "Tax Revenue Generated", value: 5000, suffix: "Cr", color: colors.accent },
         { icon: Award, label: "Years Experience", value: 25, suffix: "+", color: colors.primary },
@@ -56,20 +56,15 @@ export function ProjectsPage() {
 
     const featuredProjects = [
         {
-            title: "Akola Municipal Corporation",
-            image: "/image_data/ProjectPage/akola.webp",
-            tag: "Growth Partner"
+            title: "Pimpri Municipal Corporation",
+            location: "Pimpri, Maharashtra",
+            image: "/image_data/ProjectPage/pcmc.webp",
+            tag: "Flagship Project"
         },
         {
             title: "Panvel Municipal Corporation",
             image: "/image_data/ProjectPage/panvel.webp",
             tag: "Smart City"
-        },
-        {
-            title: "Pimpri Municipal Corporation",
-            location: "Pimpri, Maharashtra",
-            image: "/image_data/ProjectPage/pcmc.webp",
-            tag: "Flagship Project"
         },
         {
             title: "Thane Municipal Corporation",
@@ -80,6 +75,11 @@ export function ProjectsPage() {
             title: "Amravati Municipal Corporation",
             image: "/image_data/ProjectPage/amc.webp",
             tag: "Tech Innovation"
+        },
+        {
+            title: "Akola Municipal Corporation",
+            image: "/image_data/ProjectPage/akola.webp",
+            tag: "Growth Partner"
         },
         {
             title: "Jalgaon Municipal Corporation",

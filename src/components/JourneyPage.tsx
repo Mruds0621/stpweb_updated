@@ -1,12 +1,27 @@
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { Calendar, MapPin, Award, TrendingUp, Building, Target, Zap, Rocket, Heart, Shield, Users, Star, Sparkles } from "lucide-react";
 import { useThemeColors } from "./useThemeColors";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { Footer } from "./Footer";
+import { useState, useEffect } from "react";
 
 export function JourneyPage() {
     const { colors } = useThemeColors();
 
+    // Slideshow state
+    const [currentSlide, setCurrentSlide] = useState(0);
+    const heroImages = [
+        "/image_data/Website_Hero_Section/aboutpage.webp",
+        "/image_data/Website_Hero_Section/journey.webp"
+    ];
+
+    // Auto-slide with 3 seconds duration
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+        }, 2000); 
+        return () => clearInterval(interval);
+    }, []);
     const milestones = [
         {
             year: "2001",
@@ -104,16 +119,27 @@ export function JourneyPage() {
         <div className="min-h-screen bg-white">
             {/* Hero Section with Background Image */}
             <div className="relative pt-24 sm:pt-20 h-auto sm:h-[65vh] md:h-[70vh] min-h-[550px] sm:min-h-[550px] md:min-h-[600px] overflow-hidden">
-                {/* Background Image */}
+                {/* Background Image Slideshow */}
                 <div className="absolute inset-0">
-                    <ImageWithFallback
-                        src="/image_data/Website_Hero_Section/journey.webp"
-                        alt="Smart City Technology Background"
-                        className="w-full h-full object-cover"
-                        style={{
-                            objectPosition: 'center center'
-                        }}
-                    />
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={currentSlide}
+                            initial={{ x: "100%" }}
+                            animate={{ x: 0 }}
+                            exit={{ x: "-100%" }}
+                            transition={{ duration: 0.8, ease: "easeInOut" }}
+                            className="absolute inset-0"
+                        >
+                            <ImageWithFallback
+                                src={heroImages[currentSlide]}
+                                alt="Smart City Technology Background"
+                                className="w-full h-full object-cover"
+                                style={{
+                                    objectPosition: 'center center'
+                                }}
+                            />
+                        </motion.div>
+                    </AnimatePresence>
                     {/* Dark Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/30 to-black/40" />
                 </div>
@@ -133,16 +159,16 @@ export function JourneyPage() {
                             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-4 sm:mb-5 text-white px-4"
                             style={{ fontWeight: 700 }}
                         >
-                            Milestones That
+                            A Timeline of Growth That Reflects 
                             <br />
-                            <span style={{ color: "white" }}>Define Us</span>
+                            <span style={{ color: "white" }}>Our Commitment to Excellence</span>
                         </motion.h1>
 
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.6 }}
-                            className="text-2xl sm:text-xl md:text-2xl lg:text-3xl text-gray-200 mb-6 sm:mb-8 max-w-4xl mx-auto leading-relaxed px-4"
+                            className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-4"
                         >
                             From a visionary start to becoming Maharashtra's leading urban governance partner —
                             our journey of innovation, growth, and unwavering commitment
