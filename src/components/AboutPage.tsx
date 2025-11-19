@@ -55,7 +55,7 @@ export function AboutPage() {
                     <ImageWithFallback
                         src="/image_data/Website_Hero_Section/aboutpage.webp"
                         alt="City Governance Technology Background"
-                        className="w-full h-full object-contain sm:object-cover"
+                        className="w-full h-full object-cover mt-6 pt-8"
                         style={{
                             objectPosition: 'center'
                         }}

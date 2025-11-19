@@ -1451,7 +1451,7 @@ export function HomePage() {
                             return (
                                 <>
                                     {/* Mobile Carousel - Hidden on sm and up */}
-                                    <div className="sm:hidden mb-8 relative">
+                                    <div className="md:hidden mb-8 relative">
                                         <Carousel
                                             opts={{
                                                 align: "start",
@@ -1480,8 +1480,24 @@ export function HomePage() {
                                         </Carousel>
                                     </div>
 
-                                    {/* Desktop Grid - Hidden on mobile */}
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+                                    {/* Desktop Grid - Visible on sm and up, hidden on mobile */}
+                                    <div
+                                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-8"
+                                        style={{ display: "none" }}
+                                        ref={(el) => {
+                                            if (el) {
+                                                const mediaQuery =
+                                                    window.matchMedia("(min-width: 768px)");
+                                                const updateDisplay = () => {
+                                                    el.style.display = mediaQuery.matches
+                                                        ? "grid"
+                                                        : "none";
+                                                };
+                                                mediaQuery.addEventListener("change", updateDisplay);
+                                                updateDisplay(); // Set initial state
+                                            }
+                                        }}
+                                    >
                                         {[
                                             {
                                                 name: "Thane Municipal Corporation",
@@ -2086,9 +2102,10 @@ export function HomePage() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.8 }}
-                            className="relative"
+                            className="relative w-full"
                         >
-                            <div className="flex gap-4 h-[600px] w-full max-w-[1420px] mx-auto">
+                            {/* Desktop Layout */}
+                            <div className="hidden md:flex gap-4 h-[600px] w-full max-w-[1420px] mx-auto">
                                 {/* Far Left Side - 2 Square Images */}
                                 <div className="flex flex-col gap-4 w-[260px]">
                                     <motion.div
@@ -2261,11 +2278,139 @@ export function HomePage() {
                                 </div>
                             </div>
 
+                            {/* Mobile Collage Layout */}
+                            <div className="md:hidden px-4">
+                                <div className="flex flex-col gap-3">
+                                    {/* Row 1: Large Left + Small Right Stack */}
+                                    <div className="flex gap-3">
+                                        {/* Large Image - Left */}
+                                        <motion.div
+                                            initial={{ opacity: 0, scale: 0.9 }}
+                                            whileInView={{ opacity: 1, scale: 1 }}
+                                            viewport={{ once: true }}
+                                            transition={{ delay: 0.05 }}
+                                            className="relative group flex-1 overflow-hidden rounded-2xl shadow-lg"
+                                            style={{ minHeight: "220px" }}
+                                        >
+                                            <ImageWithFallback
+                                                src="/image_data/Team_photo/13.webp"
+                                                alt="Professional Team"
+                                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                            />
+                                            <div
+                                                className="absolute inset-0 rounded-2xl border-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                                style={{ borderColor: colors.accent }}
+                                            />
+                                        </motion.div>
+
+                                        {/* Small Images Stack - Right */}
+                                        <div className="flex flex-col gap-3 flex-1">
+                                            <motion.div
+                                                initial={{ opacity: 0, scale: 0.9 }}
+                                                whileInView={{ opacity: 1, scale: 1 }}
+                                                viewport={{ once: true }}
+                                                transition={{ delay: 0.1 }}
+                                                className="relative group overflow-hidden rounded-2xl shadow-lg flex-1"
+                                            >
+                                                <ImageWithFallback
+                                                    src="/image_data/Team_photo/16.webp"
+                                                    alt="Office Collaboration"
+                                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                                />
+                                                <div
+                                                    className="absolute inset-0 rounded-2xl border-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                                    style={{ borderColor: colors.accent }}
+                                                />
+                                            </motion.div>
+
+                                            <motion.div
+                                                initial={{ opacity: 0, scale: 0.9 }}
+                                                whileInView={{ opacity: 1, scale: 1 }}
+                                                viewport={{ once: true }}
+                                                transition={{ delay: 0.15 }}
+                                                className="relative group overflow-hidden rounded-2xl shadow-lg flex-1"
+                                            >
+                                                <ImageWithFallback
+                                                    src="/image_data/Team_photo/7.webp"
+                                                    alt="Team Collaboration"
+                                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                                />
+                                                <div
+                                                    className="absolute inset-0 rounded-2xl border-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                                    style={{ borderColor: colors.accent }}
+                                                />
+                                            </motion.div>
+                                        </div>
+                                    </div>
+
+                                    {/* Row 2: Small Left Stack + Large Right */}
+                                    <div className="flex gap-3">
+                                        {/* Small Images Stack - Left */}
+                                        <div className="flex flex-col gap-3 flex-1">
+                                            <motion.div
+                                                initial={{ opacity: 0, scale: 0.9 }}
+                                                whileInView={{ opacity: 1, scale: 1 }}
+                                                viewport={{ once: true }}
+                                                transition={{ delay: 0.2 }}
+                                                className="relative group overflow-hidden rounded-2xl shadow-lg flex-1"
+                                            >
+                                                <ImageWithFallback
+                                                    src="/image_data/Team_photo/5.webp"
+                                                    alt="Professional Excellence"
+                                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                                />
+                                                <div
+                                                    className="absolute inset-0 rounded-2xl border-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                                    style={{ borderColor: colors.accent }}
+                                                />
+                                            </motion.div>
+
+                                            <motion.div
+                                                initial={{ opacity: 0, scale: 0.9 }}
+                                                whileInView={{ opacity: 1, scale: 1 }}
+                                                viewport={{ once: true }}
+                                                transition={{ delay: 0.25 }}
+                                                className="relative group overflow-hidden rounded-2xl shadow-lg flex-1"
+                                            >
+                                                <ImageWithFallback
+                                                    src="/image_data/Team_photo/2.webp"
+                                                    alt="Modern Workspace"
+                                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                                />
+                                                <div
+                                                    className="absolute inset-0 rounded-2xl border-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                                    style={{ borderColor: colors.accent }}
+                                                />
+                                            </motion.div>
+                                        </div>
+
+                                        {/* Large Image - Right */}
+                                        <motion.div
+                                            initial={{ opacity: 0, scale: 0.9 }}
+                                            whileInView={{ opacity: 1, scale: 1 }}
+                                            viewport={{ once: true }}
+                                            transition={{ delay: 0.3 }}
+                                            className="relative group flex-1 overflow-hidden rounded-2xl shadow-lg"
+                                            style={{ minHeight: "220px" }}
+                                        >
+                                            <ImageWithFallback
+                                                src="/image_data/Team_photo/3.webp"
+                                                alt="Innovation & Growth"
+                                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                            />
+                                            <div
+                                                className="absolute inset-0 rounded-2xl border-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                                style={{ borderColor: colors.accent }}
+                                            />
+                                        </motion.div>
+                                    </div>
+                                </div>
+                            </div>
+
                             {/* Decorative Elements */}
                             <div className="absolute -top-4 -left-4 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl" />
                             <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl" />
                         </motion.div>
-
                     </div>
                 </div>
             </section>
